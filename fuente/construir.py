@@ -125,3 +125,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# (build automatizado vía .github/workflows/build.yml)
