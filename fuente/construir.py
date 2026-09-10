@@ -34,7 +34,8 @@ def data_uri(ruta: pathlib.Path, mime: str) -> str:
             w, h = im.size
             if max(w, h) > JPEG_LADO_MAX:
                 escala = JPEG_LADO_MAX / max(w, h)
-                im = im.resize((round(w * escala), round(h * escala)), Image.LANCZOS)
+                lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+                im = im.resize((round(w * escala), round(h * escala)), lanczos)
             buf = io.BytesIO()
             im.save(buf, format="JPEG", quality=JPEG_CALIDAD, optimize=True)
             datos = buf.getvalue()

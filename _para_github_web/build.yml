@@ -1,0 +1,47 @@
+name: Construir sitio
+
+# Cada vez que alguien cambia algo dentro de fuente/ (por ejemplo el texto
+# en fuente/plantilla.html), GitHub regenera index.html automaticamente y
+# lo publica. Nadie tiene que correr nada a mano.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'fuente/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: construir-sitio
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install pillow
+
+      - name: Regenerar index.html
+        run: python3 fuente/construir.py
+
+      - name: Publicar si cambio
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "index.html sin cambios, nada que publicar."
+          else
+            git config user.name "Artemisa Bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html
+            git commit -m "Regenerar index.html [automatico]"
+            git push
+          fi
