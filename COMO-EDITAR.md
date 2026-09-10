@@ -1,50 +1,65 @@
 # Cómo editar el sitio de Artemisa
 
-## Cambios de texto (precios, fechas, nombres, párrafos)
+Todo se hace desde la página de GitHub, en el navegador. **No hay que instalar
+nada ni usar la Terminal.** Cuando guardas un cambio, el sitio se actualiza solo
+en 1–2 minutos.
 
-Estos son la mayoría de los cambios y **no necesitan instalar nada**.
+Sitio publicado: **https://alaiae.github.io/artemisa-web/**
 
-1. En GitHub, entrar a la carpeta `fuente/` y abrir **`plantilla.html`**.
-2. Tocar el lápiz (**Edit this file**) arriba a la derecha.
-3. Buscar el texto con `Ctrl/Cmd + F` y cambiarlo. Ejemplos:
-   - El precio de la entrada: buscar `Entrada` → `<b>$450</b>`.
-   - La fecha: buscar `18 de diciembre`.
-   - El lugar: buscar `Casa del Tiempo`.
-4. Abajo, **Commit changes** con una nota corta de qué cambiaste.
+---
 
-> ⚠️ Después de editar `plantilla.html` **hay que regenerar `index.html`**, que es lo
-> que ve el público. Ver la sección siguiente. Si no sabés hacer ese paso, avisá a
-> Alaia o pedíselo a Claude Code con este repo abierto: _"corré `fuente/construir.py`
-> y subí el `index.html` nuevo"_.
+## Primera vez (solo una vez)
 
-## Regenerar `index.html` (paso técnico)
+1. Crear una cuenta gratis en **github.com** (botón *Sign up*).
+2. Pasarle tu **nombre de usuario** de GitHub a Alaia.
+3. Alaia te agrega al proyecto. Te llega un correo:
+   *"AlaiaE invited you to collaborate"* → abre el correo y pica **Accept invitation**.
 
-Hace falta **Python 3** (ya viene en Mac). En una terminal, dentro de la carpeta del repo:
+Listo, ya puedes editar.
 
-```bash
-python3 fuente/construir.py
-```
+---
 
-Eso reescribe `index.html`. Después:
+## Cambiar un texto (precio, fecha, nombres, párrafos…)
 
-```bash
-git add index.html
-git commit -m "Regenerar index.html"
-git push
-```
+1. Entra a **github.com/AlaiaE/artemisa-web**
+2. Pica la carpeta **`fuente`** y luego el archivo **`plantilla.html`**.
+3. Arriba a la derecha del archivo, pica el **lápiz ✏️** (*Edit this file*).
+4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
+   - Precio de entrada → busca `Entrada` y cambia `$450`
+   - Fecha → busca `18 de diciembre`
+   - Lugar → busca `Casa del Tiempo`
+   - Nombre de una artista → busca `[Nombre Artista 2]`
+   - Bio de una artista → busca `[Breve descripción de Artista 2`
+5. Baja hasta abajo, pica **Commit changes**, escribe una nota corta
+   (ej. *"precio actualizado"*) y confirma con **Commit changes**.
+6. Espera 1–2 minutos y recarga **https://alaiae.github.io/artemisa-web/**.
+   El cambio ya está.
 
-## Cambiar imágenes (obras, fotos, stickers)
+> Para ver que el sitio se está reconstruyendo: en el repo, pestaña **Actions**.
+> Un punto amarillo = trabajando, palomita verde ✅ = listo.
 
-1. Reemplazar el archivo dentro de `fuente/obras/`, `fuente/fotos/` o `fuente/stickers/`
-   **manteniendo el mismo nombre**.
-2. Correr `python3 fuente/construir.py`.
-3. Commit + push.
+---
 
-Para recortes finos (quitar fondo, encuadrar una obra) es más fácil pedírselo a
-Claude Code con el repo abierto.
+## ⚠️ Qué NO tocar
 
-## Ver el sitio publicado
+- El archivo **`index.html`** (se genera solo — si lo editas se sobreescribe).
+- Las carpetas **`fuente/letras`**, **`fuente/stickers`**, **`fuente/fuentes`**.
+- El archivo **`fuente/construir.py`** y la carpeta **`.github`**.
+- Dentro de `plantilla.html`: cualquier cosa que parezca código o letras
+  aleatorias largas. Solo cambia el **texto que se lee** (títulos, párrafos,
+  precios, fechas, nombres).
 
-Si está activado **GitHub Pages** (Settings → Pages), la dirección es algo como
-`https://USUARIO.github.io/artemisa-web/`. Tarda ~1 minuto en actualizarse después
-de cada push.
+Si algo se ve raro después de un cambio, avísale a Alaia — siempre se puede volver
+a la versión anterior.
+
+---
+
+## Cambiar una imagen de una obra o foto
+
+1. Entra a `fuente/obras/` (o `fuente/fotos/`).
+2. Pica la imagen que quieres reemplazar → botón **⋯** → **Delete file** → commit.
+3. Vuelve a `fuente/obras/` → **Add file → Upload files** → sube la nueva
+   **con el mismo nombre** que tenía la anterior → commit.
+4. El sitio se reconstruye solo.
+
+Para recortes finos (quitar fondo, encuadrar), es mejor pedírselo a Alaia.
