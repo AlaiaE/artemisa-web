@@ -1,0 +1,5 @@
+.DS_Store
+*.pages
+*.heic
+*.HEIC
+__pycache__/
