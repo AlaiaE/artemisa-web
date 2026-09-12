@@ -1,7 +1,34 @@
+<!-- ================================================================
+     ARTEMISA — plantilla.html
+     This is a TEMPLATE, not the live site. A build script
+     (fuente/construir.py) reads this file, swaps every __TOKEN__
+     placeholder below for a real embedded image/font, and writes
+     the result out as index.html — that generated file is what
+     actually gets published. Never edit index.html directly.
+
+     File map (in the order things appear below):
+       1. <head> metadata + @font-face declarations       (here)
+       2. <style>  — all page CSS, organized by component
+       3. <header class="nav">  — sticky top navigation
+       4. <main>
+            - .hero                       (top banner/collage)
+            - #proposito section          (why we do this)
+            - #artistas section           (artist cards)
+            - 3x .artist-modal            (one popup per artist)
+            - #obras section              (full 30-lot catalog)
+            - #impacto section + its modal (where funds go)
+            - #participar section         (how to join)
+       5. <footer>
+       6. <script>  — reveal-on-scroll + modal open/close
+     ================================================================ -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artemisa</title>
 <style>
+  /* ---------- FONTS ----------
+     @font-face rules embedding each custom typeface. The
+     base64,__TOKEN__ placeholders are filled in by construir.py —
+     don't edit the text inside them. */
   @font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url(data:font/woff2;base64,__FRAUNCES600__) format('woff2');}
   @font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,__FRAUNCES700__) format('woff2');}
   @font-face{font-family:'Fraunces';font-style:italic;font-weight:500;font-display:swap;src:url(data:font/woff2;base64,__FRAUNCES500I__) format('woff2');}
@@ -14,6 +41,14 @@
   @font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,__CAVEAT700__) format('woff2');}
   @font-face{font-family:'Tangerine';font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,__TANGERINE700__) format('woff2');}
 
+  /* ---------- COLOR TOKENS ----------
+     One palette for light mode (:root) and two overrides for dark
+     mode: an automatic one that follows the OS/browser setting
+     (@media prefers-color-scheme) and a manual one for when the
+     page is forced with data-theme="dark"/"light". Every other CSS
+     rule below references these variables (var(--ink), etc.)
+     instead of hard-coded colors, so this is the one place to
+     change the whole site's color scheme. */
   :root{
     --paper:#EEEAE0;
     --paper-raised:#F6F3EA;
@@ -418,6 +453,14 @@
   }
 </style>
 
+<!-- ============================================================
+     SITE HEADER — sticky top navigation bar.
+     Contains: the "Artemisa" logo (wordmark), the menu links
+     (Propósito / Artistas / Obras / Impacto / Cómo participar),
+     the "Reservar lugar" button, and a hidden checkbox (#nav-check)
+     that is used purely as a CSS trick to open/close the mobile
+     hamburger menu — no JavaScript needed for that toggle.
+     ============================================================ -->
 <header class="nav">
   <input type="checkbox" id="nav-check">
   <div class="nav-inner">
@@ -443,7 +486,28 @@
   </nav>
 </header>
 
+<!-- ============================================================
+     MAIN CONTENT
+     Everything the visitor scrolls through lives inside this
+     <main> tag: the hero banner, then one <section> per anchor
+     link from the nav bar (Propósito, Artistas, Obras, Impacto,
+     Cómo participar), plus the three hidden artist "modal" boxes
+     and the "impacto" organization modal.
+     ============================================================ -->
 <main id="top">
+
+  <!-- ----------------------------------------------------------
+       HERO — the big banner at the very top of the page.
+       Holds: the hand-drawn doodle squiggles, the small orange
+       sticker badge, the handwritten headline, the sticker
+       "collage" illustration (bull + fans + sun + stars) with the
+       big "Artemisa" title overlaid on top, the short description
+       paragraph, the date/place/price info chips, and the two
+       call-to-action buttons ("Ver las obras" / "Conoce el
+       proyecto"). All the __STK_..._ and __LETTER_..._ tokens you
+       see below are placeholders — the build script (construir.py)
+       swaps them for real images, so don't rename them.
+       ---------------------------------------------------------- -->
   <div class="hero">
     <div class="hero-inner reveal" id="hero-collage">
       <svg class="doodle doodle-left" width="140" height="80" viewBox="0 0 140 80" aria-hidden="true">
@@ -489,6 +553,12 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       SECTION: "PROPÓSITO" (Why we do this)
+       Anchor target for the "Propósito" nav link. One short block
+       of text explaining the motivation behind the auction — the
+       art classes with children that the pieces help fund.
+       ============================================================ -->
   <section id="proposito">
     <div class="wrap">
       <div class="reveal" style="max-width:68ch;">
@@ -503,6 +573,17 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       SECTION: "ARTISTAS" (The artists)
+       Anchor target for the "Artistas" nav link. Shows a horizontal
+       row of clickable artist cards (photo placeholder + name +
+       one-line description). Clicking a card doesn't navigate
+       anywhere — it opens that artist's hidden "modal" popup (see
+       the <div class="artist-modal" id="modal-..."> blocks right
+       after this section, matched by the data-open-modal attribute).
+       Cards are kept in numerical order here: 01 Alaia Esteban,
+       02 [Artista 2], 03 [Artista 3].
+       ============================================================ -->
   <section id="artistas">
     <div class="wrap">
       <div class="section-head reveal">
@@ -512,16 +593,19 @@
       </div>
 
       <div class="artist-carousel reveal">
-        <button type="button" class="artist-card" data-open-modal="modal-artista2">
-          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph"></div></div>
-          <div class="artist-name">[Nombre Artista 2]</div>
-          <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
-        </button>
+        <!-- Artist 01 -->
         <button type="button" class="artist-card" data-open-modal="modal-alaia">
           <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph"></div></div>
           <div class="artist-name">Alaia Esteban</div>
           <p class="artist-brief">Estudiante, artista y educadora · Ciudad de México.</p>
         </button>
+        <!-- Artist 02 -->
+        <button type="button" class="artist-card" data-open-modal="modal-artista2">
+          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-name">[Nombre Artista 2]</div>
+          <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
+        </button>
+        <!-- Artist 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista3">
           <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph"></div></div>
           <div class="artist-name">[Nombre Artista 3]</div>
@@ -531,6 +615,22 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       ARTIST MODAL 01 — Alaia Esteban
+       Hidden by default ([hidden] attribute); opened by the
+       matching button in the carousel above (data-open-modal=
+       "modal-alaia") and closed by the ✕ button, clicking the
+       dark backdrop, or pressing Escape (logic in the <script> at
+       the bottom of the page).
+       Structure inside: photo + name/role header, biography
+       paragraphs, a classroom photo, a 3-step "how it works" strip
+       (Enseñar / Intervenir / Compartir), a short "el taller"
+       blurb, and then her 10 lots (.lots.modal-lots grid) — 5 of
+       her own pieces (Lotes 01, 04, 07, 10, 13) plus 5 pieces where
+       she intervened on a student's work (Lotes 16, 19, 22, 25, 28,
+       marked with the "intervención" tag). Kept in ascending lot
+       order.
+       ============================================================ -->
   <div class="artist-modal" id="modal-alaia" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
@@ -666,6 +766,13 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       ARTIST MODAL 02 — [Nombre Artista 2] (placeholder artist)
+       Same structure as modal-alaia above, minus the classroom
+       photo/steps/taller blocks (those are specific to Alaia).
+       Holds her/his 10 lots, in ascending order: 02, 05, 08, 11,
+       14, 17, 20, 23, 26, 29.
+       ============================================================ -->
   <div class="artist-modal" id="modal-artista2" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
@@ -769,6 +876,13 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       ARTIST MODAL 03 — [Nombre Artista 3] (placeholder artist)
+       Same structure again. Holds her/his 10 lots, in ascending
+       order: 03, 06, 09, 12, 15, 18, 21, 24, 27, 30.
+       This is the last of the three artist modals — together
+       Alaia + Artista 2 + Artista 3 account for all 30 lots.
+       ============================================================ -->
   <div class="artist-modal" id="modal-artista3" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
@@ -872,6 +986,18 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       SECTION: "OBRAS" (The full catalog)
+       Anchor target for the "Obras" nav link. This is the same 30
+       lots that appear split across the three artist modals above,
+       but shown together here as one flat grid, mixed and sorted
+       purely by lot number (Lote 01 → Lote 30), regardless of which
+       artist made each piece. Every ".lot" card repeats the same
+       pattern: an image (or a placeholder color swatch when there's
+       no photo yet) tagged with its lot number, a title, a
+       technique/artist/size line, and a base price. A disclaimer
+       paragraph at the end notes that titles/prices are provisional.
+       ============================================================ -->
   <section id="obras">
     <div class="wrap">
       <div class="section-head reveal">
@@ -1127,6 +1253,16 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       SECTION: "IMPACTO" (Where the money goes)
+       Anchor target for the "Impacto" nav link. Has a different
+       background tint (.impact-section) to visually separate it.
+       Explains what the proceeds fund, then shows one "collab-card"
+       introducing the partner organization. Clicking the
+       organization's name opens the "modal-org" popup defined right
+       below this section, the same way artist names open artist
+       modals.
+       ============================================================ -->
   <section id="impacto" class="impact-section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -1146,6 +1282,16 @@
       </div>
     </div>
 
+    <!-- ==========================================================
+         ORGANIZATION MODAL — partner organization details.
+         Same hidden-popup pattern as the artist modals: opened by
+         the "[Nombre de la organización]" button in the collab-card
+         just above, closed the same way. Shows a longer description
+         and a 3-item grid of the organization's own projects.
+         Nested inside the "impacto" section (not inside <main>'s
+         top-level modal group) because it's only ever referenced
+         from within this section.
+         ========================================================== -->
     <div class="artist-modal" id="modal-org" hidden>
       <div class="artist-modal-backdrop"></div>
       <div class="artist-modal-panel">
@@ -1186,6 +1332,15 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       SECTION: "PARTICIPAR" (How to take part)
+       Anchor target for the "Cómo participar" nav link and the
+       "Reservar lugar" button in the header. A 4-step strip
+       (Reserva tu lugar / Conoce las obras / Puja el día del
+       evento / Tu aporte se queda aquí) followed by one final
+       call-to-action button linking to the same RSVP email.
+       This is the last section inside <main> — the footer follows.
+       ============================================================ -->
   <section id="participar">
     <div class="wrap">
       <div class="section-head reveal">
@@ -1222,7 +1377,16 @@
     </div>
   </section>
 </main>
+<!-- ============================================================
+     END OF MAIN CONTENT
+     ============================================================ -->
 
+<!-- ============================================================
+     FOOTER — outside <main>, shown at the very bottom of every
+     page load. Repeats the badge sticker and the "Artemisa"
+     wordmark, lists the event summary/address/contact links, and
+     ends with a small "site under construction" note.
+     ============================================================ -->
 <footer>
   <div class="wrap">
     <div class="footer-inner">
@@ -1240,6 +1404,17 @@
   </div>
 </footer>
 
+<!-- ============================================================
+     SCRIPT — page behavior. Three independent pieces:
+     1. Scroll-reveal: fades/slides each ".reveal" element into
+        view the first time it scrolls onscreen (skipped entirely
+        if the visitor's system prefers reduced motion).
+     2. Modal open/close: any element with [data-open-modal="ID"]
+        (artist cards, the organization name button) reveals the
+        matching #ID modal; clicking its backdrop, its ✕ button, or
+        pressing Escape hides it again.
+     Both pieces work together but don't depend on each other.
+     ============================================================ -->
 <script>
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var els = document.querySelectorAll('.reveal');
