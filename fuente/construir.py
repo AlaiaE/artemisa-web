@@ -13,6 +13,7 @@ publica el sitio.
 import base64
 import io
 import pathlib
+import re
 import sys
 
 AQUI = pathlib.Path(__file__).resolve().parent      # .../fuente
@@ -76,12 +77,32 @@ IMAGENES = {
     "__STK_STAR_E__":   ("stickers/star_e.png",            "image/png"),
     "__STK_NARANJA_GIF__": ("stickers/naranja_anim.gif",   "image/gif"),
     "__FOOTER_GIF__":   ("stickers/granada_anim.gif",      "image/gif"),
-    "__OBRA_DEPREDADOR__":  ("obras/lote01_depredador_doble.jpg", "image/jpeg"),
-    "__OBRA_QUIMERA__":     ("obras/lote04_quimera_acuatica.jpg", "image/jpeg"),
-    "__OBRA_MATRIOSHKA__":  ("obras/lote13_matrioshka.jpg",       "image/jpeg"),
-    "__OBRA_ENSENARON__":   ("obras/lote10_nos_ensenaron.jpg",    "image/jpeg"),
     "__PHOTO_ESTUDIANTES__": ("fotos/estudiantes_en_clase.jpg",   "image/jpeg"),
 }
+
+# --- fotos de obras: por CONVENCIÓN DE NOMBRE, sin tocar plantilla.html ---
+# Cada lote es <div class="lot-art[...clases...]"><span>Lote NN</span></div>
+# (sin <img>, dos veces: catálogo general + modal del artista). Si existe
+# fuente/obras/loteNN.jpg (o .jpeg/.png), se le mete la foto ahí mismo.
+# Para poner una obra: sube el archivo con ese nombre. Para quitarla: bórralo.
+LOTE_ART_RE = re.compile(
+    r'<div class="lot-art[^"]*"><span>Lote (\d{2})</span></div>'
+)
+
+def inyectar_fotos_de_lotes(html: str) -> str:
+    def reemplazar(m: "re.Match[str]") -> str:
+        numero = m.group(1)
+        for ext, mime in ((".jpg", "image/jpeg"), (".jpeg", "image/jpeg"), (".png", "image/png")):
+            ruta = AQUI / "obras" / f"lote{numero}{ext}"
+            if ruta.exists():
+                uri = data_uri(ruta, mime)
+                return (
+                    f'<div class="lot-art"><img src="{uri}" alt="" '
+                    f'style="width:100%;height:100%;object-fit:cover;">'
+                    f'<span>Lote {numero}</span></div>'
+                )
+        return m.group(0)  # sin foto: se queda el fondo de textura
+    return LOTE_ART_RE.sub(reemplazar, html)
 
 def main() -> int:
     plantilla = (AQUI / "plantilla.html").read_text(encoding="utf-8")
@@ -101,7 +122,6 @@ def main() -> int:
         html = html.replace(marcador, data_uri(ruta, mime))
 
     # letras recortadas: __LETTER_a_0__ -> fuente/letras/a_0.png
-    import re
     for marcador in sorted(set(re.findall(r"__LETTER_[a-z0-9_]+__", plantilla))):
         clave = marcador[len("__LETTER_"):-2]          # ej. "a_0"
         ruta = AQUI / "letras" / f"{clave}.png"
@@ -112,6 +132,10 @@ def main() -> int:
     if faltan_archivos:
         print("ERROR: faltan archivos:", *faltan_archivos, sep="\n  ")
         return 1
+
+    # fotos de obras por convención de nombre (loteNN.jpg) — va después de
+    # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
+    html = inyectar_fotos_de_lotes(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:
