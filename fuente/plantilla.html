@@ -1,7 +1,7 @@
 <!-- ================================================================
      ARTEMISA — plantilla.html
      This is a TEMPLATE, not the live site. A build script
-     (fuente/construir.py) reads this file, swaps every __TOKEN__
+     (fuente/construir.py) reads this file, swaps every "__…__"
      placeholder below for a real embedded image/font, and writes
      the result out as index.html — that generated file is what
      actually gets published. Never edit index.html directly.
@@ -16,6 +16,7 @@
             - #artistas section           (artist cards)
             - 3x .artist-modal            (one popup per artist)
             - #obras section              (full 30-lot catalog)
+            - #galeria section            (venue photos + map link)
             - #impacto section + its modal (where funds go)
             - #participar section         (how to join)
        5. <footer>
@@ -27,7 +28,7 @@
 <style>
   /* ---------- FONTS ----------
      @font-face rules embedding each custom typeface. The
-     base64,__TOKEN__ placeholders are filled in by construir.py —
+     base64,"__…__" placeholders are filled in by construir.py —
      don't edit the text inside them. */
   @font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url(data:font/woff2;base64,__FRAUNCES600__) format('woff2');}
   @font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,__FRAUNCES700__) format('woff2');}
@@ -402,6 +403,25 @@
   .lot-price-value{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--sienna);font-variant-numeric:tabular-nums;}
   .disclaimer{margin-top:32px;font-size:13px;color:var(--graphite-soft);max-width:70ch;}
 
+  /* ---------- GALLERY (venue photo strip, "La galería" section) ----------
+     Swipeable row of venue photos, same scroll-snap technique as
+     .artist-carousel. Each .gallery-photo shows a placeholder
+     gradient (reusing the .art-* classes from the lot cards above)
+     until a real photo file exists at galeria/<archivo>.jpg — see
+     "Agregar fotos a la Galería" in COMO-EDITAR.md. The <img>
+     removes itself on load error (onerror="this.remove()"), so a
+     missing photo just reveals the placeholder underneath instead
+     of showing a broken-image icon. */
+  .gallery-carousel{
+    display:flex;gap:22px;margin-top:48px;padding:28px 6px 18px;
+    border-top:1px solid var(--line);
+    overflow-x:auto;scroll-snap-type:x proximity;scroll-padding:6px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .gallery-photo{flex:0 0 auto;width:min(78vw,380px);scroll-snap-align:center;}
+  .gallery-frame{aspect-ratio:4/3;position:relative;overflow:hidden;}
+  .gallery-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
   /* participar */
   .participar-cta{margin-top:44px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
 
@@ -469,6 +489,7 @@
       <a href="#proposito">Propósito</a>
       <a href="#artistas">Artistas</a>
       <a href="#obras">Obras</a>
+      <a href="#galeria">Galería</a>
       <a href="#impacto">Impacto</a>
       <a href="#participar">Cómo participar</a>
     </nav>
@@ -481,6 +502,7 @@
     <a href="#proposito">Propósito</a>
     <a href="#artistas">Artistas</a>
     <a href="#obras">Obras</a>
+    <a href="#galeria">Galería</a>
     <a href="#impacto">Impacto</a>
     <a href="#participar">Cómo participar</a>
   </nav>
@@ -1254,6 +1276,88 @@
   </section>
 
   <!-- ============================================================
+       SECTION: "GALERÍA" (The venue)
+       Anchor target for the "Galería" nav link, placed right before
+       "Impacto" as requested. Unlike "Obras" and "Impacto" above,
+       the title here is PLAIN, ordinary text — not the hand-drawn
+       sticker-letter treatment — so it's as easy to retype as the
+       "Los artistas" heading is: just edit the words inside <h2>.
+
+       Contains, top to bottom:
+       1. Title + an editable one-line description of the venue and
+          how the art will be displayed (both plain placeholder text
+          — just replace the bracketed text).
+       2. A swipeable photo strip (.gallery-carousel), 6 slots ready
+          to go. No real photos yet, so each tile currently shows a
+          placeholder pattern (reusing the .art-* gradients from the
+          "Obras" lot cards). See "Agregar fotos a la Galería" in
+          COMO-EDITAR.md for exactly how to drop real photos in
+          later — no code editing needed for that step.
+       3. The venue name + address and the "Ver ubicación en Google
+          Maps" button, moved here from "Cómo participar".
+       ============================================================ -->
+  <section id="galeria">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">el espacio</div>
+        <h2>La galería</h2>
+        <p class="lede">[Breve descripción del espacio: cómo se verá la exposición y cómo estarán montadas las obras el día del evento].</p>
+      </div>
+
+      <div class="gallery-carousel reveal">
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-grafito"><img class="gallery-photo-img" src="galeria/01.jpg" alt="[Descripción de la foto 1: p. ej. fachada / entrada]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 1: p. ej. fachada / entrada]</p>
+        </div>
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-acuarela"><img class="gallery-photo-img" src="galeria/02.jpg" alt="[Descripción de la foto 2: p. ej. salón principal, vista general]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 2: p. ej. salón principal, vista general]</p>
+        </div>
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-oleo"><img class="gallery-photo-img" src="galeria/03.jpg" alt="[Descripción de la foto 3: p. ej. pared donde se montarán las obras]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 3: p. ej. pared donde se montarán las obras]</p>
+        </div>
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-mixta"><img class="gallery-photo-img" src="galeria/04.jpg" alt="[Descripción de la foto 4: p. ej. patio o sala secundaria]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 4: p. ej. patio o sala secundaria]</p>
+        </div>
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-collage"><img class="gallery-photo-img" src="galeria/05.jpg" alt="[Descripción de la foto 5: p. ej. detalle arquitectónico]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 5: p. ej. detalle arquitectónico]</p>
+        </div>
+        <div class="gallery-photo">
+          <div class="frame">
+            <div class="gallery-frame art-grafito"><img class="gallery-photo-img" src="galeria/06.jpg" alt="[Descripción de la foto 6]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+          </div>
+          <p class="frame-cap">[Descripción de la foto 6]</p>
+        </div>
+      </div>
+
+      <!-- Venue address + Google Maps link (moved here from "Cómo
+           participar"). The href is a Google Maps "search" URL
+           built from the address below — if the address ever
+           changes, update both the visible text and the %-encoded
+           query in the href to match. -->
+      <div class="prose reveal" style="margin-top:40px;">
+        <p><strong>Lugar del evento:</strong> Casa del Tiempo — Gral. Pedro Antonio de los Santos 84, San Miguel Chapultepec I Secc., 11850 CDMX.</p>
+      </div>
+      <div class="participar-cta reveal">
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Casa+del+Tiempo%2C+Gral.+Pedro+Antonio+de+los+Santos+84%2C+San+Miguel+Chapultepec+I+Secc.%2C+11850+CDMX" target="_blank" rel="noopener">Ver ubicación en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        SECTION: "IMPACTO" (Where the money goes)
        Anchor target for the "Impacto" nav link. Has a different
        background tint (.impact-section) to visually separate it.
@@ -1371,17 +1475,8 @@
         </div>
       </div>
 
-      <!-- Venue address + Google Maps link. The href is a Google Maps
-           "search" URL built from the venue name/address below — if
-           the address text ever changes, update both the visible
-           text and the %-encoded query in the href to match. -->
-      <div class="prose reveal" style="margin-top:36px;">
-        <p><strong>Lugar del evento:</strong> Casa del Tiempo — Gral. Pedro Antonio de los Santos 84, San Miguel Chapultepec I Secc., 11850 CDMX.</p>
-      </div>
-
       <div class="participar-cta reveal">
         <a class="btn btn-primary" href="mailto:alaiaesteban@icloud.com">Escríbenos para reservar</a>
-        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Casa+del+Tiempo%2C+Gral.+Pedro+Antonio+de+los+Santos+84%2C+San+Miguel+Chapultepec+I+Secc.%2C+11850+CDMX" target="_blank" rel="noopener">Ver ubicación en Google Maps</a>
       </div>
     </div>
   </section>
