@@ -429,9 +429,17 @@
   .footer-inner{display:flex;flex-direction:column;align-items:center;gap:32px;}
   .footer-badge{width:min(148px,22vw);aspect-ratio:1;flex-shrink:0;filter:drop-shadow(0 8px 16px hsl(var(--shadow) / 0.22));}
   .footer-badge img{width:100%;height:100%;object-fit:contain;}
-  .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;width:100%;}
+  .footer-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px 48px;width:100%;}
   .footer-word{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:24px;}
-  .footer-meta{display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--graphite);text-align:right;}
+  /* left column: wordmark + short event description/address */
+  .footer-about{display:flex;flex-direction:column;gap:12px;max-width:46ch;}
+  .footer-meta{display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--graphite);text-align:left;}
+  /* right column: "Contáctanos" with email + Instagram links, each with an icon */
+  .footer-contact{display:flex;flex-direction:column;align-items:flex-start;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  .footer-contact-title{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:20px;line-height:1.2;color:var(--ink);margin:0;}
+  .footer-contact a{display:inline-flex;align-items:center;gap:10px;color:var(--graphite);text-decoration:none;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;}
+  .footer-contact a:hover{color:var(--sienna);border-color:var(--sienna);}
+  .footer-icon{width:18px;height:18px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
   .footer-note{margin-top:32px;font-size:12px;color:var(--graphite-soft);border-top:1px dashed var(--line);padding-top:18px;}
 
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease;}
@@ -1498,11 +1506,21 @@
     <div class="footer-inner">
       <div class="footer-badge"><img src="__FOOTER_GIF__" alt="Sticker animado girando"></div>
       <div class="footer-row">
-        <div class="footer-word">Artemisa</div>
-        <div class="footer-meta">
-          <span>Subasta de arte solidaria · Ciudad de México · 18 de diciembre</span>
-          <span>Centro Cultural San Ángel — Álvaro Obregón, Av. Revolución S/n, San Ángel, Benito Juárez, 01000 Ciudad de México, CDMX</span>
-          <span><a href="mailto:alaiaesteban@icloud.com">alaiaesteban@icloud.com</a> · <a href="https://instagram.com/artemisa.proyect" target="_blank" rel="noopener">@artemisa.proyect</a></span>
+        <!-- Column 1: wordmark + short event description and address -->
+        <div class="footer-about">
+          <div class="footer-word">Artemisa</div>
+          <div class="footer-meta">
+            <span>Subasta de arte solidaria · Ciudad de México · 18 de diciembre</span>
+            <span>Centro Cultural San Ángel — Álvaro Obregón, Av. Revolución S/n, San Ángel, Benito Juárez, 01000 Ciudad de México, CDMX</span>
+          </div>
+        </div>
+        <!-- Column 2: "Contáctanos" — each link has a small inline SVG
+             icon (envelope = email, camera-in-square = Instagram). -->
+        <div class="footer-contact">
+          <h3 class="footer-contact-title">Contáctanos</h3>
+          <a href="mailto:alaiaesteban@icloud.com"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>alaiaesteban@icloud.com</a>
+          <a href="mailto:artemisa.proyect2026@gmail.com"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>artemisa.proyect2026@gmail.com</a>
+          <a href="https://instagram.com/artemisa.proyect" target="_blank" rel="noopener"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@artemisa.proyect</a>
         </div>
       </div>
     </div>
