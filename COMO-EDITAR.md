@@ -27,7 +27,7 @@ Listo, ya puedes editar.
 4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
    - Precio de entrada → busca `Entrada` y cambia `$450`
    - Fecha → busca `18 de diciembre`
-   - Lugar → busca `Casa del Tiempo`
+   - Lugar → busca `Centro Cultural San Ángel`
    - Nombre de una artista → busca `[Nombre Artista 2]`
    - Bio de una artista → busca `[Breve descripción de Artista 2`
 5. Baja hasta abajo, pica **Commit changes**, escribe una nota corta

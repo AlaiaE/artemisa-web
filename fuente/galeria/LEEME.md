@@ -1,6 +1,6 @@
 # Fotos de "La galería"
 
-Sube aquí las fotos del espacio (Casa del Tiempo) para la sección
+Sube aquí las fotos del espacio (Centro Cultural San Ángel) para la sección
 **"La galería"** del sitio. No hace falta tocar ningún otro archivo.
 
 ## Cómo se llaman los archivos
