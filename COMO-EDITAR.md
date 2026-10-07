@@ -27,7 +27,7 @@ Listo, ya puedes editar.
 4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
    - Precio de entrada → busca `Entrada` y cambia `$450`
    - Fecha → busca `18 de diciembre`
-   - Lugar → busca `Casa del Tiempo`
+   - Lugar → busca `Centro Cultural San Ángel`
    - Nombre de una artista → busca `[Nombre Artista 2]`
    - Bio de una artista → busca `[Breve descripción de Artista 2`
 5. Baja hasta abajo, pica **Commit changes**, escribe una nota corta
@@ -82,3 +82,25 @@ Para recortes finos (quitar fondo, encuadrar bien), es mejor pedírselo a Alaia.
 Esas sí van por nombre fijo — hay que reemplazar el archivo **con el mismo
 nombre** que ya tiene, dentro de `fuente/fotos/` o `fuente/stickers/`
 (borrar + subir, igual que arriba).
+
+---
+
+## Agregar fotos a "La galería" (fotos del espacio)
+
+La sección **"La galería"** tiene 6 espacios de foto listos, cada uno
+esperando un archivo con un nombre exacto: `01.jpg`, `02.jpg`, `03.jpg`,
+`04.jpg`, `05.jpg` y `06.jpg`.
+
+1. Entra a `fuente/galeria/`.
+2. **Add file → Upload files** → sube tu foto **nombrada exactamente**
+   `01.jpg` (o el número que le toque) → commit.
+3. Espera 1–2 minutos: el sitio se reconstruye solo y la foto aparece ya
+   comprimida (liviana, para que la página cargue rápido) en su lugar.
+
+No necesitas tener las 6 fotos de una vez — sube las que tengas. Los
+espacios sin foto todavía se ven como un color de fondo, no como un error.
+Puedes subir la foto tal cual sale de tu teléfono; se comprime sola.
+
+Si más adelante quieres más de 6 fotos, o en otro orden, eso sí requiere
+pedirle el cambio a Alaia o a Claude (implica editar `plantilla.html`, no
+solo subir un archivo).

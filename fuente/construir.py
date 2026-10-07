@@ -48,6 +48,51 @@ def data_uri(ruta: pathlib.Path, mime: str) -> str:
 def b64_crudo(ruta: pathlib.Path) -> str:
     return base64.b64encode(ruta.read_bytes()).decode("ascii")
 
+# --- fotos de "La galeria": NO se incrustan como data URI (harian el
+# index.html todavia mas pesado). En vez de eso, cada foto que exista en
+# fuente/galeria/ se comprime y se copia tal cual a galeria/ en la raiz del
+# repo, con el MISMO nombre de archivo. plantilla.html ya trae <img
+# src="galeria/01.jpg" ...> apuntando ahi para 6 fotos (01.jpg .. 06.jpg);
+# mientras un archivo no exista, ese <img> simplemente falla a cargar y
+# desaparece (onerror="this.remove()"), mostrando el marco de color de
+# fondo. Por eso esta funcion NUNCA cuenta como "archivo faltante": es
+# opcional, a diferencia de FUENTES/IMAGENES arriba.
+GALERIA_LADO_MAX = 1400
+GALERIA_CALIDAD = 76
+
+def optimizar_galeria() -> int:
+    origen = AQUI / "galeria"
+    if not origen.is_dir():
+        return 0
+    destino = RAIZ / "galeria"
+    procesadas = 0
+    for ruta in sorted(origen.iterdir()):
+        if not ruta.is_file() or ruta.suffix.lower() not in (".jpg", ".jpeg", ".png"):
+            continue
+        mime = "image/png" if ruta.suffix.lower() == ".png" else "image/jpeg"
+        datos = ruta.read_bytes()
+        if mime == "image/jpeg":
+            try:
+                from PIL import Image
+                im = Image.open(io.BytesIO(datos))
+                im = im.convert("RGB")
+                w, h = im.size
+                if max(w, h) > GALERIA_LADO_MAX:
+                    escala = GALERIA_LADO_MAX / max(w, h)
+                    lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+                    im = im.resize((round(w * escala), round(h * escala)), lanczos)
+                buf = io.BytesIO()
+                im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
+                datos = buf.getvalue()
+            except ImportError:
+                print("  aviso: Pillow no esta instalado, copio la foto de galeria sin comprimir")
+        destino.mkdir(exist_ok=True)
+        (destino / ruta.name).write_bytes(datos)
+        procesadas += 1
+    if procesadas:
+        print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
+    return procesadas
+
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
 FUENTES = {
     "__FRAUNCES600__":  "fraunces600.woff2",
@@ -145,6 +190,8 @@ def main() -> int:
     salida = RAIZ / "index.html"
     salida.write_text(html, encoding="utf-8")
     print(f"OK  ->  {salida}  ({len(html):,} caracteres)")
+
+    optimizar_galeria()
     return 0
 
 if __name__ == "__main__":

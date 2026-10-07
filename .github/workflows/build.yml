@@ -20,12 +20,13 @@ jobs:
       - run: pip install pillow
       - run: python3 fuente/construir.py
       - run: |
-          if git diff --quiet -- index.html; then
+          git add index.html
+          if [ -d galeria ]; then git add galeria; fi
+          if git diff --cached --quiet; then
             echo "sin cambios"
           else
             git config user.name "Artemisa Bot"
             git config user.email "actions@users.noreply.github.com"
-            git add index.html
-            git commit -m "Regenerar index.html [automatico]"
+            git commit -m "Regenerar index.html y galeria/ [automatico]"
             git push
           fi
