@@ -104,3 +104,26 @@ Puedes subir la foto tal cual sale de tu teléfono; se comprime sola.
 Si más adelante quieres más de 6 fotos, o en otro orden, eso sí requiere
 pedirle el cambio a Alaia o a Claude (implica editar `plantilla.html`, no
 solo subir un archivo).
+
+---
+
+## Fotos de portafolios, inspiración y destinatario (collages)
+
+Estas tres partes del sitio muestran **collages de fotos** que se arman solos
+a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
+no se toca ningún archivo de código.
+
+| Qué                                    | Carpeta                | El nombre de la foto empieza con |
+|----------------------------------------|------------------------|----------------------------------|
+| Portafolio de cada próxima estrella    | `fuente/portafolios/`  | `estrella01` … `estrella15`      |
+| "Inspiración" de cada obra reimaginada | `fuente/inspiracion/`  | `lote01` … `lote10`              |
+| Fotos del destinatario                 | `fuente/destinatario/` | (cualquier nombre)               |
+
+Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
+`estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
+Cada carpeta tiene un archivo `LEEME.md` con más detalle.
+
+1. Entra a la carpeta → **Add file → Upload files** → sube las fotos → commit.
+2. Espera 1–2 minutos: el sitio se reconstruye y comprime las fotos solo.
+
+No edites la carpeta `media/` de la raíz: la genera el sitio automáticamente.

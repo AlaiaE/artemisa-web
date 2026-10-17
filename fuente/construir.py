@@ -14,6 +14,7 @@ import base64
 import io
 import pathlib
 import re
+import shutil
 import sys
 
 AQUI = pathlib.Path(__file__).resolve().parent      # .../fuente
@@ -60,6 +61,27 @@ def b64_crudo(ruta: pathlib.Path) -> str:
 GALERIA_LADO_MAX = 1400
 GALERIA_CALIDAD = 76
 
+def comprimir_foto(ruta: pathlib.Path) -> bytes:
+    """JPEG -> reescalado (lado mayor <= GALERIA_LADO_MAX) y recomprimido.
+    Otros formatos (PNG, WEBP) se copian tal cual."""
+    datos = ruta.read_bytes()
+    if ruta.suffix.lower() not in (".jpg", ".jpeg"):
+        return datos
+    try:
+        from PIL import Image
+    except ImportError:
+        print(f"  aviso: Pillow no esta instalado, copio {ruta.name} sin comprimir")
+        return datos
+    im = Image.open(io.BytesIO(datos)).convert("RGB")
+    w, h = im.size
+    if max(w, h) > GALERIA_LADO_MAX:
+        escala = GALERIA_LADO_MAX / max(w, h)
+        lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+        im = im.resize((round(w * escala), round(h * escala)), lanczos)
+    buf = io.BytesIO()
+    im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
+    return buf.getvalue()
+
 def optimizar_galeria() -> int:
     origen = AQUI / "galeria"
     if not origen.is_dir():
@@ -69,29 +91,59 @@ def optimizar_galeria() -> int:
     for ruta in sorted(origen.iterdir()):
         if not ruta.is_file() or ruta.suffix.lower() not in (".jpg", ".jpeg", ".png"):
             continue
-        mime = "image/png" if ruta.suffix.lower() == ".png" else "image/jpeg"
-        datos = ruta.read_bytes()
-        if mime == "image/jpeg":
-            try:
-                from PIL import Image
-                im = Image.open(io.BytesIO(datos))
-                im = im.convert("RGB")
-                w, h = im.size
-                if max(w, h) > GALERIA_LADO_MAX:
-                    escala = GALERIA_LADO_MAX / max(w, h)
-                    lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
-                    im = im.resize((round(w * escala), round(h * escala)), lanczos)
-                buf = io.BytesIO()
-                im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
-                datos = buf.getvalue()
-            except ImportError:
-                print("  aviso: Pillow no esta instalado, copio la foto de galeria sin comprimir")
         destino.mkdir(exist_ok=True)
-        (destino / ruta.name).write_bytes(datos)
+        (destino / ruta.name).write_bytes(comprimir_foto(ruta))
         procesadas += 1
     if procesadas:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
     return procesadas
+
+# --- collages (portafolios, inspiracion, destinatario): por CARPETA ---
+# En plantilla.html cada collage es
+#   <div class="fotos-collage..." data-fotos="portafolios/estrella01"> ...placeholders... </div>
+# Se buscan fotos en fuente/portafolios/ cuyo nombre (o subcarpeta) empiece
+# por "estrella01" (sin clave, p. ej. data-fotos="destinatario", valen todas).
+# Cada foto se comprime y se copia a media/<carpeta>/<clave>/01.jpg, 02.jpg...
+# (orden alfabetico del nombre original), y el collage se rellena con ellas.
+# Sin fotos se quedan los placeholders. Es opcional: nunca rompe el build.
+# media/ es SOLO salida del build: se borra y se regenera completa cada vez.
+MEDIA = RAIZ / "media"
+EXT_FOTO = (".jpg", ".jpeg", ".png", ".webp")
+COLLAGE_RE = re.compile(r'<div class="(fotos-collage[^"]*)" data-fotos="([^"]+)">(.*?)</div>', re.S)
+
+def inyectar_collages(html: str) -> str:
+    if MEDIA.is_dir():
+        shutil.rmtree(MEDIA)
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        clases, ref, _ = m.groups()
+        carpeta, _, clave = ref.partition("/")
+        origen = AQUI / carpeta
+        if not origen.is_dir():
+            return m.group(0)
+        fotos = []
+        for ruta in sorted(origen.rglob("*"), key=lambda p: str(p).lower()):
+            if not ruta.is_file() or ruta.suffix.lower() not in EXT_FOTO:
+                continue
+            primera = ruta.relative_to(origen).parts[0].lower()
+            if clave and not primera.startswith(clave.lower()):
+                continue
+            fotos.append(ruta)
+        if not fotos:
+            return m.group(0)
+        partes = ["media", carpeta] + ([clave] if clave else [])
+        destino = RAIZ.joinpath(*partes)
+        destino.mkdir(parents=True, exist_ok=True)
+        imgs = []
+        for n, ruta in enumerate(fotos, 1):
+            ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
+            nombre = f"{n:02d}{ext}"
+            (destino / nombre).write_bytes(comprimir_foto(ruta))
+            imgs.append(f'<img src="{"/".join(partes + [nombre])}" alt="" loading="lazy" decoding="async">')
+        print(f"  collage {ref}: {len(fotos)} foto(s)")
+        return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
+
+    return COLLAGE_RE.sub(reemplazar, html)
 
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
 FUENTES = {
@@ -181,6 +233,7 @@ def main() -> int:
     # fotos de obras por convención de nombre (loteNN.jpg) — va después de
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
+    html = inyectar_collages(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:
