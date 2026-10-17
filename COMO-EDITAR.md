@@ -127,3 +127,20 @@ Cada carpeta tiene un archivo `LEEME.md` con más detalle.
 2. Espera 1–2 minutos: el sitio se reconstruye y comprime las fotos solo.
 
 No edites la carpeta `media/` de la raíz: la genera el sitio automáticamente.
+
+---
+
+## Fotos de los maestros y de las próximas estrellas
+
+Cada persona tiene una foto que aparece en su tarjeta y en la foto redonda de
+su ventana. Va en `fuente/retratos/` con un nombre exacto:
+
+- Maestros: `maestro01.jpg` (Alaia), `maestro02.jpg`, `maestro03.jpg`
+- Próximas estrellas: `estrella01.jpg` … `estrella15.jpg` (siempre dos dígitos)
+
+1. Entra a `fuente/retratos/` → **Add file → Upload files** → sube la foto con
+   ese nombre → commit.
+2. Espera 1–2 minutos: el sitio se reconstruye y comprime la foto solo.
+
+Para cambiar una foto, borra la anterior y sube la nueva con el mismo nombre.
+Más detalle en `fuente/retratos/LEEME.md`.

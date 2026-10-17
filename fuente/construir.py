@@ -112,9 +112,6 @@ EXT_FOTO = (".jpg", ".jpeg", ".png", ".webp")
 COLLAGE_RE = re.compile(r'<div class="(fotos-collage[^"]*)" data-fotos="([^"]+)">(.*?)</div>', re.S)
 
 def inyectar_collages(html: str) -> str:
-    if MEDIA.is_dir():
-        shutil.rmtree(MEDIA)
-
     def reemplazar(m: "re.Match[str]") -> str:
         clases, ref, _ = m.groups()
         carpeta, _, clave = ref.partition("/")
@@ -144,6 +141,47 @@ def inyectar_collages(html: str) -> str:
         return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
 
     return COLLAGE_RE.sub(reemplazar, html)
+
+# --- retratos de maestros y próximas estrellas: por NOMBRE de archivo ---
+# En plantilla.html cada foto de tarjeta y cada foto redonda de la ventana
+# lleva data-retrato="maestro01" (01 = Alaia, 02, 03) o "estrella01".."estrella15".
+# Si existe fuente/retratos/<clave>.jpg (o .jpeg/.png/.webp), se comprime, se
+# copia a media/retratos/ y aparece en la tarjeta Y en la ventana.
+RETRATO_RE = re.compile(r'<div class="(artist-photo-ph|artist-modal-photo)" data-retrato="([a-z0-9]+)"></div>')
+
+def inyectar_retratos(html: str) -> str:
+    origen = AQUI / "retratos"
+    copiados = {}
+
+    def foto(clave: str):
+        if clave not in copiados:
+            copiados[clave] = None
+            for ext in EXT_FOTO:
+                ruta = origen / f"{clave}{ext}"
+                if ruta.is_file():
+                    destino = MEDIA / "retratos"
+                    destino.mkdir(parents=True, exist_ok=True)
+                    salida = ".jpg" if ext == ".jpeg" else ext
+                    (destino / f"{clave}{salida}").write_bytes(comprimir_foto(ruta))
+                    copiados[clave] = f"media/retratos/{clave}{salida}"
+                    break
+        return copiados[clave]
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        clase, clave = m.groups()
+        src = foto(clave)
+        if not src:
+            return m.group(0)  # sin foto: se queda el placeholder
+        img = f'<img src="{src}" alt="" loading="lazy" decoding="async"'
+        if clase == "artist-photo-ph":
+            return f'{img} class="artist-photo-img">'
+        return f'<div class="artist-modal-photo" data-retrato="{clave}">{img}></div>'
+
+    html = RETRATO_RE.sub(reemplazar, html)
+    n = sum(1 for v in copiados.values() if v)
+    if n:
+        print(f"  retratos: {n} foto(s)")
+    return html
 
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
 FUENTES = {
@@ -233,7 +271,10 @@ def main() -> int:
     # fotos de obras por convención de nombre (loteNN.jpg) — va después de
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
+    if MEDIA.is_dir():
+        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     html = inyectar_collages(html)
+    html = inyectar_retratos(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:

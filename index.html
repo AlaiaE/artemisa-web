@@ -363,6 +363,12 @@
   .carousel-2rows .artist-card{min-width:0;max-width:none;}
   .carousel-2rows .artist-photo{aspect-ratio:1/1;}
 
+  /* Real portrait (from fuente/retratos/) replacing the placeholder:
+     fills the card's photo box / the round photo in the popup. */
+  .artist-photo-img{width:100%;height:100%;object-fit:cover;display:block;}
+  .artist-modal-photo{overflow:hidden;}
+  .artist-modal-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+
   /* ---------- ARTIST MODAL ---------- */
   body.modal-open{overflow:hidden;}
   .artist-modal{position:fixed;inset:0;z-index:100;overflow-y:auto;padding:48px 20px;}
@@ -687,19 +693,19 @@
       <div class="artist-carousel reveal">
         <!-- Artist 01 -->
         <button type="button" class="artist-card" data-open-modal="modal-alaia">
-          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph" data-retrato="maestro01"></div></div>
           <div class="artist-name">Alaia Esteban</div>
           <p class="artist-brief">Estudiante, artista y educadora · Ciudad de México.</p>
         </button>
         <!-- Artist 02 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista2">
-          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="maestro02"></div></div>
           <div class="artist-name">[Nombre Artista 2]</div>
           <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
         </button>
         <!-- Artist 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista3">
-          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="maestro03"></div></div>
           <div class="artist-name">[Nombre Artista 3]</div>
           <p class="artist-brief">[Breve descripción de Artista 3 — técnica, ciudad, una línea].</p>
         </button>
@@ -726,7 +732,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro01"></div>
         <div>
           <div class="author-name">Alaia Esteban</div>
           <div class="author-role">Estudiante, Artista y Educadora · Ciudad de México</div>
@@ -828,7 +834,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro02"></div>
         <div>
           <div class="author-name">[Nombre Artista 2]</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
@@ -896,7 +902,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro03"></div>
         <div>
           <div class="author-name">[Nombre Artista 3]</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
@@ -927,91 +933,91 @@
       <div class="artist-carousel carousel-2rows reveal">
         <!-- Estrella 01 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-01">
-          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph" data-retrato="estrella01"></div></div>
           <div class="artist-name">Sara</div>
           <p class="artist-brief">[Breve descripción de Estrella 1 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 02 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-02">
-          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="estrella02"></div></div>
           <div class="artist-name">Herminio</div>
           <p class="artist-brief">[Breve descripción de Estrella 2 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-03">
-          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="estrella03"></div></div>
           <div class="artist-name">[Nombre Estrella 3]</div>
           <p class="artist-brief">[Breve descripción de Estrella 3 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 04 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-04">
-          <div class="artist-photo"><span class="artist-index">04</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">04</span><div class="artist-photo-ph" data-retrato="estrella04"></div></div>
           <div class="artist-name">[Nombre Estrella 4]</div>
           <p class="artist-brief">[Breve descripción de Estrella 4 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 05 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-05">
-          <div class="artist-photo"><span class="artist-index">05</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">05</span><div class="artist-photo-ph" data-retrato="estrella05"></div></div>
           <div class="artist-name">[Nombre Estrella 5]</div>
           <p class="artist-brief">[Breve descripción de Estrella 5 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 06 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-06">
-          <div class="artist-photo"><span class="artist-index">06</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">06</span><div class="artist-photo-ph" data-retrato="estrella06"></div></div>
           <div class="artist-name">[Nombre Estrella 6]</div>
           <p class="artist-brief">[Breve descripción de Estrella 6 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 07 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-07">
-          <div class="artist-photo"><span class="artist-index">07</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">07</span><div class="artist-photo-ph" data-retrato="estrella07"></div></div>
           <div class="artist-name">[Nombre Estrella 7]</div>
           <p class="artist-brief">[Breve descripción de Estrella 7 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 08 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-08">
-          <div class="artist-photo"><span class="artist-index">08</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">08</span><div class="artist-photo-ph" data-retrato="estrella08"></div></div>
           <div class="artist-name">[Nombre Estrella 8]</div>
           <p class="artist-brief">[Breve descripción de Estrella 8 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 09 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-09">
-          <div class="artist-photo"><span class="artist-index">09</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">09</span><div class="artist-photo-ph" data-retrato="estrella09"></div></div>
           <div class="artist-name">[Nombre Estrella 9]</div>
           <p class="artist-brief">[Breve descripción de Estrella 9 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 10 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-10">
-          <div class="artist-photo"><span class="artist-index">10</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">10</span><div class="artist-photo-ph" data-retrato="estrella10"></div></div>
           <div class="artist-name">[Nombre Estrella 10]</div>
           <p class="artist-brief">[Breve descripción de Estrella 10 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 11 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-11">
-          <div class="artist-photo"><span class="artist-index">11</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">11</span><div class="artist-photo-ph" data-retrato="estrella11"></div></div>
           <div class="artist-name">[Nombre Estrella 11]</div>
           <p class="artist-brief">[Breve descripción de Estrella 11 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 12 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-12">
-          <div class="artist-photo"><span class="artist-index">12</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">12</span><div class="artist-photo-ph" data-retrato="estrella12"></div></div>
           <div class="artist-name">[Nombre Estrella 12]</div>
           <p class="artist-brief">[Breve descripción de Estrella 12 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 13 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-13">
-          <div class="artist-photo"><span class="artist-index">13</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">13</span><div class="artist-photo-ph" data-retrato="estrella13"></div></div>
           <div class="artist-name">[Nombre Estrella 13]</div>
           <p class="artist-brief">[Breve descripción de Estrella 13 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 14 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-14">
-          <div class="artist-photo"><span class="artist-index">14</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">14</span><div class="artist-photo-ph" data-retrato="estrella14"></div></div>
           <div class="artist-name">[Nombre Estrella 14]</div>
           <p class="artist-brief">[Breve descripción de Estrella 14 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 15 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-15">
-          <div class="artist-photo"><span class="artist-index">15</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">15</span><div class="artist-photo-ph" data-retrato="estrella15"></div></div>
           <div class="artist-name">[Nombre Estrella 15]</div>
           <p class="artist-brief">[Breve descripción de Estrella 15 — edad, técnica favorita, una línea].</p>
         </button>
@@ -1028,7 +1034,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella01"></div>
         <div>
           <div class="author-name">Sara</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1047,7 +1053,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella02"></div>
         <div>
           <div class="author-name">Herminio</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1066,7 +1072,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella03"></div>
         <div>
           <div class="author-name">[Nombre Estrella 3]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1085,7 +1091,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella04"></div>
         <div>
           <div class="author-name">[Nombre Estrella 4]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1104,7 +1110,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella05"></div>
         <div>
           <div class="author-name">[Nombre Estrella 5]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1123,7 +1129,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella06"></div>
         <div>
           <div class="author-name">[Nombre Estrella 6]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1142,7 +1148,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella07"></div>
         <div>
           <div class="author-name">[Nombre Estrella 7]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1161,7 +1167,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella08"></div>
         <div>
           <div class="author-name">[Nombre Estrella 8]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1180,7 +1186,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella09"></div>
         <div>
           <div class="author-name">[Nombre Estrella 9]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1199,7 +1205,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella10"></div>
         <div>
           <div class="author-name">[Nombre Estrella 10]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1218,7 +1224,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella11"></div>
         <div>
           <div class="author-name">[Nombre Estrella 11]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1237,7 +1243,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella12"></div>
         <div>
           <div class="author-name">[Nombre Estrella 12]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1256,7 +1262,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella13"></div>
         <div>
           <div class="author-name">[Nombre Estrella 13]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1275,7 +1281,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella14"></div>
         <div>
           <div class="author-name">[Nombre Estrella 14]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
@@ -1294,7 +1300,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="estrella15"></div>
         <div>
           <div class="author-name">[Nombre Estrella 15]</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
