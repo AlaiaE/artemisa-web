@@ -3,7 +3,8 @@
 Reconstruye index.html a partir de fuente/plantilla.html + las imagenes/fuentes.
 
 Uso:
-    python3 fuente/construir.py
+    python3 fuente/construir.py                        # escribe en la raiz (lo que se publica)
+    python3 fuente/construir.py --salida .vista-previa # copia local para la vista previa
 
 Toma plantilla.html (texto y CSS editables a mano), incrusta cada imagen y
 tipografia como data URI en el marcador correspondiente, y escribe el
@@ -19,6 +20,7 @@ import sys
 
 AQUI = pathlib.Path(__file__).resolve().parent      # .../fuente
 RAIZ = AQUI.parent                                   # raiz del repo
+SALIDA = RAIZ      # donde se escriben index.html, galeria/ y media/ (ver --salida)
 
 # Las fotos (.jpg) se reescalan para la web antes de incrustarlas:
 # lado mayor <= JPEG_LADO_MAX px, calidad JPEG_CALIDAD. Asi el index.html
@@ -82,11 +84,35 @@ def comprimir_foto(ruta: pathlib.Path) -> bytes:
     im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
     return buf.getvalue()
 
+def foto_web(ruta: pathlib.Path) -> "tuple[bytes, str]":
+    """Para retratos y collages: cualquier foto (JPG/PNG/WEBP) -> JPEG reescalado.
+    Si la imagen usa transparencia de verdad, se queda en PNG (reescalado).
+    Devuelve (bytes, extension). Sin Pillow, copia el archivo tal cual."""
+    ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
+    try:
+        from PIL import Image
+    except ImportError:
+        print(f"  aviso: Pillow no esta instalado, copio {ruta.name} sin comprimir")
+        return ruta.read_bytes(), ext
+    im = Image.open(ruta)
+    im.load()
+    w, h = im.size
+    if max(w, h) > GALERIA_LADO_MAX:
+        escala = GALERIA_LADO_MAX / max(w, h)
+        lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+        im = im.resize((round(w * escala), round(h * escala)), lanczos)
+    buf = io.BytesIO()
+    if im.mode in ("RGBA", "LA", "P") and im.convert("RGBA").getextrema()[3][0] < 255:
+        im.save(buf, format="PNG", optimize=True)
+        return buf.getvalue(), ".png"
+    im.convert("RGB").save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
+    return buf.getvalue(), ".jpg"
+
 def optimizar_galeria() -> int:
     origen = AQUI / "galeria"
     if not origen.is_dir():
         return 0
-    destino = RAIZ / "galeria"
+    destino = SALIDA / "galeria"
     procesadas = 0
     for ruta in sorted(origen.iterdir()):
         if not ruta.is_file() or ruta.suffix.lower() not in (".jpg", ".jpeg", ".png"):
@@ -107,7 +133,7 @@ def optimizar_galeria() -> int:
 # (orden alfabetico del nombre original), y el collage se rellena con ellas.
 # Sin fotos se quedan los placeholders. Es opcional: nunca rompe el build.
 # media/ es SOLO salida del build: se borra y se regenera completa cada vez.
-MEDIA = RAIZ / "media"
+MEDIA = SALIDA / "media"
 EXT_FOTO = (".jpg", ".jpeg", ".png", ".webp")
 COLLAGE_RE = re.compile(r'<div class="(fotos-collage[^"]*)" data-fotos="([^"]+)">(.*?)</div>', re.S)
 
@@ -129,13 +155,13 @@ def inyectar_collages(html: str) -> str:
         if not fotos:
             return m.group(0)
         partes = ["media", carpeta] + ([clave] if clave else [])
-        destino = RAIZ.joinpath(*partes)
+        destino = SALIDA.joinpath(*partes)
         destino.mkdir(parents=True, exist_ok=True)
         imgs = []
         for n, ruta in enumerate(fotos, 1):
-            ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
+            datos, ext = foto_web(ruta)
             nombre = f"{n:02d}{ext}"
-            (destino / nombre).write_bytes(comprimir_foto(ruta))
+            (destino / nombre).write_bytes(datos)
             imgs.append(f'<img src="{"/".join(partes + [nombre])}" alt="" loading="lazy" decoding="async">')
         print(f"  collage {ref}: {len(fotos)} foto(s)")
         return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
@@ -161,8 +187,8 @@ def inyectar_retratos(html: str) -> str:
                 if ruta.is_file():
                     destino = MEDIA / "retratos"
                     destino.mkdir(parents=True, exist_ok=True)
-                    salida = ".jpg" if ext == ".jpeg" else ext
-                    (destino / f"{clave}{salida}").write_bytes(comprimir_foto(ruta))
+                    datos, salida = foto_web(ruta)
+                    (destino / f"{clave}{salida}").write_bytes(datos)
                     copiados[clave] = f"media/retratos/{clave}{salida}"
                     break
         return copiados[clave]
@@ -240,6 +266,11 @@ def inyectar_fotos_de_lotes(html: str) -> str:
     return LOTE_ART_RE.sub(reemplazar, html)
 
 def main() -> int:
+    global SALIDA, MEDIA
+    if "--salida" in sys.argv:
+        SALIDA = (RAIZ / sys.argv[sys.argv.index("--salida") + 1]).resolve()
+        SALIDA.mkdir(parents=True, exist_ok=True)
+        MEDIA = SALIDA / "media"
     plantilla = (AQUI / "plantilla.html").read_text(encoding="utf-8")
     html = plantilla
     faltan_archivos = []
@@ -281,7 +312,7 @@ def main() -> int:
         print("ERROR: quedaron marcadores sin rellenar:", *sobran, sep="\n  ")
         return 1
 
-    salida = RAIZ / "index.html"
+    salida = SALIDA / "index.html"
     salida.write_text(html, encoding="utf-8")
     print(f"OK  ->  {salida}  ({len(html):,} caracteres)")
 
