@@ -84,9 +84,28 @@ def comprimir_foto(ruta: pathlib.Path) -> bytes:
     im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
     return buf.getvalue()
 
-def foto_web(ruta: pathlib.Path) -> "tuple[bytes, str]":
+def recortar_bordes_vacios(im):
+    """Quita el margen blanco o transparente alrededor de un logo, dejando un
+    respiro pequeño (4% del lado mayor). Si no encuentra contenido, no toca nada."""
+    from PIL import Image, ImageChops
+    rgba = im.convert("RGBA")
+    if rgba.getextrema()[3][0] < 255:                  # con transparencia
+        caja = rgba.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
+    else:                                               # fondo blanco (p. ej. JPG)
+        blanco = Image.new("RGB", rgba.size, (255, 255, 255))
+        dif = ImageChops.difference(rgba.convert("RGB"), blanco).convert("L")
+        caja = dif.point(lambda p: 255 if p > 24 else 0).getbbox()
+    if not caja:
+        return im
+    margen = round(max(caja[2] - caja[0], caja[3] - caja[1]) * 0.04)
+    w, h = im.size
+    return im.crop((max(0, caja[0] - margen), max(0, caja[1] - margen),
+                    min(w, caja[2] + margen), min(h, caja[3] + margen)))
+
+def foto_web(ruta: pathlib.Path, recortar: bool = False) -> "tuple[bytes, str]":
     """Para retratos y collages: cualquier foto (JPG/PNG/WEBP) -> JPEG reescalado.
     Si la imagen usa transparencia de verdad, se queda en PNG (reescalado).
+    recortar=True (logos) quita primero el margen vacío alrededor.
     Devuelve (bytes, extension). Sin Pillow, copia el archivo tal cual."""
     ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
     try:
@@ -96,6 +115,8 @@ def foto_web(ruta: pathlib.Path) -> "tuple[bytes, str]":
         return ruta.read_bytes(), ext
     im = Image.open(ruta)
     im.load()
+    if recortar:
+        im = recortar_bordes_vacios(im)
     w, h = im.size
     if max(w, h) > GALERIA_LADO_MAX:
         escala = GALERIA_LADO_MAX / max(w, h)
@@ -175,9 +196,10 @@ def inyectar_collages(html: str) -> str:
 # copia a media/retratos/ y aparece en la tarjeta Y en la ventana.
 RETRATO_RE = re.compile(r'<div class="(artist-photo-ph|artist-modal-photo)" data-retrato="([a-z0-9]+)"></div>')
 
-def cargador_por_nombre(carpeta: str):
+def cargador_por_nombre(carpeta: str, recortar: bool = False):
     """Devuelve foto(clave) -> ruta web de fuente/<carpeta>/<clave>.(jpg|png|...)
-    ya comprimida en media/<carpeta>/, o None si no existe. Y el dict de copiadas."""
+    ya comprimida en media/<carpeta>/, o None si no existe. Y el dict de copiadas.
+    recortar=True quita el margen vacío de cada imagen (para logos)."""
     origen = AQUI / carpeta
     copiados = {}
 
@@ -189,7 +211,7 @@ def cargador_por_nombre(carpeta: str):
                 if ruta.is_file():
                     destino = MEDIA / carpeta
                     destino.mkdir(parents=True, exist_ok=True)
-                    datos, salida = foto_web(ruta)
+                    datos, salida = foto_web(ruta, recortar)
                     (destino / f"{clave}{salida}").write_bytes(datos)
                     copiados[clave] = f"media/{carpeta}/{clave}{salida}"
                     break
@@ -222,7 +244,7 @@ def inyectar_retratos(html: str) -> str:
 LOGO_RE = re.compile(r'<div class="(collab-logo|artist-modal-photo)" data-logo="([a-z0-9-]+)"></div>')
 
 def inyectar_logos(html: str) -> str:
-    foto, copiados = cargador_por_nombre("logos")
+    foto, copiados = cargador_por_nombre("logos", recortar=True)
 
     def reemplazar(m: "re.Match[str]") -> str:
         clase, clave = m.groups()

@@ -316,8 +316,12 @@
     display:flex;align-items:center;justify-content:center;
   }
   .collab-logo.con-imagen img,.artist-modal-photo.con-imagen img{
-    width:100%;height:100%;object-fit:contain;padding:12%;box-sizing:border-box;
+    width:100%;height:100%;object-fit:contain;padding:9%;box-sizing:border-box;
   }
+  /* real logos get bigger circles than the placeholders (the build also
+     trims the empty margin around each logo image) */
+  .collab-logo.con-imagen{width:112px;height:112px;}
+  .artist-modal-photo.con-imagen{width:104px;height:104px;}
   .collab-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite-soft);}
   .collab-name{
     display:block;font-family:'Fraunces',serif;font-weight:600;font-size:23px;margin:6px 0 12px;color:var(--ink);
