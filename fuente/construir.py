@@ -175,8 +175,10 @@ def inyectar_collages(html: str) -> str:
 # copia a media/retratos/ y aparece en la tarjeta Y en la ventana.
 RETRATO_RE = re.compile(r'<div class="(artist-photo-ph|artist-modal-photo)" data-retrato="([a-z0-9]+)"></div>')
 
-def inyectar_retratos(html: str) -> str:
-    origen = AQUI / "retratos"
+def cargador_por_nombre(carpeta: str):
+    """Devuelve foto(clave) -> ruta web de fuente/<carpeta>/<clave>.(jpg|png|...)
+    ya comprimida en media/<carpeta>/, o None si no existe. Y el dict de copiadas."""
+    origen = AQUI / carpeta
     copiados = {}
 
     def foto(clave: str):
@@ -185,13 +187,17 @@ def inyectar_retratos(html: str) -> str:
             for ext in EXT_FOTO:
                 ruta = origen / f"{clave}{ext}"
                 if ruta.is_file():
-                    destino = MEDIA / "retratos"
+                    destino = MEDIA / carpeta
                     destino.mkdir(parents=True, exist_ok=True)
                     datos, salida = foto_web(ruta)
                     (destino / f"{clave}{salida}").write_bytes(datos)
-                    copiados[clave] = f"media/retratos/{clave}{salida}"
+                    copiados[clave] = f"media/{carpeta}/{clave}{salida}"
                     break
         return copiados[clave]
+    return foto, copiados
+
+def inyectar_retratos(html: str) -> str:
+    foto, copiados = cargador_por_nombre("retratos")
 
     def reemplazar(m: "re.Match[str]") -> str:
         clase, clave = m.groups()
@@ -207,6 +213,29 @@ def inyectar_retratos(html: str) -> str:
     n = sum(1 for v in copiados.values() if v)
     if n:
         print(f"  retratos: {n} foto(s)")
+    return html
+
+# --- logos de la organización y del destinatario: por NOMBRE de archivo ---
+# Los círculos llevan data-logo="organizacion" o "destinatario". Si existe
+# fuente/logos/<clave>.png (o .jpg/.webp), aparece en el círculo de su
+# recuadro (y, el de la organización, también en su ventana).
+LOGO_RE = re.compile(r'<div class="(collab-logo|artist-modal-photo)" data-logo="([a-z0-9-]+)"></div>')
+
+def inyectar_logos(html: str) -> str:
+    foto, copiados = cargador_por_nombre("logos")
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        clase, clave = m.groups()
+        src = foto(clave)
+        if not src:
+            return m.group(0)
+        return (f'<div class="{clase} con-imagen" data-logo="{clave}">'
+                f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
+
+    html = LOGO_RE.sub(reemplazar, html)
+    n = sum(1 for v in copiados.values() if v)
+    if n:
+        print(f"  logos: {n}")
     return html
 
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
@@ -306,6 +335,7 @@ def main() -> int:
         shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     html = inyectar_collages(html)
     html = inyectar_retratos(html)
+    html = inyectar_logos(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:

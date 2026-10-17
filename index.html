@@ -305,6 +305,19 @@
     background:repeating-linear-gradient(135deg, var(--line) 0 6px, transparent 6px 13px);
     border:1px dashed var(--graphite-soft);
   }
+  /* long links (e.g. a full Instagram URL) wrap instead of pushing the
+     box wider than a phone screen */
+  .collab-body{min-width:0;}
+  .collab-link{max-width:100%;overflow-wrap:anywhere;}
+  /* Logo (from fuente/logos/) replacing the striped placeholder circle;
+     contain + padding so any logo shape fits inside the circle. */
+  .collab-logo.con-imagen,.artist-modal-photo.con-imagen{
+    background:#fff;border:1px solid var(--line);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .collab-logo.con-imagen img,.artist-modal-photo.con-imagen img{
+    width:100%;height:100%;object-fit:contain;padding:12%;box-sizing:border-box;
+  }
   .collab-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite-soft);}
   .collab-name{
     display:block;font-family:'Fraunces',serif;font-weight:600;font-size:23px;margin:6px 0 12px;color:var(--ink);
@@ -700,13 +713,13 @@
         <!-- Artist 02 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista2">
           <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="maestro02"></div></div>
-          <div class="artist-name">[Nombre Artista 2]</div>
+          <div class="artist-name">Constanza García</div>
           <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
         </button>
         <!-- Artist 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista3">
           <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="maestro03"></div></div>
-          <div class="artist-name">[Nombre Artista 3]</div>
+          <div class="artist-name">Diego Hurtado</div>
           <p class="artist-brief">[Breve descripción de Artista 3 — técnica, ciudad, una línea].</p>
         </button>
       </div>
@@ -836,7 +849,7 @@
       <div class="artist-modal-header">
         <div class="artist-modal-photo" data-retrato="maestro02"></div>
         <div>
-          <div class="author-name">[Nombre Artista 2]</div>
+          <div class="author-name">Constanza García</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
         </div>
       </div>
@@ -852,7 +865,7 @@
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -860,7 +873,7 @@
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -868,7 +881,7 @@
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -876,7 +889,7 @@
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -884,7 +897,7 @@
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -904,7 +917,7 @@
       <div class="artist-modal-header">
         <div class="artist-modal-photo" data-retrato="maestro03"></div>
         <div>
-          <div class="author-name">[Nombre Artista 3]</div>
+          <div class="author-name">Diego Hurtado</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
         </div>
       </div>
@@ -1688,7 +1701,7 @@
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1696,7 +1709,7 @@
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1704,7 +1717,7 @@
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1712,7 +1725,7 @@
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1720,7 +1733,7 @@
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1942,12 +1955,12 @@
       </div>
 
       <div class="collab-card reveal">
-        <div class="collab-logo"></div>
+        <div class="collab-logo" data-logo="organizacion"></div>
         <div class="collab-body">
           <div class="collab-label">En colaboración con</div>
-          <button type="button" class="collab-name" data-open-modal="modal-org">[Nombre de la organización]</button>
-          <p class="collab-desc">[Breve descripción de quiénes son y qué aportan a esta colaboración].</p>
-          <a class="collab-link" href="#" target="_blank" rel="noopener">[www.suorganizacion.com]</a>
+          <button type="button" class="collab-name" data-open-modal="modal-org">Misión Animal</button>
+          <p class="collab-desc">Misión Animal es una organizacion no gubernamental que promueve el trato justo, y la representacion equitativa de animales en condiciones de maltrato. Nuestra colaboracion se basa en la difusion de redes sobre el evento y su proposito para salvar al ajolote por medio de el Museo del Ajolote.</p>
+          <a class="collab-link" href="https://www.instagram.com/misionanimal_ac" target="_blank" rel="noopener">@misionanimal_ac</a>
         </div>
       </div>
 
@@ -1955,7 +1968,7 @@
            link, and 3 photos underneath. Photos: put pictures in
            fuente/destinatario/ (any names); with none, 3 placeholders show. -->
       <div class="collab-card reveal">
-        <div class="collab-logo"></div>
+        <div class="collab-logo" data-logo="destinatario"></div>
         <div class="collab-body">
           <div class="collab-label">Destinatario</div>
           <div class="collab-name collab-name-static">[Nombre del destinatario]</div>
@@ -1981,7 +1994,7 @@
       <div class="artist-modal-panel">
         <button class="artist-modal-close" aria-label="Cerrar">✕</button>
         <div class="artist-modal-header">
-          <div class="artist-modal-photo"></div>
+          <div class="artist-modal-photo" data-logo="organizacion"></div>
           <div>
             <div class="author-name">[Nombre de la organización]</div>
             <div class="author-role">[Tipo de organización] · [Ciudad]</div>

@@ -305,6 +305,19 @@
     background:repeating-linear-gradient(135deg, var(--line) 0 6px, transparent 6px 13px);
     border:1px dashed var(--graphite-soft);
   }
+  /* long links (e.g. a full Instagram URL) wrap instead of pushing the
+     box wider than a phone screen */
+  .collab-body{min-width:0;}
+  .collab-link{max-width:100%;overflow-wrap:anywhere;}
+  /* Logo (from fuente/logos/) replacing the striped placeholder circle;
+     contain + padding so any logo shape fits inside the circle. */
+  .collab-logo.con-imagen,.artist-modal-photo.con-imagen{
+    background:#fff;border:1px solid var(--line);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .collab-logo.con-imagen img,.artist-modal-photo.con-imagen img{
+    width:100%;height:100%;object-fit:contain;padding:12%;box-sizing:border-box;
+  }
   .collab-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite-soft);}
   .collab-name{
     display:block;font-family:'Fraunces',serif;font-weight:600;font-size:23px;margin:6px 0 12px;color:var(--ink);
@@ -1942,12 +1955,12 @@
       </div>
 
       <div class="collab-card reveal">
-        <div class="collab-logo"></div>
+        <div class="collab-logo" data-logo="organizacion"></div>
         <div class="collab-body">
           <div class="collab-label">En colaboración con</div>
           <button type="button" class="collab-name" data-open-modal="modal-org">Misión Animal</button>
           <p class="collab-desc">Misión Animal es una organizacion no gubernamental que promueve el trato justo, y la representacion equitativa de animales en condiciones de maltrato. Nuestra colaboracion se basa en la difusion de redes sobre el evento y su proposito para salvar al ajolote por medio de el Museo del Ajolote.</p>
-          <a class="collab-link" href="#" target="_blank" rel="noopener">https://www.instagram.com/misionanimal_ac?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==</a>
+          <a class="collab-link" href="https://www.instagram.com/misionanimal_ac" target="_blank" rel="noopener">@misionanimal_ac</a>
         </div>
       </div>
 
@@ -1955,7 +1968,7 @@
            link, and 3 photos underneath. Photos: put pictures in
            fuente/destinatario/ (any names); with none, 3 placeholders show. -->
       <div class="collab-card reveal">
-        <div class="collab-logo"></div>
+        <div class="collab-logo" data-logo="destinatario"></div>
         <div class="collab-body">
           <div class="collab-label">Destinatario</div>
           <div class="collab-name collab-name-static">[Nombre del destinatario]</div>
@@ -1981,7 +1994,7 @@
       <div class="artist-modal-panel">
         <button class="artist-modal-close" aria-label="Cerrar">✕</button>
         <div class="artist-modal-header">
-          <div class="artist-modal-photo"></div>
+          <div class="artist-modal-photo" data-logo="organizacion"></div>
           <div>
             <div class="author-name">[Nombre de la organización]</div>
             <div class="author-role">[Tipo de organización] · [Ciudad]</div>

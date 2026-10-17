@@ -144,3 +144,16 @@ su ventana. Va en `fuente/retratos/` con un nombre exacto:
 
 Para cambiar una foto, borra la anterior y sube la nueva con el mismo nombre.
 Más detalle en `fuente/retratos/LEEME.md`.
+
+---
+
+## Logos de la organización y del destinatario
+
+Van en `fuente/logos/` con un nombre exacto:
+
+- `organizacion.png`: círculo de "En colaboración con" (y su ventana)
+- `destinatario.png`: círculo de "Destinatario"
+
+Mejor `.png` con fondo transparente (también sirven `.jpg` y `.webp`).
+**Renombra la imagen en tu computadora antes de subirla**: renombrar una imagen
+en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
