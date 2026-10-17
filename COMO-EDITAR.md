@@ -107,9 +107,9 @@ solo subir un archivo).
 
 ---
 
-## Fotos de portafolios, inspiración y destinatario (collages)
+## Fotos de portafolios e inspiración (collages)
 
-Estas tres partes del sitio muestran **collages de fotos** que se arman solos
+Estas dos partes del sitio muestran **collages de fotos** que se arman solos
 a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
 no se toca ningún archivo de código.
 
@@ -117,7 +117,6 @@ no se toca ningún archivo de código.
 |----------------------------------------|------------------------|----------------------------------|
 | Portafolio de cada próxima estrella    | `fuente/portafolios/`  | `estrella01` … `estrella15`      |
 | "Inspiración" de cada obra reimaginada | `fuente/inspiracion/`  | `lote01` … `lote10`              |
-| Fotos del destinatario                 | `fuente/destinatario/` | (cualquier nombre)               |
 
 Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
 `estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
@@ -157,3 +156,13 @@ Van en `fuente/logos/` con un nombre exacto:
 Mejor `.png` con fondo transparente (también sirven `.jpg` y `.webp`).
 **Renombra la imagen en tu computadora antes de subirla**: renombrar una imagen
 en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
+
+---
+
+## Fotos del destinatario (en su ventana)
+
+Al hacer clic en el nombre del destinatario se abre una ventana igual a la de
+la organización, con 3 fotos. Van en `fuente/destinatario/` con nombre exacto:
+`01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). El título y la
+descripción de cada foto se cambian en `plantilla.html` (busca
+`[Título de la foto 1]`). Más detalle en `fuente/destinatario/LEEME.md`.

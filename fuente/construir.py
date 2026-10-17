@@ -124,11 +124,11 @@ def optimizar_galeria() -> int:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
     return procesadas
 
-# --- collages (portafolios, inspiracion, destinatario): por CARPETA ---
+# --- collages (portafolios, inspiracion): por CARPETA ---
 # En plantilla.html cada collage es
 #   <div class="fotos-collage..." data-fotos="portafolios/estrella01"> ...placeholders... </div>
 # Se buscan fotos en fuente/portafolios/ cuyo nombre (o subcarpeta) empiece
-# por "estrella01" (sin clave, p. ej. data-fotos="destinatario", valen todas).
+# por "estrella01" (sin clave, p. ej. data-fotos="carpeta", valen todas).
 # Cada foto se comprime y se copia a media/<carpeta>/<clave>/01.jpg, 02.jpg...
 # (orden alfabetico del nombre original), y el collage se rellena con ellas.
 # Sin fotos se quedan los placeholders. Es opcional: nunca rompe el build.
@@ -238,6 +238,31 @@ def inyectar_logos(html: str) -> str:
         print(f"  logos: {n}")
     return html
 
+# --- recuadros de imagen de las ventanas (p. ej. las 3 fotos del destinatario) ---
+# <div class="org-project-img" data-imagen="destinatario/01"></div> se rellena con
+# fuente/destinatario/01.jpg (o .png/.webp) si existe.
+IMAGEN_RE = re.compile(r'<div class="org-project-img" data-imagen="([a-z0-9-]+)/([a-z0-9-]+)"></div>')
+
+def inyectar_imagenes(html: str) -> str:
+    cargadores = {}
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        carpeta, clave = m.groups()
+        if carpeta not in cargadores:
+            cargadores[carpeta] = cargador_por_nombre(carpeta)
+        src = cargadores[carpeta][0](clave)
+        if not src:
+            return m.group(0)
+        return (f'<div class="org-project-img con-foto" data-imagen="{carpeta}/{clave}">'
+                f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
+
+    html = IMAGEN_RE.sub(reemplazar, html)
+    for carpeta, (_, copiados) in cargadores.items():
+        n = sum(1 for v in copiados.values() if v)
+        if n:
+            print(f"  {carpeta}: {n} foto(s)")
+    return html
+
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
 FUENTES = {
     "__FRAUNCES600__":  "fraunces600.woff2",
@@ -336,6 +361,7 @@ def main() -> int:
     html = inyectar_collages(html)
     html = inyectar_retratos(html)
     html = inyectar_logos(html)
+    html = inyectar_imagenes(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:

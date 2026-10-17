@@ -418,6 +418,9 @@
       linear-gradient(155deg, var(--teal-soft), var(--paper-raised) 75%);
     border:1px solid var(--line);
   }
+  /* photo (from fuente/<carpeta>/NN.jpg via data-imagen) filling an image box */
+  .org-project-img.con-foto{background:none;overflow:hidden;}
+  .org-project-img.con-foto img{width:100%;height:100%;object-fit:cover;display:block;}
   .org-project-title{font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin:10px 0 4px;}
   .org-project-desc{font-size:12.5px;color:var(--graphite);}
 
@@ -493,12 +496,6 @@
   .collage-ph{border:1px solid var(--line);}
   .fotos-collage > :nth-child(3n+1){transform:rotate(-1.2deg);}
   .fotos-collage > :nth-child(3n+2){transform:rotate(0.9deg);}
-  /* 3-up row variant (destinatario photos under its box) */
-  .fotos-collage-3{columns:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:760px;}
-  .fotos-collage-3 > *{margin:0;transform:none !important;aspect-ratio:4/3;}
-  .fotos-collage-3 > img{object-fit:cover;width:100%;height:100%;}
-  .collab-name-static{cursor:default;}
-  .collab-name-static:hover{color:var(--ink);border-color:transparent;}
 
   /* participar */
   .participar-cta{margin-top:44px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
@@ -554,7 +551,6 @@
     .lots{grid-template-columns:1fr 1fr;}
     .modal-lots{grid-template-columns:1fr;}
     .org-projects{grid-template-columns:1fr;}
-    .fotos-collage-3{grid-template-columns:1fr 1fr;}
     .footer-inner{flex-direction:column;align-items:flex-start;}
     .footer-meta{text-align:left;}
   }
@@ -1964,19 +1960,19 @@
         </div>
       </div>
 
-      <!-- Destinatario: who receives the funds. Name, short description,
-           link, and 3 photos underneath. Photos: put pictures in
-           fuente/destinatario/ (any names); with none, 3 placeholders show. -->
+      <!-- Destinatario: who receives the funds. Same pattern as the
+           organization box above: clicking the name opens
+           "modal-destinatario" (defined after modal-org below), which holds
+           the logo, a longer description and 3 photos. -->
       <div class="collab-card reveal">
         <div class="collab-logo" data-logo="destinatario"></div>
         <div class="collab-body">
           <div class="collab-label">Destinatario</div>
-          <div class="collab-name collab-name-static">[Nombre del destinatario]</div>
+          <button type="button" class="collab-name" data-open-modal="modal-destinatario">[Nombre del destinatario]</button>
           <p class="collab-desc">[Breve descripción del destinatario: quién es y cómo usará lo recaudado].</p>
           <a class="collab-link" href="#" target="_blank" rel="noopener">[www.destinatario.com]</a>
         </div>
       </div>
-      <div class="fotos-collage fotos-collage-3 dest-photos reveal" data-fotos="destinatario"><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span></div>
     </div>
 
     <!-- ==========================================================
@@ -2025,6 +2021,52 @@
           </div>
         </div>
         <a class="collab-link" href="#" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">[www.suorganizacion.com]</a>
+      </div>
+    </div>
+
+    <!-- ==========================================================
+         DESTINATARIO MODAL — identical layout to the organization
+         modal above. Opened by the "[Nombre del destinatario]"
+         button in its box. Logo comes from fuente/logos/
+         destinatario.png; the 3 photos from fuente/destinatario/
+         01.jpg, 02.jpg, 03.jpg (placeholders until they exist).
+         ========================================================== -->
+    <div class="artist-modal" id="modal-destinatario" hidden>
+      <div class="artist-modal-backdrop"></div>
+      <div class="artist-modal-panel">
+        <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+        <div class="artist-modal-header">
+          <div class="artist-modal-photo" data-logo="destinatario"></div>
+          <div>
+            <div class="author-name">[Nombre del destinatario]</div>
+            <div class="author-role">[Tipo de organización] · [Ciudad]</div>
+          </div>
+        </div>
+        <div class="prose">
+          <p>[Aquí va una descripción más amplia del destinatario: quién es, qué hace y cómo usará lo recaudado].</p>
+        </div>
+        <div class="artist-modal-subhead">
+          <div class="eyebrow">en imágenes</div>
+          <h3>[Título de las fotos del destinatario]</h3>
+        </div>
+        <div class="org-projects">
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/01"></div>
+            <div class="org-project-title">[Título de la foto 1]</div>
+            <p class="org-project-desc">[Breve descripción de la foto 1].</p>
+          </div>
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/02"></div>
+            <div class="org-project-title">[Título de la foto 2]</div>
+            <p class="org-project-desc">[Breve descripción de la foto 2].</p>
+          </div>
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/03"></div>
+            <div class="org-project-title">[Título de la foto 3]</div>
+            <p class="org-project-desc">[Breve descripción de la foto 3].</p>
+          </div>
+        </div>
+        <a class="collab-link" href="#" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">[www.destinatario.com]</a>
       </div>
     </div>
   </section>
