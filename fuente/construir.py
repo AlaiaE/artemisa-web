@@ -102,31 +102,39 @@ def recortar_bordes_vacios(im):
     return im.crop((max(0, caja[0] - margen), max(0, caja[1] - margen),
                     min(w, caja[2] + margen), min(h, caja[3] + margen)))
 
-def foto_web(ruta: pathlib.Path, recortar: bool = False) -> "tuple[bytes, str]":
+def foto_web(ruta: pathlib.Path, recortar: bool = False,
+             lado_max: int = GALERIA_LADO_MAX, calidad: int = GALERIA_CALIDAD) -> "tuple[bytes, str]":
     """Para retratos y collages: cualquier foto (JPG/PNG/WEBP) -> JPEG reescalado.
     Si la imagen usa transparencia de verdad, se queda en PNG (reescalado).
     recortar=True (logos) quita primero el margen vacío alrededor.
     Devuelve (bytes, extension). Sin Pillow, copia el archivo tal cual."""
     ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
     try:
-        from PIL import Image
+        from PIL import Image, ImageOps
     except ImportError:
         print(f"  aviso: Pillow no esta instalado, copio {ruta.name} sin comprimir")
         return ruta.read_bytes(), ext
     im = Image.open(ruta)
     im.load()
+    # Un JPEG que ya es de tamaño web se copia tal cual: volver a comprimirlo
+    # solo perdería calidad.
+    if ext == ".jpg" and not recortar and max(im.size) <= lado_max:
+        return ruta.read_bytes(), ".jpg"
+    # Aplica la rotación guardada por el teléfono (EXIF) antes de re-guardar,
+    # porque al re-guardar se pierde esa etiqueta y la foto saldría girada.
+    im = ImageOps.exif_transpose(im)
     if recortar:
         im = recortar_bordes_vacios(im)
     w, h = im.size
-    if max(w, h) > GALERIA_LADO_MAX:
-        escala = GALERIA_LADO_MAX / max(w, h)
+    if max(w, h) > lado_max:
+        escala = lado_max / max(w, h)
         lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
         im = im.resize((round(w * escala), round(h * escala)), lanczos)
     buf = io.BytesIO()
     if im.mode in ("RGBA", "LA", "P") and im.convert("RGBA").getextrema()[3][0] < 255:
         im.save(buf, format="PNG", optimize=True)
         return buf.getvalue(), ".png"
-    im.convert("RGB").save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
+    im.convert("RGB").save(buf, format="JPEG", quality=calidad, optimize=True)
     return buf.getvalue(), ".jpg"
 
 def optimizar_galeria() -> int:
@@ -196,7 +204,7 @@ def inyectar_collages(html: str) -> str:
 # copia a media/retratos/ y aparece en la tarjeta Y en la ventana.
 RETRATO_RE = re.compile(r'<div class="(artist-photo-ph|artist-modal-photo)" data-retrato="([a-z0-9]+)"></div>')
 
-def cargador_por_nombre(carpeta: str, recortar: bool = False):
+def cargador_por_nombre(carpeta: str, recortar: bool = False, **calidad_foto):
     """Devuelve foto(clave) -> ruta web de fuente/<carpeta>/<clave>.(jpg|png|...)
     ya comprimida en media/<carpeta>/, o None si no existe. Y el dict de copiadas.
     recortar=True quita el margen vacío de cada imagen (para logos)."""
@@ -211,7 +219,7 @@ def cargador_por_nombre(carpeta: str, recortar: bool = False):
                 if ruta.is_file():
                     destino = MEDIA / carpeta
                     destino.mkdir(parents=True, exist_ok=True)
-                    datos, salida = foto_web(ruta, recortar)
+                    datos, salida = foto_web(ruta, recortar, **calidad_foto)
                     (destino / f"{clave}{salida}").write_bytes(datos)
                     copiados[clave] = f"media/{carpeta}/{clave}{salida}"
                     break
@@ -219,7 +227,8 @@ def cargador_por_nombre(carpeta: str, recortar: bool = False):
     return foto, copiados
 
 def inyectar_retratos(html: str) -> str:
-    foto, copiados = cargador_por_nombre("retratos")
+    # retratos: más resolución y calidad que la galería (se ven grandes en las tarjetas)
+    foto, copiados = cargador_por_nombre("retratos", lado_max=1800, calidad=88)
 
     def reemplazar(m: "re.Match[str]") -> str:
         clase, clave = m.groups()

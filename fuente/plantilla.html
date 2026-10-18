@@ -382,7 +382,11 @@
 
   /* Real portrait (from fuente/retratos/) replacing the placeholder:
      fills the card's photo box / the round photo in the popup. */
-  .artist-photo-img{width:100%;height:100%;object-fit:cover;display:block;}
+  /* positioned inside the 8px frame so the photo can never stretch the box:
+     every card keeps the same shape whatever the photo's proportions.
+     object-position favors the upper part of the photo, where faces are. */
+  .artist-photo-img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;object-position:50% 30%;display:block;}
+  .artist-modal-photo img{object-position:50% 30%;}
   .artist-modal-photo{overflow:hidden;}
   .artist-modal-photo img{width:100%;height:100%;object-fit:cover;display:block;}
 

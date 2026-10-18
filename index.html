@@ -382,7 +382,11 @@
 
   /* Real portrait (from fuente/retratos/) replacing the placeholder:
      fills the card's photo box / the round photo in the popup. */
-  .artist-photo-img{width:100%;height:100%;object-fit:cover;display:block;}
+  /* positioned inside the 8px frame so the photo can never stretch the box:
+     every card keeps the same shape whatever the photo's proportions.
+     object-position favors the upper part of the photo, where faces are. */
+  .artist-photo-img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;object-position:50% 30%;display:block;}
+  .artist-modal-photo img{object-position:50% 30%;}
   .artist-modal-photo{overflow:hidden;}
   .artist-modal-photo img{width:100%;height:100%;object-fit:cover;display:block;}
 
@@ -706,19 +710,19 @@
       <div class="artist-carousel reveal">
         <!-- Artist 01 -->
         <button type="button" class="artist-card" data-open-modal="modal-alaia">
-          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph" data-retrato="maestro01"></div></div>
+          <div class="artist-photo"><span class="artist-index">01</span><img src="media/retratos/maestro01.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Alaia Esteban</div>
           <p class="artist-brief">Estudiante, artista y educadora · Ciudad de México.</p>
         </button>
         <!-- Artist 02 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista2">
-          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="maestro02"></div></div>
+          <div class="artist-photo"><span class="artist-index">02</span><img src="media/retratos/maestro02.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Constanza García</div>
           <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
         </button>
         <!-- Artist 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista3">
-          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="maestro03"></div></div>
+          <div class="artist-photo"><span class="artist-index">03</span><img src="media/retratos/maestro03.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Diego Hurtado</div>
           <p class="artist-brief">[Breve descripción de Artista 3 — técnica, ciudad, una línea].</p>
         </button>
@@ -745,7 +749,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="maestro01"></div>
+        <div class="artist-modal-photo" data-retrato="maestro01"><img src="media/retratos/maestro01.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
           <div class="author-name">Alaia Esteban</div>
           <div class="author-role">Estudiante, Artista y Educadora · Ciudad de México</div>
@@ -847,7 +851,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="maestro02"></div>
+        <div class="artist-modal-photo" data-retrato="maestro02"><img src="media/retratos/maestro02.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
           <div class="author-name">Constanza García</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
@@ -915,7 +919,7 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="maestro03"></div>
+        <div class="artist-modal-photo" data-retrato="maestro03"><img src="media/retratos/maestro03.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
           <div class="author-name">Diego Hurtado</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
@@ -976,26 +980,26 @@
         </button>
         <!-- Estrella 06 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-06">
-          <div class="artist-photo"><span class="artist-index">06</span><div class="artist-photo-ph" data-retrato="estrella06"></div></div>
-          <div class="artist-name">[Nombre Estrella 6]</div>
+          <div class="artist-photo"><span class="artist-index">06</span><img src="media/retratos/estrella06.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
+          <div class="artist-name">Janet</div>
           <p class="artist-brief">[Breve descripción de Estrella 6 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 07 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-07">
-          <div class="artist-photo"><span class="artist-index">07</span><div class="artist-photo-ph" data-retrato="estrella07"></div></div>
-          <div class="artist-name">[Nombre Estrella 7]</div>
+          <div class="artist-photo"><span class="artist-index">07</span><img src="media/retratos/estrella07.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
+          <div class="artist-name">Belén</div>
           <p class="artist-brief">[Breve descripción de Estrella 7 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 08 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-08">
-          <div class="artist-photo"><span class="artist-index">08</span><div class="artist-photo-ph" data-retrato="estrella08"></div></div>
-          <div class="artist-name">[Nombre Estrella 8]</div>
+          <div class="artist-photo"><span class="artist-index">08</span><img src="media/retratos/estrella08.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
+          <div class="artist-name">Fani</div>
           <p class="artist-brief">[Breve descripción de Estrella 8 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 09 -->
         <button type="button" class="artist-card" data-open-modal="modal-estrella-09">
-          <div class="artist-photo"><span class="artist-index">09</span><div class="artist-photo-ph" data-retrato="estrella09"></div></div>
-          <div class="artist-name">[Nombre Estrella 9]</div>
+          <div class="artist-photo"><span class="artist-index">09</span><img src="media/retratos/estrella09.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
+          <div class="artist-name">Diana</div>
           <p class="artist-brief">[Breve descripción de Estrella 9 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 10 -->
@@ -1142,9 +1146,9 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella06"></div>
+        <div class="artist-modal-photo" data-retrato="estrella06"><img src="media/retratos/estrella06.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
-          <div class="author-name">[Nombre Estrella 6]</div>
+          <div class="author-name">Janet</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
       </div>
@@ -1161,9 +1165,9 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella07"></div>
+        <div class="artist-modal-photo" data-retrato="estrella07"><img src="media/retratos/estrella07.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
-          <div class="author-name">[Nombre Estrella 7]</div>
+          <div class="author-name">Belén</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
       </div>
@@ -1180,9 +1184,9 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella08"></div>
+        <div class="artist-modal-photo" data-retrato="estrella08"><img src="media/retratos/estrella08.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
-          <div class="author-name">[Nombre Estrella 8]</div>
+          <div class="author-name">Fani</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
       </div>
@@ -1199,9 +1203,9 @@
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella09"></div>
+        <div class="artist-modal-photo" data-retrato="estrella09"><img src="media/retratos/estrella09.jpg" alt="" loading="lazy" decoding="async"></div>
         <div>
-          <div class="author-name">[Nombre Estrella 9]</div>
+          <div class="author-name">Diana</div>
           <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
       </div>
@@ -1392,7 +1396,7 @@
         <button type="button" class="lot" data-open-modal="modal-portafolio-06">
           <div class="lot-art art-grafito"><span>Estrella 06</span></div>
           <div class="lot-label">
-            <div class="lot-title">[Nombre Estrella 6]</div>
+            <div class="lot-title">Janet</div>
             <div class="lot-meta">Portafolio</div>
             <div class="lot-cta">Ver portafolio →</div>
           </div>
@@ -1400,7 +1404,7 @@
         <button type="button" class="lot" data-open-modal="modal-portafolio-07">
           <div class="lot-art art-acuarela"><span>Estrella 07</span></div>
           <div class="lot-label">
-            <div class="lot-title">[Nombre Estrella 7]</div>
+            <div class="lot-title">Belén</div>
             <div class="lot-meta">Portafolio</div>
             <div class="lot-cta">Ver portafolio →</div>
           </div>
@@ -1408,7 +1412,7 @@
         <button type="button" class="lot" data-open-modal="modal-portafolio-08">
           <div class="lot-art art-oleo"><span>Estrella 08</span></div>
           <div class="lot-label">
-            <div class="lot-title">[Nombre Estrella 8]</div>
+            <div class="lot-title">Fani</div>
             <div class="lot-meta">Portafolio</div>
             <div class="lot-cta">Ver portafolio →</div>
           </div>
@@ -1416,7 +1420,7 @@
         <button type="button" class="lot" data-open-modal="modal-portafolio-09">
           <div class="lot-art art-mixta"><span>Estrella 09</span></div>
           <div class="lot-label">
-            <div class="lot-title">[Nombre Estrella 9]</div>
+            <div class="lot-title">Diana</div>
             <div class="lot-meta">Portafolio</div>
             <div class="lot-cta">Ver portafolio →</div>
           </div>
@@ -1534,7 +1538,7 @@
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-subhead modal-title-head">
         <div class="eyebrow">portafolio</div>
-        <h3>[Nombre Estrella 6]</h3>
+        <h3>Janet</h3>
       </div>
       <div class="fotos-collage" data-fotos="portafolios/estrella06"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
     </div>
@@ -1545,7 +1549,7 @@
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-subhead modal-title-head">
         <div class="eyebrow">portafolio</div>
-        <h3>[Nombre Estrella 7]</h3>
+        <h3>Belén</h3>
       </div>
       <div class="fotos-collage" data-fotos="portafolios/estrella07"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
     </div>
@@ -1556,7 +1560,7 @@
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-subhead modal-title-head">
         <div class="eyebrow">portafolio</div>
-        <h3>[Nombre Estrella 8]</h3>
+        <h3>Fani</h3>
       </div>
       <div class="fotos-collage" data-fotos="portafolios/estrella08"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
     </div>
@@ -1567,7 +1571,7 @@
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-subhead modal-title-head">
         <div class="eyebrow">portafolio</div>
-        <h3>[Nombre Estrella 9]</h3>
+        <h3>Diana</h3>
       </div>
       <div class="fotos-collage" data-fotos="portafolios/estrella09"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
     </div>
@@ -2056,13 +2060,13 @@
         </div>
         <div class="org-projects">
           <div class="org-project">
-            <div class="org-project-img" data-imagen="destinatario/01"></div>
+            <div class="org-project-img con-foto" data-imagen="destinatario/01"><img src="media/destinatario/01.jpg" alt="" loading="lazy" decoding="async"></div>
           </div>
           <div class="org-project">
-            <div class="org-project-img" data-imagen="destinatario/02"></div>
+            <div class="org-project-img con-foto" data-imagen="destinatario/02"><img src="media/destinatario/02.jpg" alt="" loading="lazy" decoding="async"></div>
           </div>
           <div class="org-project">
-            <div class="org-project-img" data-imagen="destinatario/03"></div>
+            <div class="org-project-img con-foto" data-imagen="destinatario/03"><img src="media/destinatario/03.jpg" alt="" loading="lazy" decoding="async"></div>
           </div>
         </div>
         <a class="collab-link" href="https://mexicocity.cdmx.gob.mx/venues/anfibium/" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">mexicocity.cdmx.gob.mx/venues/anfibium/</a>
