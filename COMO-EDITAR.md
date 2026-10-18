@@ -163,6 +163,6 @@ en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
 
 Al hacer clic en el nombre del destinatario se abre una ventana igual a la de
 la organización, con 3 fotos. Van en `fuente/destinatario/` con nombre exacto:
-`01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). El título y la
-descripción de cada foto se cambian en `plantilla.html` (busca
-`[Título de la foto 1]`). Más detalle en `fuente/destinatario/LEEME.md`.
+`01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). Solo se muestran
+las fotos, sin título ni descripción. Más detalle en
+`fuente/destinatario/LEEME.md`.

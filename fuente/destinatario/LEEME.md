@@ -1,8 +1,8 @@
 # Fotos del destinatario
 
 Al hacer clic en el nombre del destinatario (sección "El destino de tu aporte")
-se abre una ventana igual a la de la organización. Abajo tiene **3 fotos**,
-cada una con su título y una descripción breve.
+se abre una ventana igual a la de la organización. Abajo tiene **3 fotos**
+(solo las fotos, sin título ni descripción).
 
 Las fotos van **aquí mismo**, en esta carpeta, con un nombre exacto:
 
@@ -16,8 +16,6 @@ Las fotos van **aquí mismo**, en esta carpeta, con un nombre exacto:
 - **Renombra la foto en tu computadora antes de subirla.** Renombrar una
   imagen en el editor de GitHub la deja vacía.
 - Mientras una foto no exista, se ve un recuadro de color.
-- El título y la descripción de cada foto se escriben en `fuente/plantilla.html`
-  (busca `[Título de la foto 1]`).
 - El logo del destinatario va aparte, en `fuente/logos/destinatario.png`.
 
 El sitio se reconstruye solo y las fotos se comprimen automáticamente.
