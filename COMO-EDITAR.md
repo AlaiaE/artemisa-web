@@ -25,7 +25,7 @@ Listo, ya puedes editar.
 2. Pica la carpeta **`fuente`** y luego el archivo **`plantilla.html`**.
 3. Arriba a la derecha del archivo, pica el **lápiz ✏️** (*Edit this file*).
 4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
-   - Precio de entrada → busca `Entrada` y cambia `$450`
+   - Precio de entrada → busca `Entrada` y cambia `$400`
    - Fecha → busca `18 de diciembre`
    - Lugar → busca `Centro Cultural San Ángel`
    - Nombre de una artista → busca `[Nombre Artista 2]`
