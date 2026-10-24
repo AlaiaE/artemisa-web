@@ -63,27 +63,6 @@ def b64_crudo(ruta: pathlib.Path) -> str:
 GALERIA_LADO_MAX = 1400
 GALERIA_CALIDAD = 76
 
-def comprimir_foto(ruta: pathlib.Path) -> bytes:
-    """JPEG -> reescalado (lado mayor <= GALERIA_LADO_MAX) y recomprimido.
-    Otros formatos (PNG, WEBP) se copian tal cual."""
-    datos = ruta.read_bytes()
-    if ruta.suffix.lower() not in (".jpg", ".jpeg"):
-        return datos
-    try:
-        from PIL import Image
-    except ImportError:
-        print(f"  aviso: Pillow no esta instalado, copio {ruta.name} sin comprimir")
-        return datos
-    im = Image.open(io.BytesIO(datos)).convert("RGB")
-    w, h = im.size
-    if max(w, h) > GALERIA_LADO_MAX:
-        escala = GALERIA_LADO_MAX / max(w, h)
-        lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
-        im = im.resize((round(w * escala), round(h * escala)), lanczos)
-    buf = io.BytesIO()
-    im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
-    return buf.getvalue()
-
 def recortar_bordes_vacios(im):
     """Quita el margen blanco o transparente alrededor de un logo, dejando un
     respiro pequeño (4% del lado mayor). Si no encuentra contenido, no toca nada."""
@@ -142,12 +121,20 @@ def optimizar_galeria() -> int:
     if not origen.is_dir():
         return 0
     destino = SALIDA / "galeria"
+    if destino.is_dir():
+        shutil.rmtree(destino)      # salida del build: se regenera completa
     procesadas = 0
     for ruta in sorted(origen.iterdir()):
-        if not ruta.is_file() or ruta.suffix.lower() not in (".jpg", ".jpeg", ".png"):
+        if not ruta.is_file() or ruta.suffix.lower() not in EXT_FOTO:
+            continue
+        # plantilla.html pide galeria/01.jpg..06.jpg: cualquier formato que se
+        # suba (01.jpeg, 01.png, 01.webp) sale como <nombre>.jpg.
+        datos, ext = foto_web(ruta)
+        if ext != ".jpg":
+            print(f"  aviso: {ruta.name} tiene transparencia y no se puede usar en la galería (súbela como JPG)")
             continue
         destino.mkdir(exist_ok=True)
-        (destino / ruta.name).write_bytes(comprimir_foto(ruta))
+        (destino / f"{ruta.stem}.jpg").write_bytes(datos)
         procesadas += 1
     if procesadas:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
