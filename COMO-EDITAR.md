@@ -25,7 +25,7 @@ Listo, ya puedes editar.
 2. Pica la carpeta **`fuente`** y luego el archivo **`plantilla.html`**.
 3. Arriba a la derecha del archivo, pica el **lápiz ✏️** (*Edit this file*).
 4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
-   - Precio de entrada → busca `Entrada` y cambia `$450`
+   - Precio de entrada → busca `Entrada` y cambia `$400`
    - Fecha → busca `18 de diciembre`
    - Lugar → busca `Centro Cultural San Ángel`
    - Nombre de una artista → busca `[Nombre Artista 2]`
@@ -104,3 +104,65 @@ Puedes subir la foto tal cual sale de tu teléfono; se comprime sola.
 Si más adelante quieres más de 6 fotos, o en otro orden, eso sí requiere
 pedirle el cambio a Alaia o a Claude (implica editar `plantilla.html`, no
 solo subir un archivo).
+
+---
+
+## Fotos de portafolios e inspiración (collages)
+
+Estas dos partes del sitio muestran **collages de fotos** que se arman solos
+a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
+no se toca ningún archivo de código.
+
+| Qué                                    | Carpeta                | El nombre de la foto empieza con |
+|----------------------------------------|------------------------|----------------------------------|
+| Portafolio de cada próxima estrella    | `fuente/portafolios/`  | `estrella01` … `estrella15`      |
+| "Inspiración" de cada obra reimaginada | `fuente/inspiracion/`  | `lote01` … `lote10`              |
+
+Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
+`estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
+Cada carpeta tiene un archivo `LEEME.md` con más detalle.
+
+1. Entra a la carpeta → **Add file → Upload files** → sube las fotos → commit.
+2. Espera 1–2 minutos: el sitio se reconstruye y comprime las fotos solo.
+
+No edites la carpeta `media/` de la raíz: la genera el sitio automáticamente.
+
+---
+
+## Fotos de los maestros y de las próximas estrellas
+
+Cada persona tiene una foto que aparece en su tarjeta y en la foto redonda de
+su ventana. Va en `fuente/retratos/` con un nombre exacto:
+
+- Maestros: `maestro01.jpg` (Alaia), `maestro02.jpg`, `maestro03.jpg`
+- Próximas estrellas: `estrella01.jpg` … `estrella15.jpg` (siempre dos dígitos)
+
+1. Entra a `fuente/retratos/` → **Add file → Upload files** → sube la foto con
+   ese nombre → commit.
+2. Espera 1–2 minutos: el sitio se reconstruye y comprime la foto solo.
+
+Para cambiar una foto, borra la anterior y sube la nueva con el mismo nombre.
+Más detalle en `fuente/retratos/LEEME.md`.
+
+---
+
+## Logos de la organización y del destinatario
+
+Van en `fuente/logos/` con un nombre exacto:
+
+- `organizacion.png`: círculo de "En colaboración con" (y su ventana)
+- `destinatario.png`: círculo de "Destinatario"
+
+Mejor `.png` con fondo transparente (también sirven `.jpg` y `.webp`).
+**Renombra la imagen en tu computadora antes de subirla**: renombrar una imagen
+en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
+
+---
+
+## Fotos del destinatario (en su ventana)
+
+Al hacer clic en el nombre del destinatario se abre una ventana igual a la de
+la organización, con 3 fotos. Van en `fuente/destinatario/` con nombre exacto:
+`01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). Solo se muestran
+las fotos, sin título ni descripción. Más detalle en
+`fuente/destinatario/LEEME.md`.

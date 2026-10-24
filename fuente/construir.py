@@ -3,7 +3,8 @@
 Reconstruye index.html a partir de fuente/plantilla.html + las imagenes/fuentes.
 
 Uso:
-    python3 fuente/construir.py
+    python3 fuente/construir.py                        # escribe en la raiz (lo que se publica)
+    python3 fuente/construir.py --salida .vista-previa # copia local para la vista previa
 
 Toma plantilla.html (texto y CSS editables a mano), incrusta cada imagen y
 tipografia como data URI en el marcador correspondiente, y escribe el
@@ -14,10 +15,12 @@ import base64
 import io
 import pathlib
 import re
+import shutil
 import sys
 
 AQUI = pathlib.Path(__file__).resolve().parent      # .../fuente
 RAIZ = AQUI.parent                                   # raiz del repo
+SALIDA = RAIZ      # donde se escriben index.html, galeria/ y media/ (ver --salida)
 
 # Las fotos (.jpg) se reescalan para la web antes de incrustarlas:
 # lado mayor <= JPEG_LADO_MAX px, calidad JPEG_CALIDAD. Asi el index.html
@@ -60,38 +63,223 @@ def b64_crudo(ruta: pathlib.Path) -> str:
 GALERIA_LADO_MAX = 1400
 GALERIA_CALIDAD = 76
 
+def recortar_bordes_vacios(im):
+    """Quita el margen blanco o transparente alrededor de un logo, dejando un
+    respiro pequeño (4% del lado mayor). Si no encuentra contenido, no toca nada."""
+    from PIL import Image, ImageChops
+    rgba = im.convert("RGBA")
+    if rgba.getextrema()[3][0] < 255:                  # con transparencia
+        caja = rgba.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
+    else:                                               # fondo blanco (p. ej. JPG)
+        blanco = Image.new("RGB", rgba.size, (255, 255, 255))
+        dif = ImageChops.difference(rgba.convert("RGB"), blanco).convert("L")
+        caja = dif.point(lambda p: 255 if p > 24 else 0).getbbox()
+    if not caja:
+        return im
+    margen = round(max(caja[2] - caja[0], caja[3] - caja[1]) * 0.04)
+    w, h = im.size
+    return im.crop((max(0, caja[0] - margen), max(0, caja[1] - margen),
+                    min(w, caja[2] + margen), min(h, caja[3] + margen)))
+
+def foto_web(ruta: pathlib.Path, recortar: bool = False,
+             lado_max: int = GALERIA_LADO_MAX, calidad: int = GALERIA_CALIDAD) -> "tuple[bytes, str]":
+    """Para retratos y collages: cualquier foto (JPG/PNG/WEBP) -> JPEG reescalado.
+    Si la imagen usa transparencia de verdad, se queda en PNG (reescalado).
+    recortar=True (logos) quita primero el margen vacío alrededor.
+    Devuelve (bytes, extension). Sin Pillow, copia el archivo tal cual."""
+    ext = ".jpg" if ruta.suffix.lower() == ".jpeg" else ruta.suffix.lower()
+    try:
+        from PIL import Image, ImageOps
+    except ImportError:
+        print(f"  aviso: Pillow no esta instalado, copio {ruta.name} sin comprimir")
+        return ruta.read_bytes(), ext
+    im = Image.open(ruta)
+    im.load()
+    # Un JPEG que ya es de tamaño web se copia tal cual: volver a comprimirlo
+    # solo perdería calidad.
+    if ext == ".jpg" and not recortar and max(im.size) <= lado_max:
+        return ruta.read_bytes(), ".jpg"
+    # Aplica la rotación guardada por el teléfono (EXIF) antes de re-guardar,
+    # porque al re-guardar se pierde esa etiqueta y la foto saldría girada.
+    im = ImageOps.exif_transpose(im)
+    if recortar:
+        im = recortar_bordes_vacios(im)
+    w, h = im.size
+    if max(w, h) > lado_max:
+        escala = lado_max / max(w, h)
+        lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
+        im = im.resize((round(w * escala), round(h * escala)), lanczos)
+    buf = io.BytesIO()
+    if im.mode in ("RGBA", "LA", "P") and im.convert("RGBA").getextrema()[3][0] < 255:
+        im.save(buf, format="PNG", optimize=True)
+        return buf.getvalue(), ".png"
+    im.convert("RGB").save(buf, format="JPEG", quality=calidad, optimize=True)
+    return buf.getvalue(), ".jpg"
+
 def optimizar_galeria() -> int:
     origen = AQUI / "galeria"
     if not origen.is_dir():
         return 0
-    destino = RAIZ / "galeria"
+    destino = SALIDA / "galeria"
+    if destino.is_dir():
+        shutil.rmtree(destino)      # salida del build: se regenera completa
     procesadas = 0
     for ruta in sorted(origen.iterdir()):
-        if not ruta.is_file() or ruta.suffix.lower() not in (".jpg", ".jpeg", ".png"):
+        if not ruta.is_file() or ruta.suffix.lower() not in EXT_FOTO:
             continue
-        mime = "image/png" if ruta.suffix.lower() == ".png" else "image/jpeg"
-        datos = ruta.read_bytes()
-        if mime == "image/jpeg":
-            try:
-                from PIL import Image
-                im = Image.open(io.BytesIO(datos))
-                im = im.convert("RGB")
-                w, h = im.size
-                if max(w, h) > GALERIA_LADO_MAX:
-                    escala = GALERIA_LADO_MAX / max(w, h)
-                    lanczos = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
-                    im = im.resize((round(w * escala), round(h * escala)), lanczos)
-                buf = io.BytesIO()
-                im.save(buf, format="JPEG", quality=GALERIA_CALIDAD, optimize=True)
-                datos = buf.getvalue()
-            except ImportError:
-                print("  aviso: Pillow no esta instalado, copio la foto de galeria sin comprimir")
+        # plantilla.html pide galeria/01.jpg..06.jpg: cualquier formato que se
+        # suba (01.jpeg, 01.png, 01.webp) sale como <nombre>.jpg.
+        datos, ext = foto_web(ruta)
+        if ext != ".jpg":
+            print(f"  aviso: {ruta.name} tiene transparencia y no se puede usar en la galería (súbela como JPG)")
+            continue
         destino.mkdir(exist_ok=True)
-        (destino / ruta.name).write_bytes(datos)
+        (destino / f"{ruta.stem}.jpg").write_bytes(datos)
         procesadas += 1
     if procesadas:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
     return procesadas
+
+# --- collages (portafolios, inspiracion): por CARPETA ---
+# En plantilla.html cada collage es
+#   <div class="fotos-collage..." data-fotos="portafolios/estrella01"> ...placeholders... </div>
+# Se buscan fotos en fuente/portafolios/ cuyo nombre (o subcarpeta) empiece
+# por "estrella01" (sin clave, p. ej. data-fotos="carpeta", valen todas).
+# Cada foto se comprime y se copia a media/<carpeta>/<clave>/01.jpg, 02.jpg...
+# (orden alfabetico del nombre original), y el collage se rellena con ellas.
+# Sin fotos se quedan los placeholders. Es opcional: nunca rompe el build.
+# media/ es SOLO salida del build: se borra y se regenera completa cada vez.
+MEDIA = SALIDA / "media"
+EXT_FOTO = (".jpg", ".jpeg", ".png", ".webp")
+COLLAGE_RE = re.compile(r'<div class="(fotos-collage[^"]*)" data-fotos="([^"]+)">(.*?)</div>', re.S)
+
+def inyectar_collages(html: str) -> str:
+    def reemplazar(m: "re.Match[str]") -> str:
+        clases, ref, _ = m.groups()
+        carpeta, _, clave = ref.partition("/")
+        origen = AQUI / carpeta
+        if not origen.is_dir():
+            return m.group(0)
+        fotos = []
+        for ruta in sorted(origen.rglob("*"), key=lambda p: str(p).lower()):
+            if not ruta.is_file() or ruta.suffix.lower() not in EXT_FOTO:
+                continue
+            primera = ruta.relative_to(origen).parts[0].lower()
+            if clave and not primera.startswith(clave.lower()):
+                continue
+            fotos.append(ruta)
+        if not fotos:
+            return m.group(0)
+        partes = ["media", carpeta] + ([clave] if clave else [])
+        destino = SALIDA.joinpath(*partes)
+        destino.mkdir(parents=True, exist_ok=True)
+        imgs = []
+        for n, ruta in enumerate(fotos, 1):
+            datos, ext = foto_web(ruta)
+            nombre = f"{n:02d}{ext}"
+            (destino / nombre).write_bytes(datos)
+            imgs.append(f'<img src="{"/".join(partes + [nombre])}" alt="" loading="lazy" decoding="async">')
+        print(f"  collage {ref}: {len(fotos)} foto(s)")
+        return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
+
+    return COLLAGE_RE.sub(reemplazar, html)
+
+# --- retratos de maestros y próximas estrellas: por NOMBRE de archivo ---
+# En plantilla.html cada foto de tarjeta y cada foto redonda de la ventana
+# lleva data-retrato="maestro01" (01 = Alaia, 02, 03) o "estrella01".."estrella15".
+# Si existe fuente/retratos/<clave>.jpg (o .jpeg/.png/.webp), se comprime, se
+# copia a media/retratos/ y aparece en la tarjeta Y en la ventana.
+RETRATO_RE = re.compile(r'<div class="(artist-photo-ph|artist-modal-photo)" data-retrato="([a-z0-9]+)"></div>')
+
+def cargador_por_nombre(carpeta: str, recortar: bool = False, **calidad_foto):
+    """Devuelve foto(clave) -> ruta web de fuente/<carpeta>/<clave>.(jpg|png|...)
+    ya comprimida en media/<carpeta>/, o None si no existe. Y el dict de copiadas.
+    recortar=True quita el margen vacío de cada imagen (para logos)."""
+    origen = AQUI / carpeta
+    copiados = {}
+
+    def foto(clave: str):
+        if clave not in copiados:
+            copiados[clave] = None
+            for ext in EXT_FOTO:
+                ruta = origen / f"{clave}{ext}"
+                if ruta.is_file():
+                    destino = MEDIA / carpeta
+                    destino.mkdir(parents=True, exist_ok=True)
+                    datos, salida = foto_web(ruta, recortar, **calidad_foto)
+                    (destino / f"{clave}{salida}").write_bytes(datos)
+                    copiados[clave] = f"media/{carpeta}/{clave}{salida}"
+                    break
+        return copiados[clave]
+    return foto, copiados
+
+def inyectar_retratos(html: str) -> str:
+    # retratos: más resolución y calidad que la galería (se ven grandes en las tarjetas)
+    foto, copiados = cargador_por_nombre("retratos", lado_max=1800, calidad=88)
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        clase, clave = m.groups()
+        src = foto(clave)
+        if not src:
+            return m.group(0)  # sin foto: se queda el placeholder
+        img = f'<img src="{src}" alt="" loading="lazy" decoding="async"'
+        if clase == "artist-photo-ph":
+            return f'{img} class="artist-photo-img">'
+        return f'<div class="artist-modal-photo" data-retrato="{clave}">{img}></div>'
+
+    html = RETRATO_RE.sub(reemplazar, html)
+    n = sum(1 for v in copiados.values() if v)
+    if n:
+        print(f"  retratos: {n} foto(s)")
+    return html
+
+# --- logos de la organización y del destinatario: por NOMBRE de archivo ---
+# Los círculos llevan data-logo="organizacion" o "destinatario". Si existe
+# fuente/logos/<clave>.png (o .jpg/.webp), aparece en el círculo de su
+# recuadro (y, el de la organización, también en su ventana).
+LOGO_RE = re.compile(r'<div class="(collab-logo|artist-modal-photo)" data-logo="([a-z0-9-]+)"></div>')
+
+def inyectar_logos(html: str) -> str:
+    foto, copiados = cargador_por_nombre("logos", recortar=True)
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        clase, clave = m.groups()
+        src = foto(clave)
+        if not src:
+            return m.group(0)
+        return (f'<div class="{clase} con-imagen" data-logo="{clave}">'
+                f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
+
+    html = LOGO_RE.sub(reemplazar, html)
+    n = sum(1 for v in copiados.values() if v)
+    if n:
+        print(f"  logos: {n}")
+    return html
+
+# --- recuadros de imagen de las ventanas (p. ej. las 3 fotos del destinatario) ---
+# <div class="org-project-img" data-imagen="destinatario/01"></div> se rellena con
+# fuente/destinatario/01.jpg (o .png/.webp) si existe.
+IMAGEN_RE = re.compile(r'<div class="org-project-img" data-imagen="([a-z0-9-]+)/([a-z0-9-]+)"></div>')
+
+def inyectar_imagenes(html: str) -> str:
+    cargadores = {}
+
+    def reemplazar(m: "re.Match[str]") -> str:
+        carpeta, clave = m.groups()
+        if carpeta not in cargadores:
+            cargadores[carpeta] = cargador_por_nombre(carpeta)
+        src = cargadores[carpeta][0](clave)
+        if not src:
+            return m.group(0)
+        return (f'<div class="org-project-img con-foto" data-imagen="{carpeta}/{clave}">'
+                f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
+
+    html = IMAGEN_RE.sub(reemplazar, html)
+    for carpeta, (_, copiados) in cargadores.items():
+        n = sum(1 for v in copiados.values() if v)
+        if n:
+            print(f"  {carpeta}: {n} foto(s)")
+    return html
 
 # --- tipografias: el marcador va DENTRO de url(data:font/woff2;base64,XXXX) ---
 FUENTES = {
@@ -150,6 +338,11 @@ def inyectar_fotos_de_lotes(html: str) -> str:
     return LOTE_ART_RE.sub(reemplazar, html)
 
 def main() -> int:
+    global SALIDA, MEDIA
+    if "--salida" in sys.argv:
+        SALIDA = (RAIZ / sys.argv[sys.argv.index("--salida") + 1]).resolve()
+        SALIDA.mkdir(parents=True, exist_ok=True)
+        MEDIA = SALIDA / "media"
     plantilla = (AQUI / "plantilla.html").read_text(encoding="utf-8")
     html = plantilla
     faltan_archivos = []
@@ -181,13 +374,19 @@ def main() -> int:
     # fotos de obras por convención de nombre (loteNN.jpg) — va después de
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
+    if MEDIA.is_dir():
+        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
+    html = inyectar_collages(html)
+    html = inyectar_retratos(html)
+    html = inyectar_logos(html)
+    html = inyectar_imagenes(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:
         print("ERROR: quedaron marcadores sin rellenar:", *sobran, sep="\n  ")
         return 1
 
-    salida = RAIZ / "index.html"
+    salida = SALIDA / "index.html"
     salida.write_text(html, encoding="utf-8")
     print(f"OK  ->  {salida}  ({len(html):,} caracteres)")
 

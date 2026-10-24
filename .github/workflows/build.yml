@@ -22,6 +22,7 @@ jobs:
       - run: |
           git add index.html
           if [ -d galeria ]; then git add galeria; fi
+          git add -A media 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "sin cambios"
           else

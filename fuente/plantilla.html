@@ -13,9 +13,11 @@
        4. <main>
             - .hero                       (top banner/collage)
             - #proposito section          (why we do this)
-            - #artistas section           (artist cards)
-            - 3x .artist-modal            (one popup per artist)
-            - #obras section              (full 30-lot catalog)
+            - #artistas section           ("Los maestros" cards)
+            - 3x .artist-modal            (one popup per teacher)
+            - #estrellas section + 15 modals   (students)
+            - #portafolios section + 15 modals (photo collages)
+            - #obras section + 10 modals  (obras reimaginadas + inspiración)
             - #galeria section            (venue photos + map link)
             - #impacto section + its modal (where funds go)
             - #participar section         (how to join)
@@ -62,7 +64,8 @@
     --sienna:#B14F2A;
     --sienna-soft:#EBD3C2;
     --sienna-ink:#5C2A16;
-    --ink-blue:#3549A6;
+    --warm-white:#F7F3E8;
+    --hero-accent:#B14F2A;   /* tagline, sparkle, squiggles: orange in light mode */
     --shadow: 220 30% 10%;
   }
   @media (prefers-color-scheme: dark){
@@ -78,7 +81,8 @@
       --sienna:#E2894F;
       --sienna-soft:#3C2A1B;
       --sienna-ink:#F4D9C2;
-      --ink-blue:#8C9CE8;
+      --warm-white:#F7F3E8;
+      --hero-accent:#F7F3E8;   /* warm-white in dark mode */
       --shadow: 0 0% 0%;
     }
   }
@@ -94,6 +98,7 @@
     --sienna:#E2894F;
     --sienna-soft:#3C2A1B;
     --sienna-ink:#F4D9C2;
+    --hero-accent:#F7F3E8;
     --shadow: 0 0% 0%;
   }
 
@@ -170,7 +175,7 @@
   .doodle{position:absolute;top:38px;opacity:0.85;pointer-events:none;}
   .doodle-left{left:-14px;}
   .doodle-right{right:-14px;}
-  .doodle path{fill:none;stroke:var(--ink-blue);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+  .doodle path{fill:none;stroke:var(--hero-accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 
   .orange-badge{
     position:relative;width:min(148px,22vw);aspect-ratio:1;margin-bottom:6px;
@@ -180,13 +185,13 @@
 
   .hero-title{
     margin-top:2px;
-    font-family:'Caveat',cursive;font-weight:600;
+    font-family:'Fraunces',cursive;font-weight:600;
     font-size:clamp(26px,3.6vw,38px);
     line-height:1.25;
-    text-align:center;color:var(--ink-blue);max-width:18ch;
+    text-align:center;color:var(--hero-accent);max-width:18ch;
     text-wrap:balance;
   }
-  .hero-spark{color:var(--ink-blue);font-size:15px;margin-top:2px;opacity:0.8;}
+  .hero-spark{color:var(--hero-accent);font-size:15px;margin-top:2px;opacity:0.8;}
 
   .collage{
     position:relative;width:100%;max-width:min(1360px, calc(100% - 240px));aspect-ratio:9/7;margin-top:18px;
@@ -303,6 +308,23 @@
     background:repeating-linear-gradient(135deg, var(--line) 0 6px, transparent 6px 13px);
     border:1px dashed var(--graphite-soft);
   }
+  /* long links (e.g. a full Instagram URL) wrap instead of pushing the
+     box wider than a phone screen */
+  .collab-body{min-width:0;}
+  .collab-link{max-width:100%;overflow-wrap:anywhere;}
+  /* Logo (from fuente/logos/) replacing the striped placeholder circle;
+     contain + padding so any logo shape fits inside the circle. */
+  .collab-logo.con-imagen,.artist-modal-photo.con-imagen{
+    background:#fff;border:1px solid var(--line);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .collab-logo.con-imagen img,.artist-modal-photo.con-imagen img{
+    width:100%;height:100%;object-fit:contain;padding:9%;box-sizing:border-box;
+  }
+  /* real logos get bigger circles than the placeholders (the build also
+     trims the empty margin around each logo image) */
+  .collab-logo.con-imagen{width:112px;height:112px;}
+  .artist-modal-photo.con-imagen{width:104px;height:104px;}
   .collab-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite-soft);}
   .collab-name{
     display:block;font-family:'Fraunces',serif;font-weight:600;font-size:23px;margin:6px 0 12px;color:var(--ink);
@@ -355,6 +377,22 @@
   .artist-card:hover .artist-name,.artist-card:focus-visible .artist-name{color:var(--sienna);border-color:var(--sienna);}
   .artist-brief{font-size:13.5px;color:var(--graphite);}
 
+  /* Two-row variant (Próximas estrellas): cards fill top row, then
+     bottom row, column by column, so 15 cards scroll half as far. */
+  .carousel-2rows{display:grid;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:min(62vw,230px);gap:28px 24px;}
+  .carousel-2rows .artist-card{min-width:0;max-width:none;}
+  .carousel-2rows .artist-photo{aspect-ratio:1/1;}
+
+  /* Real portrait (from fuente/retratos/) replacing the placeholder:
+     fills the card's photo box / the round photo in the popup. */
+  /* positioned inside the 8px frame so the photo can never stretch the box:
+     every card keeps the same shape whatever the photo's proportions.
+     object-position favors the upper part of the photo, where faces are. */
+  .artist-photo-img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:cover;object-position:50% 30%;display:block;}
+  .artist-modal-photo img{object-position:50% 30%;}
+  .artist-modal-photo{overflow:hidden;}
+  .artist-modal-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+
   /* ---------- ARTIST MODAL ---------- */
   body.modal-open{overflow:hidden;}
   .artist-modal{position:fixed;inset:0;z-index:100;overflow-y:auto;padding:48px 20px;}
@@ -391,6 +429,9 @@
       linear-gradient(155deg, var(--teal-soft), var(--paper-raised) 75%);
     border:1px solid var(--line);
   }
+  /* photo (from fuente/<carpeta>/NN.jpg via data-imagen) filling an image box */
+  .org-project-img.con-foto{background:none;overflow:hidden;}
+  .org-project-img.con-foto img{width:100%;height:100%;object-fit:cover;display:block;}
   .org-project-title{font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin:10px 0 4px;}
   .org-project-desc{font-size:12.5px;color:var(--graphite);}
 
@@ -446,6 +487,26 @@
   .gallery-photo{flex:0 0 auto;width:min(78vw,380px);scroll-snap-align:center;}
   .gallery-frame{aspect-ratio:4/3;position:relative;overflow:hidden;}
   .gallery-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+  /* ---------- CLICKABLE CARDS + PHOTO COLLAGES ----------
+     Lot cards that open a popup are <button class="lot">; this resets
+     the browser's button look so they match the plain lot cards. */
+  button.lot{font:inherit;color:inherit;text-align:left;padding:0;cursor:pointer;width:100%;}
+  /* let lot cards shrink on narrow phones; the price row wraps instead
+     of pushing the card wider than the screen */
+  .lots > *{min-width:0;}
+  .lot-price{flex-wrap:wrap;gap:2px 8px;}
+  .lot-cta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sienna);margin-top:4px;}
+  .modal-title-head{margin-top:0;padding-right:40px;}
+  .modal-title-head h3{font-size:30px;}
+  /* Collage: masonry columns of photos (or placeholder tiles). Filled
+     automatically by construir.py from the folder named in data-fotos. */
+  .fotos-collage{columns:3 170px;column-gap:14px;margin-top:22px;}
+  .fotos-collage > *{display:block;width:100%;margin:0 0 14px;break-inside:avoid;box-sizing:border-box;}
+  .fotos-collage > img{height:auto;background:var(--paper-raised);border:1px solid var(--line);padding:6px;box-shadow:0 8px 18px -12px hsl(var(--shadow) / 0.4);}
+  .collage-ph{border:1px solid var(--line);}
+  .fotos-collage > :nth-child(3n+1){transform:rotate(-1.2deg);}
+  .fotos-collage > :nth-child(3n+2){transform:rotate(0.9deg);}
 
   /* participar */
   .participar-cta{margin-top:44px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
@@ -520,8 +581,9 @@
     <a class="wordmark" href="#top">Artemisa</a>
     <nav class="links">
       <a href="#proposito">Propósito</a>
-      <a href="#artistas">Artistas</a>
-      <a href="#obras">Obras</a>
+      <a href="#artistas">Maestros</a>
+      <a href="#estrellas">Estrellas</a>
+      <a href="#portafolios">Obras</a>
       <a href="#galeria">Galería</a>
       <a href="#impacto">Impacto</a>
       <a href="#participar">Cómo participar</a>
@@ -533,8 +595,9 @@
   </div>
   <nav class="mobile-links">
     <a href="#proposito">Propósito</a>
-    <a href="#artistas">Artistas</a>
-    <a href="#obras">Obras</a>
+    <a href="#artistas">Maestros</a>
+    <a href="#estrellas">Estrellas</a>
+    <a href="#portafolios">Obras</a>
     <a href="#galeria">Galería</a>
     <a href="#impacto">Impacto</a>
     <a href="#participar">Cómo participar</a>
@@ -593,12 +656,13 @@
         <div class="title-mark" aria-hidden="true">Artemisa</div>
       </div>
 
-      <p class="hero-desc">Subasta de arte solidaria. Obras originales, historias reales, y una tarde para creer que el arte también repara.</p>
+      <p class="hero-desc">Subasta de arte solidaria. Obras originales, historias reales y una tarde para creer que el arte también repara.</p>
 
       <div class="hero-meta">
-        <span>Fecha&nbsp;<b>Viernes 18 de diciembre</b></span>
+        <span>Evento&nbsp;<b>Viernes 18 de diciembre</b></span>
+        <span>Exposición&nbsp;<b>Del 12 de diciembre al 12 de enero</b></span>
         <span>Lugar&nbsp;<b>Centro Cultural San Ángel</b></span>
-        <span>Entrada&nbsp;<b>$450</b></span>
+        <span>Entrada&nbsp;<b>$400</b></span>
       </div>
 
       <div class="hero-actions">
@@ -622,14 +686,14 @@
             <h2 class="sticker-title"><span class="sr-only">El arte como herramienta</span><span aria-hidden="true" class="sticker-row"><span class="sw"><img class="sl" src="__LETTER_e_1__" alt="" style="aspect-ratio:1.012;transform:translateY(3px) rotate(-7deg);"><img class="sl" src="__LETTER_l_1__" alt="" style="aspect-ratio:0.987;transform:translateY(-4px) rotate(5deg);"></span><span class="sw"><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(2px) rotate(-4deg);"><img class="sl" src="__LETTER_r_2__" alt="" style="aspect-ratio:0.767;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_t_0__" alt="" style="aspect-ratio:0.778;transform:translateY(4px) rotate(-3deg);"><img class="sl" src="__LETTER_e_2__" alt="" style="aspect-ratio:0.896;transform:translateY(-2px) rotate(4deg);"></span><span class="sw"><img class="sl" src="__LETTER_c_1__" alt="" style="aspect-ratio:0.747;transform:translateY(3px) rotate(-6deg);"><img class="sl" src="__LETTER_o_1__" alt="" style="aspect-ratio:0.770;transform:translateY(-3px) rotate(3deg);"><span class="sl sl-tile" style="--tile-bg:#F1D9C7;--tile-ink:#232220;transform:translateY(2px) rotate(-5deg);">m</span><img class="sl" src="__LETTER_o_2__" alt="" style="aspect-ratio:0.704;transform:translateY(-4px) rotate(7deg);"></span><span class="sw"><img class="sl" src="__LETTER_h_0__" alt="" style="aspect-ratio:1.015;transform:translateY(3px) rotate(-7deg);"><img class="sl" src="__LETTER_e_1__" alt="" style="aspect-ratio:1.012;transform:translateY(-4px) rotate(5deg);"><img class="sl" src="__LETTER_r_0__" alt="" style="aspect-ratio:0.922;transform:translateY(2px) rotate(-4deg);"><img class="sl" src="__LETTER_r_2__" alt="" style="aspect-ratio:0.767;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_a_2__" alt="" style="aspect-ratio:1.135;transform:translateY(4px) rotate(-3deg);"><span class="sl sl-tile" style="--tile-bg:#D6E4E1;--tile-ink:#B14F2A;transform:translateY(-2px) rotate(4deg);">m</span><img class="sl" src="__LETTER_i_0__" alt="" style="aspect-ratio:0.764;transform:translateY(3px) rotate(-6deg);"><img class="sl" src="__LETTER_e_2__" alt="" style="aspect-ratio:0.896;transform:translateY(-3px) rotate(3deg);"><img class="sl" src="__LETTER_n_2__" alt="" style="aspect-ratio:0.739;transform:translateY(2px) rotate(-5deg);"><img class="sl" src="__LETTER_t_2__" alt="" style="aspect-ratio:0.677;transform:translateY(-4px) rotate(7deg);"><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(3px) rotate(-7deg);"></span></span></h2>
           </div>
           <div class="prose">
-            <p>Esta subasta nace de mis clases de arte con niños de 7 a 10 años: un espacio donde ellos descubren su propio lenguaje visual y yo aprendo, semana tras semana, a mirar el mundo de nuevo. Cada pieza que se subasta —mía, de una intervención sobre el trabajo de un estudiante, o de las artistas que se suman a este proyecto— sostiene ese espacio para que pueda seguir creciendo.</p>
+            <p>Esta subasta nace de mis clases de arte con niños de 7 a 10 años: un espacio donde ellos descubren su propio lenguaje visual y yo aprendo, semana tras semana, a mirar el mundo de nuevo. Cada pieza que se subasta —mía, de una intervención sobre el trabajo de un estudiante, o de los artistas que se suman a este proyecto— sostiene ese espacio para que pueda seguir creciendo.</p>
           </div>
         </div>
     </div>
   </section>
 
   <!-- ============================================================
-       SECTION: "ARTISTAS" (The artists)
+       SECTION: "LOS MAESTROS" (The teachers — the id stays "artistas")
        Anchor target for the "Artistas" nav link. Shows a horizontal
        row of clickable artist cards (photo placeholder + name +
        one-line description). Clicking a card doesn't navigate
@@ -642,28 +706,28 @@
   <section id="artistas">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="eyebrow">quiénes exponen</div>
-        <h2>Los artistas</h2>
+        <div class="eyebrow">quiénes enseñan</div>
+        <h2>Los maestros</h2>
         <p class="lede">Haz clic en la tarjeta de cada artista para conocer su historia y ver sus obras. O mira <a href="#obras">todas las piezas mezcladas</a> directamente.</p>
       </div>
 
       <div class="artist-carousel reveal">
         <!-- Artist 01 -->
         <button type="button" class="artist-card" data-open-modal="modal-alaia">
-          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph"></div></div>
+          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph" data-retrato="maestro01"></div></div>
           <div class="artist-name">Alaia Esteban</div>
           <p class="artist-brief">Estudiante, artista y educadora · Ciudad de México.</p>
         </button>
         <!-- Artist 02 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista2">
-          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph"></div></div>
-          <div class="artist-name">[Nombre Artista 2]</div>
+          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="maestro02"></div></div>
+          <div class="artist-name">Constanza García</div>
           <p class="artist-brief">[Breve descripción de Artista 2 — técnica, ciudad, una línea].</p>
         </button>
         <!-- Artist 03 -->
         <button type="button" class="artist-card" data-open-modal="modal-artista3">
-          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph"></div></div>
-          <div class="artist-name">[Nombre Artista 3]</div>
+          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="maestro03"></div></div>
+          <div class="artist-name">Diego Hurtado</div>
           <p class="artist-brief">[Breve descripción de Artista 3 — técnica, ciudad, una línea].</p>
         </button>
       </div>
@@ -680,21 +744,19 @@
        Structure inside: photo + name/role header, biography
        paragraphs, a classroom photo, a 3-step "how it works" strip
        (Enseñar / Intervenir / Compartir), a short "el taller"
-       blurb, and then her 10 lots (.lots.modal-lots grid) — 5 of
-       her own pieces (Lotes 01, 04, 07, 10, 13) plus 5 pieces where
-       she intervened on a student's work (Lotes 16, 19, 22, 25, 28,
-       marked with the "intervención" tag). Kept in ascending lot
-       order.
+       blurb, and then her 5 lots (Lote 01–05), the same cards as in
+       "Obras reimaginadas" — clicking one opens its "Inspiración"
+       popup.
        ============================================================ -->
   <div class="artist-modal" id="modal-alaia" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro01"></div>
         <div>
           <div class="author-name">Alaia Esteban</div>
-          <div class="author-role">Estudiante, Artista y Educadora · Ciudad de México</div>
+          <div class="author-role">Estudiante, artista y educadora · Ciudad de México</div>
         </div>
       </div>
       <div class="prose">
@@ -729,94 +791,54 @@
         <h3>Aquí es donde todo empieza</h3>
       </div>
       <div class="prose">
-        <p>Cada semana me reúno con niños y niñas de 7 a 10 años para explorar técnicas de dibujo, pintura y collage. No corrijo su trabajo — lo escucho y luego respondo con mis propias herramientas.</p>
+        <p>Cada semana me reúno con niños y niñas de 7 a 10 años para explorar técnicas de dibujo, pintura y collage. No corrijo su trabajo: lo escucho y luego respondo con mis propias herramientas.</p>
         <p>Esa colaboración entre generaciones es el corazón de Artemisa: lo que ves en la subasta nace, en parte, de lo que ellos me enseñan a mí primero.</p>
       </div>
       <div class="artist-modal-subhead">
         <div class="eyebrow">sus obras</div>
-        <h3>10 piezas — 5 propias y 5 intervenciones</h3>
+        <h3>5 piezas</h3>
       </div>
       <div class="lots modal-lots">
-          <div class="lot">
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-01">
           <div class="lot-art art-grafito"><span>Lote 01</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
             <div class="lot-meta">Grafito sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-02">
+          <div class="lot-art art-grafito"><span>Lote 02</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-03">
+          <div class="lot-art art-oleo"><span>Lote 03</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-04">
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
             <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 07</span></div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-05">
+          <div class="lot-art art-acuarela"><span>Lote 05</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 10</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Grafito y lápiz de color sobre tela · Alaia Esteban · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 13</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Grafito, tinta y collage · Alaia Esteban · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 16</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Técnica mixta y caligrafía · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 19</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Collage y grafito · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 22</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Técnica mixta · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 25</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 28</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -825,17 +847,17 @@
        ARTIST MODAL 02 — [Nombre Artista 2] (placeholder artist)
        Same structure as modal-alaia above, minus the classroom
        photo/steps/taller blocks (those are specific to Alaia).
-       Holds her/his 10 lots, in ascending order: 02, 05, 08, 11,
-       14, 17, 20, 23, 26, 29.
+       Holds her/his 5 lots: Lote 06–10 (same cards as in
+       "Obras reimaginadas").
        ============================================================ -->
   <div class="artist-modal" id="modal-artista2" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro02"></div>
         <div>
-          <div class="author-name">[Nombre Artista 2]</div>
+          <div class="author-name">Constanza García</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
         </div>
       </div>
@@ -844,469 +866,1001 @@
       </div>
       <div class="artist-modal-subhead">
         <div class="eyebrow">sus obras</div>
-        <h3>10 piezas</h3>
+        <h3>5 piezas</h3>
       </div>
       <div class="lots modal-lots">
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 02</span></div>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
+          <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 05</span></div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
+          <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 11</span></div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
+          <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 14</span></div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
+          <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 17</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 20</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 23</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 26</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 29</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- ============================================================
        ARTIST MODAL 03 — [Nombre Artista 3] (placeholder artist)
-       Same structure again. Holds her/his 10 lots, in ascending
-       order: 03, 06, 09, 12, 15, 18, 21, 24, 27, 30.
-       This is the last of the three artist modals — together
-       Alaia + Artista 2 + Artista 3 account for all 30 lots.
+       Name, role and bio only — this teacher has no "sus obras"
+       block (removed on request).
        ============================================================ -->
   <div class="artist-modal" id="modal-artista3" hidden>
     <div class="artist-modal-backdrop"></div>
     <div class="artist-modal-panel">
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-header">
-        <div class="artist-modal-photo"></div>
+        <div class="artist-modal-photo" data-retrato="maestro03"></div>
         <div>
-          <div class="author-name">[Nombre Artista 3]</div>
+          <div class="author-name">Diego Hurtado</div>
           <div class="author-role">[Rol / técnica] · [Ciudad]</div>
         </div>
       </div>
       <div class="prose">
         <p>[Aquí va la biografía breve de Artista 3: su trayectoria, su técnica, y por qué se suma a Artemisa].</p>
       </div>
-      <div class="artist-modal-subhead">
-        <div class="eyebrow">sus obras</div>
-        <h3>10 piezas</h3>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION: "LAS PRÓXIMAS ESTRELLAS" (The students)
+       Anchor target for the "Estrellas" nav link. Same horizontal card
+       carousel as "Los maestros": 15 placeholder cards (01–15). Each
+       card opens its "modal-estrella-NN" popup (right below), which
+       has a short bio and a "Ver su portafolio" button that opens
+       the matching portfolio collage further down.
+       ============================================================ -->
+  <section id="estrellas">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">quiénes exponen</div>
+        <h2>Las próximas estrellas</h2>
+        <p class="lede">[Breve introducción a las próximas estrellas: quiénes son y qué aprendieron en el taller]. Haz clic en cada tarjeta para conocer su historia.</p>
       </div>
-      <div class="lots modal-lots">
-          <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 03</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+
+      <div class="artist-carousel carousel-2rows reveal">
+        <!-- Estrella 01 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-01">
+          <div class="artist-photo"><span class="artist-index">01</span><div class="artist-photo-ph" data-retrato="estrella01"></div></div>
+          <div class="artist-name">Sara</div>
+          <p class="artist-brief">[Breve descripción de Estrella 1 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 02 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-02">
+          <div class="artist-photo"><span class="artist-index">02</span><div class="artist-photo-ph" data-retrato="estrella02"></div></div>
+          <div class="artist-name">Herminio</div>
+          <p class="artist-brief">[Breve descripción de Estrella 2 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 03 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-03">
+          <div class="artist-photo"><span class="artist-index">03</span><div class="artist-photo-ph" data-retrato="estrella03"></div></div>
+          <div class="artist-name">Emma</div>
+          <p class="artist-brief">[Breve descripción de Estrella 3 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 04 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-04">
+          <div class="artist-photo"><span class="artist-index">04</span><div class="artist-photo-ph" data-retrato="estrella04"></div></div>
+          <div class="artist-name">Jicori</div>
+          <p class="artist-brief">[Breve descripción de Estrella 4 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 05 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-05">
+          <div class="artist-photo"><span class="artist-index">05</span><div class="artist-photo-ph" data-retrato="estrella05"></div></div>
+          <div class="artist-name">Andres</div>
+          <p class="artist-brief">[Breve descripción de Estrella 5 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 06 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-06">
+          <div class="artist-photo"><span class="artist-index">06</span><div class="artist-photo-ph" data-retrato="estrella06"></div></div>
+          <div class="artist-name">Janet</div>
+          <p class="artist-brief">[Breve descripción de Estrella 6 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 07 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-07">
+          <div class="artist-photo"><span class="artist-index">07</span><div class="artist-photo-ph" data-retrato="estrella07"></div></div>
+          <div class="artist-name">Belén</div>
+          <p class="artist-brief">[Breve descripción de Estrella 7 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 08 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-08">
+          <div class="artist-photo"><span class="artist-index">08</span><div class="artist-photo-ph" data-retrato="estrella08"></div></div>
+          <div class="artist-name">Fani</div>
+          <p class="artist-brief">[Breve descripción de Estrella 8 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 09 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-09">
+          <div class="artist-photo"><span class="artist-index">09</span><div class="artist-photo-ph" data-retrato="estrella09"></div></div>
+          <div class="artist-name">Diana</div>
+          <p class="artist-brief">[Breve descripción de Estrella 9 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 10 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-10">
+          <div class="artist-photo"><span class="artist-index">10</span><div class="artist-photo-ph" data-retrato="estrella10"></div></div>
+          <div class="artist-name">Ivanna</div>
+          <p class="artist-brief">[Breve descripción de Estrella 10 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 11 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-11">
+          <div class="artist-photo"><span class="artist-index">11</span><div class="artist-photo-ph" data-retrato="estrella11"></div></div>
+          <div class="artist-name">Emiliano</div>
+          <p class="artist-brief">[Breve descripción de Estrella 11 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 12 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-12">
+          <div class="artist-photo"><span class="artist-index">12</span><div class="artist-photo-ph" data-retrato="estrella12"></div></div>
+          <div class="artist-name">[Nombre Estrella 12]</div>
+          <p class="artist-brief">[Breve descripción de Estrella 12 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 13 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-13">
+          <div class="artist-photo"><span class="artist-index">13</span><div class="artist-photo-ph" data-retrato="estrella13"></div></div>
+          <div class="artist-name">[Nombre Estrella 13]</div>
+          <p class="artist-brief">[Breve descripción de Estrella 13 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 14 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-14">
+          <div class="artist-photo"><span class="artist-index">14</span><div class="artist-photo-ph" data-retrato="estrella14"></div></div>
+          <div class="artist-name">[Nombre Estrella 14]</div>
+          <p class="artist-brief">[Breve descripción de Estrella 14 — edad, técnica favorita, una línea].</p>
+        </button>
+        <!-- Estrella 15 -->
+        <button type="button" class="artist-card" data-open-modal="modal-estrella-15">
+          <div class="artist-photo"><span class="artist-index">15</span><div class="artist-photo-ph" data-retrato="estrella15"></div></div>
+          <div class="artist-name">[Nombre Estrella 15]</div>
+          <p class="artist-brief">[Breve descripción de Estrella 15 — edad, técnica favorita, una línea].</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ESTRELLA MODALS 01–15 — one popup per student: name, role,
+       short bio, and a button that opens that student's portfolio.
+       ============================================================ -->
+  <div class="artist-modal" id="modal-estrella-01" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella01"></div>
+        <div>
+          <div class="author-name">Sara</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 06</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 1: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-01">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-02" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella02"></div>
+        <div>
+          <div class="author-name">Herminio</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 09</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 2: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-02">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-03" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella03"></div>
+        <div>
+          <div class="author-name">Emma</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 12</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 3: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-03">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-04" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella04"></div>
+        <div>
+          <div class="author-name">Jicori</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 15</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 4: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-04">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-05" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella05"></div>
+        <div>
+          <div class="author-name">Andres</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 18</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 5: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-05">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-06" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella06"></div>
+        <div>
+          <div class="author-name">Janet</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 21</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 6: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-06">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-07" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella07"></div>
+        <div>
+          <div class="author-name">Belén</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 24</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 7: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-07">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-08" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella08"></div>
+        <div>
+          <div class="author-name">Fani</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 27</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 8: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-08">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-09" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella09"></div>
+        <div>
+          <div class="author-name">Diana</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
-          <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 30</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 9: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-09">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-10" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella10"></div>
+        <div>
+          <div class="author-name">Ivanna</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
         </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 10: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-10">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-11" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella11"></div>
+        <div>
+          <div class="author-name">Emiliano</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 11: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-11">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-12" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella12"></div>
+        <div>
+          <div class="author-name">[Nombre Estrella 12]</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 12: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-12">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-13" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella13"></div>
+        <div>
+          <div class="author-name">[Nombre Estrella 13]</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 13: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-13">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-14" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella14"></div>
+        <div>
+          <div class="author-name">[Nombre Estrella 14]</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 14: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-14">Ver su portafolio</button>
+      </div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-estrella-15" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-header">
+        <div class="artist-modal-photo" data-retrato="estrella15"></div>
+        <div>
+          <div class="author-name">[Nombre Estrella 15]</div>
+          <div class="author-role">[Edad] · [Técnica favorita]</div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>[Aquí va una breve presentación de Estrella 15: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
+      </div>
+      <div class="participar-cta">
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-15">Ver su portafolio</button>
       </div>
     </div>
   </div>
 
   <!-- ============================================================
-       SECTION: "OBRAS" (The full catalog)
-       Anchor target for the "Obras" nav link. This is the same 30
-       lots that appear split across the three artist modals above,
-       but shown together here as one flat grid, mixed and sorted
-       purely by lot number (Lote 01 → Lote 30), regardless of which
-       artist made each piece. Every ".lot" card repeats the same
-       pattern: an image (or a placeholder color swatch when there's
-       no photo yet) tagged with its lot number, a title, a
-       technique/artist/size line, and a base price. A disclaimer
-       paragraph at the end notes that titles/prices are provisional.
+       SECTION: "LOS PORTAFOLIOS" (first half of the old "Obras")
+       Anchor target for the "Obras" nav link. 15 cards, one per
+       Próxima Estrella (same numbering 01–15). Each opens a
+       "modal-portafolio-NN" popup showing only a photo collage.
+
+       ADDING PHOTOS needs no code: put pictures in fuente/portafolios/
+       named estrella01-<anything>.jpg (or a subfolder estrella01/).
+       construir.py compresses them and fills the matching collage;
+       any number of photos works. With no photos the collage shows
+       colored placeholder tiles.
+       ============================================================ -->
+  <section id="portafolios">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">su trabajo</div>
+        <h2>Los portafolios</h2>
+        <p class="lede">[Breve introducción a los portafolios: el trabajo de cada estrella a lo largo del taller]. Haz clic en cada uno para verlo.</p>
+      </div>
+
+      <div class="lots reveal">
+        <button type="button" class="lot" data-open-modal="modal-portafolio-01">
+          <div class="lot-art art-grafito"><span>Estrella 01</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Sara</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-02">
+          <div class="lot-art art-acuarela"><span>Estrella 02</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Herminio</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-03">
+          <div class="lot-art art-oleo"><span>Estrella 03</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Emma</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-04">
+          <div class="lot-art art-mixta"><span>Estrella 04</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Jicori</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-05">
+          <div class="lot-art art-collage"><span>Estrella 05</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Andres</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-06">
+          <div class="lot-art art-grafito"><span>Estrella 06</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Janet</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-07">
+          <div class="lot-art art-acuarela"><span>Estrella 07</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Belén</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-08">
+          <div class="lot-art art-oleo"><span>Estrella 08</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Fani</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-09">
+          <div class="lot-art art-mixta"><span>Estrella 09</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Diana</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-10">
+          <div class="lot-art art-collage"><span>Estrella 10</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Ivanna</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-11">
+          <div class="lot-art art-grafito"><span>Estrella 11</span></div>
+          <div class="lot-label">
+            <div class="lot-title">Emiliano</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-12">
+          <div class="lot-art art-acuarela"><span>Estrella 12</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre Estrella 12]</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-13">
+          <div class="lot-art art-oleo"><span>Estrella 13</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre Estrella 13]</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-14">
+          <div class="lot-art art-mixta"><span>Estrella 14</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre Estrella 14]</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-portafolio-15">
+          <div class="lot-art art-collage"><span>Estrella 15</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre Estrella 15]</div>
+            <div class="lot-meta">Portafolio</div>
+            <div class="lot-cta">Ver portafolio →</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="artist-modal" id="modal-portafolio-01" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Sara</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella01"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-02" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Herminio</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella02"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-03" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Emma</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella03"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-04" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Jicori</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella04"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-05" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Andres</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella05"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-06" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Janet</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella06"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-07" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Belén</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella07"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-08" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Fani</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella08"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-09" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Diana</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella09"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-10" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Ivanna</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella10"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-11" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>Emiliano</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella11"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-12" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>[Nombre Estrella 12]</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella12"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-13" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>[Nombre Estrella 13]</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella13"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-14" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>[Nombre Estrella 14]</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella14"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-portafolio-15" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">portafolio</div>
+        <h3>[Nombre Estrella 15]</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella15"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION: "OBRAS REIMAGINADAS" (second half of the old "Obras")
+       Keeps the id "obras" so the hero's "Ver las obras" button
+       lands here. 10 lot cards (Lote 01–10); lot photos still come
+       from fuente/obras/loteNN.jpg as before. Each card opens a
+       "modal-inspiracion-NN" popup titled "Inspiración" with a photo
+       collage: put pictures in fuente/inspiracion/ named
+       lote01-<anything>.jpg (or a subfolder lote01/).
        ============================================================ -->
   <section id="obras">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">la colección</div>
-        <h2 class="sticker-title"><span class="sr-only">Las obras</span><span aria-hidden="true" class="sticker-row"><span class="sw"><img class="sl" src="__LETTER_l_1__" alt="" style="aspect-ratio:0.987;transform:translateY(3px) rotate(-7deg);"><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(-4px) rotate(5deg);"><img class="sl" src="__LETTER_s_0__" alt="" style="aspect-ratio:0.874;transform:translateY(2px) rotate(-4deg);"></span><span class="sw"><img class="sl" src="__LETTER_o_1__" alt="" style="aspect-ratio:0.770;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_b_1__" alt="" style="aspect-ratio:0.873;transform:translateY(4px) rotate(-3deg);"><img class="sl" src="__LETTER_r_2__" alt="" style="aspect-ratio:0.767;transform:translateY(-2px) rotate(4deg);"><img class="sl" src="__LETTER_a_2__" alt="" style="aspect-ratio:1.135;transform:translateY(3px) rotate(-6deg);"><img class="sl" src="__LETTER_s_2__" alt="" style="aspect-ratio:0.880;transform:translateY(-3px) rotate(3deg);"></span></span></h2>
-        <p class="lede">Las 30 piezas de la subasta, de las tres artistas, mezcladas. Cada una será presentada la noche del evento junto a su precio base y la historia detrás de su creación.</p>
+        <h2>Obras reimaginadas</h2>
+        <p class="lede">[Breve descripción de las obras reimaginadas]. Haz clic en cada una para ver la inspiración detrás de ella.</p>
       </div>
 
       <div class="lots reveal">
-        <div class="lot">
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-01">
           <div class="lot-art art-grafito"><span>Lote 01</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
             <div class="lot-meta">Grafito sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-02">
           <div class="lot-art art-grafito"><span>Lote 02</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-03">
           <div class="lot-art art-oleo"><span>Lote 03</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-04">
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
             <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-05">
           <div class="lot-art art-acuarela"><span>Lote 05</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Grafito y lápiz de color sobre tela · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 11</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 12</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 13</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Grafito, tinta y collage · Alaia Esteban · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 14</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 15</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 16</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Técnica mixta y caligrafía · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 17</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 18</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 19</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Collage y grafito · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 20</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 21</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 22</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Técnica mixta · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-oleo"><span>Lote 23</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 24</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 25</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-mixta"><span>Lote 26</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 27</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-grafito"><span>Lote 28</span></div>
-          <div class="lot-label">
-            <div class="lot-tag">intervención</div><div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [nombre de estudiante] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-collage"><span>Lote 29</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 2] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
-        <div class="lot">
-          <div class="lot-art art-acuarela"><span>Lote 30</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · [Nombre Artista 3] · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </div>
+        </button>
       </div>
 
-      <p class="disclaimer">Los títulos, autoría, medidas y precios base mostrados son provisionales — se actualizarán con la información definitiva de cada obra antes del evento.</p>
+      <p class="disclaimer">Los títulos, autoría, medidas y precios base mostrados son provisionales: se actualizarán con la información definitiva de cada obra antes del evento.</p>
     </div>
   </section>
+
+  <div class="artist-modal" id="modal-inspiracion-01" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 01</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote01"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-02" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 02</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote02"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-03" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 03</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote03"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-04" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 04</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote04"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-05" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 05</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote05"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-06" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 06</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote06"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-07" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 07</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote07"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-08" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 08</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote08"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-09" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 09</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote09"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
+  <div class="artist-modal" id="modal-inspiracion-10" hidden>
+    <div class="artist-modal-backdrop"></div>
+    <div class="artist-modal-panel">
+      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+      <div class="artist-modal-subhead modal-title-head">
+        <div class="eyebrow">lote 10</div>
+        <h3>Inspiración</h3>
+      </div>
+      <div class="fotos-collage" data-fotos="inspiracion/lote10"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+    </div>
+  </div>
 
   <!-- ============================================================
        SECTION: "GALERÍA" (The venue)
@@ -1334,45 +1888,21 @@
       <div class="section-head reveal">
         <div class="eyebrow">el espacio</div>
         <h2 class="sticker-title"><span class="sr-only">La galería</span><span aria-hidden="true" class="sticker-row"><span class="sw"><img class="sl" src="__LETTER_l_1__" alt="" style="aspect-ratio:0.987;transform:translateY(3px) rotate(-7deg);"><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(-4px) rotate(5deg);"></span><span class="sw"><span class="sl sl-tile" style="--tile-bg:#F1D9C7;--tile-ink:#232220;transform:translateY(2px) rotate(-4deg);">g</span><img class="sl" src="__LETTER_a_2__" alt="" style="aspect-ratio:1.135;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_l_2__" alt="" style="aspect-ratio:1.000;transform:translateY(4px) rotate(-3deg);"><img class="sl" src="__LETTER_e_1__" alt="" style="aspect-ratio:1.012;transform:translateY(-2px) rotate(4deg);"><img class="sl" src="__LETTER_r_2__" alt="" style="aspect-ratio:0.767;transform:translateY(3px) rotate(-6deg);"><span class="sl-acc"><img class="sl" src="__LETTER_i_0__" alt="" style="aspect-ratio:0.764;transform:translateY(-3px) rotate(3deg);"></span><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(2px) rotate(-5deg);"></span></span></h2>
-        <p class="lede">[Breve descripción del espacio: cómo se verá la exposición y cómo estarán montadas las obras el día del evento].</p>
+        <p class="lede">Para el evento y la exposición nos ubicaremos en el tercer piso del Centro Cultural San Ángel, del 12 de diciembre al 12 de enero, donde todas las obras estarán expuestas. El día del evento se hará uso del teatro del centro cultural para llevar a cabo la subasta.</p>
       </div>
 
       <div class="gallery-carousel reveal">
         <div class="gallery-photo">
           <div class="frame">
-            <div class="gallery-frame art-grafito"><img class="gallery-photo-img" src="galeria/01.jpg" alt="[Descripción de la foto 1: p. ej. fachada / entrada]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+            <div class="gallery-frame art-grafito"><img class="gallery-photo-img" src="galeria/01.jpg" alt="Entrada imaginativa" loading="lazy" decoding="async" onerror="this.remove()"></div>
           </div>
-          <p class="frame-cap">[Descripción de la foto 1: p. ej. fachada / entrada]</p>
+          <p class="frame-cap">Entrada imaginativa</p>
         </div>
         <div class="gallery-photo">
           <div class="frame">
-            <div class="gallery-frame art-acuarela"><img class="gallery-photo-img" src="galeria/02.jpg" alt="[Descripción de la foto 2: p. ej. salón principal, vista general]" loading="lazy" decoding="async" onerror="this.remove()"></div>
+            <div class="gallery-frame art-acuarela"><img class="gallery-photo-img" src="galeria/02.jpg" alt="Galería imaginativa" loading="lazy" decoding="async" onerror="this.remove()"></div>
           </div>
-          <p class="frame-cap">[Descripción de la foto 2: p. ej. salón principal, vista general]</p>
-        </div>
-        <div class="gallery-photo">
-          <div class="frame">
-            <div class="gallery-frame art-oleo"><img class="gallery-photo-img" src="galeria/03.jpg" alt="[Descripción de la foto 3: p. ej. pared donde se montarán las obras]" loading="lazy" decoding="async" onerror="this.remove()"></div>
-          </div>
-          <p class="frame-cap">[Descripción de la foto 3: p. ej. pared donde se montarán las obras]</p>
-        </div>
-        <div class="gallery-photo">
-          <div class="frame">
-            <div class="gallery-frame art-mixta"><img class="gallery-photo-img" src="galeria/04.jpg" alt="[Descripción de la foto 4: p. ej. patio o sala secundaria]" loading="lazy" decoding="async" onerror="this.remove()"></div>
-          </div>
-          <p class="frame-cap">[Descripción de la foto 4: p. ej. patio o sala secundaria]</p>
-        </div>
-        <div class="gallery-photo">
-          <div class="frame">
-            <div class="gallery-frame art-collage"><img class="gallery-photo-img" src="galeria/05.jpg" alt="[Descripción de la foto 5: p. ej. detalle arquitectónico]" loading="lazy" decoding="async" onerror="this.remove()"></div>
-          </div>
-          <p class="frame-cap">[Descripción de la foto 5: p. ej. detalle arquitectónico]</p>
-        </div>
-        <div class="gallery-photo">
-          <div class="frame">
-            <div class="gallery-frame art-grafito"><img class="gallery-photo-img" src="galeria/06.jpg" alt="[Descripción de la foto 6]" loading="lazy" decoding="async" onerror="this.remove()"></div>
-          </div>
-          <p class="frame-cap">[Descripción de la foto 6]</p>
+          <p class="frame-cap">Galería imaginativa</p>
         </div>
       </div>
 
@@ -1405,16 +1935,30 @@
       <div class="section-head reveal">
         <div class="eyebrow">transparencia</div>
         <h2 class="sticker-title"><span class="sr-only">El destino de tu aporte</span><span aria-hidden="true" class="sticker-row"><span class="sw"><img class="sl" src="__LETTER_e_1__" alt="" style="aspect-ratio:1.012;transform:translateY(3px) rotate(-7deg);"><img class="sl" src="__LETTER_l_1__" alt="" style="aspect-ratio:0.987;transform:translateY(-4px) rotate(5deg);"></span><span class="sw"><img class="sl" src="__LETTER_d_1__" alt="" style="aspect-ratio:0.674;transform:translateY(2px) rotate(-4deg);"><img class="sl" src="__LETTER_e_2__" alt="" style="aspect-ratio:0.896;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_s_0__" alt="" style="aspect-ratio:0.874;transform:translateY(4px) rotate(-3deg);"><img class="sl" src="__LETTER_t_0__" alt="" style="aspect-ratio:0.778;transform:translateY(-2px) rotate(4deg);"><img class="sl" src="__LETTER_i_0__" alt="" style="aspect-ratio:0.764;transform:translateY(3px) rotate(-6deg);"><img class="sl" src="__LETTER_n_2__" alt="" style="aspect-ratio:0.739;transform:translateY(-3px) rotate(3deg);"><img class="sl" src="__LETTER_o_1__" alt="" style="aspect-ratio:0.770;transform:translateY(2px) rotate(-5deg);"></span><span class="sw"><img class="sl" src="__LETTER_d_0__" alt="" style="aspect-ratio:0.705;transform:translateY(-4px) rotate(7deg);"><img class="sl" src="__LETTER_e_1__" alt="" style="aspect-ratio:1.012;transform:translateY(3px) rotate(-7deg);"></span><span class="sw"><img class="sl" src="__LETTER_t_2__" alt="" style="aspect-ratio:0.677;transform:translateY(-4px) rotate(5deg);"><img class="sl" src="__LETTER_u_2__" alt="" style="aspect-ratio:0.938;transform:translateY(2px) rotate(-4deg);"></span><span class="sw"><img class="sl" src="__LETTER_a_1__" alt="" style="aspect-ratio:0.945;transform:translateY(-3px) rotate(6deg);"><img class="sl" src="__LETTER_p_0__" alt="" style="aspect-ratio:0.802;transform:translateY(4px) rotate(-3deg);"><img class="sl" src="__LETTER_o_2__" alt="" style="aspect-ratio:0.704;transform:translateY(-2px) rotate(4deg);"><img class="sl" src="__LETTER_r_2__" alt="" style="aspect-ratio:0.767;transform:translateY(3px) rotate(-6deg);"><img class="sl" src="__LETTER_t_0__" alt="" style="aspect-ratio:0.778;transform:translateY(-3px) rotate(3deg);"><img class="sl" src="__LETTER_e_2__" alt="" style="aspect-ratio:0.896;transform:translateY(2px) rotate(-5deg);"></span></span></h2>
-        <p class="lede">Lo recaudado se destina íntegramente a [destino de los fondos: materiales de arte, becas para talleres, espacio del taller, etc.], para que este intercambio entre maestro y estudiantes siga creciendo.</p>
+        <p class="lede">Lo recaudado del proyecto se destina íntegramente al Museo del Axolote de Chapultepec con el fin de [CÓMO SE UTILIZARÁ]; Misión Animal nos ayuda a difundir la causa en redes sociales.</p>
       </div>
 
       <div class="collab-card reveal">
-        <div class="collab-logo"></div>
+        <div class="collab-logo" data-logo="organizacion"></div>
         <div class="collab-body">
           <div class="collab-label">En colaboración con</div>
-          <button type="button" class="collab-name" data-open-modal="modal-org">[Nombre de la organización]</button>
-          <p class="collab-desc">[Breve descripción de quiénes son y qué aportan a esta colaboración].</p>
-          <a class="collab-link" href="#" target="_blank" rel="noopener">[www.suorganizacion.com]</a>
+          <button type="button" class="collab-name" data-open-modal="modal-org">Misión Animal</button>
+          <p class="collab-desc">Grupo comunitario de protección animal impulsado por voluntarios.</p>
+          <a class="collab-link" href="https://www.instagram.com/misionanimal_ac" target="_blank" rel="noopener">@misionanimal_ac</a>
+        </div>
+      </div>
+
+      <!-- Destinatario: who receives the funds. Same pattern as the
+           organization box above: clicking the name opens
+           "modal-destinatario" (defined after modal-org below), which holds
+           the logo, a longer description and 3 photos. -->
+      <div class="collab-card reveal">
+        <div class="collab-logo" data-logo="destinatario"></div>
+        <div class="collab-body">
+          <div class="collab-label">Destinatario</div>
+          <button type="button" class="collab-name" data-open-modal="modal-destinatario">Museo del Axolote y Centro de Conservación de Anfibios</button>
+          <p class="collab-desc">Recinto dedicado a la protección y el estudio del ajolote.</p>
+          <a class="collab-link" href="https://mexicocity.cdmx.gob.mx/venues/anfibium/" target="_blank" rel="noopener">mexicocity.cdmx.gob.mx/venues/anfibium/</a>
         </div>
       </div>
     </div>
@@ -1434,37 +1978,78 @@
       <div class="artist-modal-panel">
         <button class="artist-modal-close" aria-label="Cerrar">✕</button>
         <div class="artist-modal-header">
-          <div class="artist-modal-photo"></div>
+          <div class="artist-modal-photo" data-logo="organizacion"></div>
           <div>
-            <div class="author-name">[Nombre de la organización]</div>
-            <div class="author-role">[Tipo de organización] · [Ciudad]</div>
+            <div class="author-name">Misión Animal</div>
+            <div class="author-role">Grupo de voluntariado · CDMX</div>
           </div>
         </div>
         <div class="prose">
-          <p>[Aquí va una descripción más amplia de la organización: su misión, su historia, y por qué colabora con Artemisa].</p>
+          <p>Misión Animal es una organización no gubernamental que promueve el trato justo y la representación equitativa de animales en condiciones de maltrato. Trabajan con muchos voluntariados e iniciativas para reducir la violencia hacia los animales en México. Nuestra colaboración se basa en la difusión en redes sociales del evento y de su propósito: salvar al ajolote por medio del Museo del Axolote.</p>
         </div>
         <div class="artist-modal-subhead">
           <div class="eyebrow">sus proyectos</div>
-          <h3>Iniciativas medioambientales</h3>
+          <h3>Iniciativas</h3>
         </div>
         <div class="org-projects">
           <div class="org-project">
             <div class="org-project-img"></div>
-            <div class="org-project-title">[Nombre del proyecto 1]</div>
-            <p class="org-project-desc">[Breve descripción del proyecto ambiental].</p>
+            <div class="org-project-title">Voluntariado en el Refugio San Gregorio</div>
+            <p class="org-project-desc">Promueven un voluntariado en el Refugio San Gregorio, donde ayudan a alimentar, cuidar y pasar tiempo con los perros puestos en adopción, como parte de una campaña de Top Choice, "Cámbiate al Verde Top".</p>
           </div>
           <div class="org-project">
             <div class="org-project-img"></div>
-            <div class="org-project-title">[Nombre del proyecto 2]</div>
-            <p class="org-project-desc">[Breve descripción del proyecto ambiental].</p>
+            <div class="org-project-title">Protección del lobo mexicano</div>
+            <p class="org-project-desc">Visitaron el Santuario Extinción Cero, donde plantaron árboles y dieron una plática acerca de la importancia de la protección del lobo mexicano.</p>
           </div>
           <div class="org-project">
             <div class="org-project-img"></div>
-            <div class="org-project-title">[Nombre del proyecto 3]</div>
-            <p class="org-project-desc">[Breve descripción del proyecto ambiental].</p>
+            <div class="org-project-title">#NoMásPirotecnia</div>
+            <p class="org-project-desc">En conjunto con Change.org México, promovieron una petición de la Fundación Pata de Perro que pide regular los fuegos artificiales por el daño que les causan a los animales durante las fiestas patrias.</p>
           </div>
         </div>
-        <a class="collab-link" href="#" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">[www.suorganizacion.com]</a>
+        <a class="collab-link" href="https://www.instagram.com/misionanimal_ac" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">@misionanimal_ac</a>
+      </div>
+    </div>
+
+    <!-- ==========================================================
+         DESTINATARIO MODAL — identical layout to the organization
+         modal above. Opened by the "[Nombre del destinatario]"
+         button in its box. Logo comes from fuente/logos/
+         destinatario.png; the 3 photos (no titles or captions) from
+         fuente/destinatario/01.jpg, 02.jpg, 03.jpg (placeholders until
+         they exist).
+         ========================================================== -->
+    <div class="artist-modal" id="modal-destinatario" hidden>
+      <div class="artist-modal-backdrop"></div>
+      <div class="artist-modal-panel">
+        <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+        <div class="artist-modal-header">
+          <div class="artist-modal-photo" data-logo="destinatario"></div>
+          <div>
+            <div class="author-name">Museo del Axolote y Centro de Conservación de Anfibios</div>
+            <div class="author-role">Anfibium · Chapultepec, CDMX</div>
+          </div>
+        </div>
+        <div class="prose">
+          <p>Forma parte del proyecto Chapultepec Naturaleza y Cultura, y su objetivo es la protección y el estudio del ajolote, especie endémica de la cuenca del Valle de México, en particular de Xochimilco. Ubicado en la Vieja Casona de los Elefantes en el Zoológico de Chapultepec, el Anfibium cuenta con salas de exposición y talleres educativos para niños y niñas, además de cuatro laboratorios para el estudio y reproducción de esta especie, y un mirador desde donde se puede apreciar el humedal artificial. El dinero recaudado del proyecto se utilizará para [CÓMO SE UTILIZARÁ].</p>
+        </div>
+        <div class="artist-modal-subhead">
+          <div class="eyebrow">en imágenes</div>
+          <h3>Visita el Anfibium</h3>
+        </div>
+        <div class="org-projects">
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/01"></div>
+          </div>
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/02"></div>
+          </div>
+          <div class="org-project">
+            <div class="org-project-img" data-imagen="destinatario/03"></div>
+          </div>
+        </div>
+        <a class="collab-link" href="https://mexicocity.cdmx.gob.mx/venues/anfibium/" target="_blank" rel="noopener" style="margin-top:28px;display:inline-flex;">mexicocity.cdmx.gob.mx/venues/anfibium/</a>
       </div>
     </div>
   </section>
@@ -1535,7 +2120,8 @@
         <div class="footer-about">
           <div class="footer-word">Artemisa</div>
           <div class="footer-meta">
-            <span>Subasta de arte solidaria · Ciudad de México · 18 de diciembre</span>
+            <span>Subasta de arte solidaria · Ciudad de México</span>
+            <span>Exposición: del 12 de diciembre al 12 de enero · Subasta: viernes 18 de diciembre</span>
             <span>Centro Cultural San Ángel — Álvaro Obregón, Av. Revolución S/n, San Ángel, Benito Juárez, 01000 Ciudad de México, CDMX</span>
           </div>
         </div>
@@ -1580,7 +2166,9 @@
   function openModal(id){
     var m = document.getElementById(id);
     if (!m) return;
+    document.querySelectorAll('.artist-modal').forEach(function(o){ if (o !== m) o.hidden = true; });
     m.hidden = false;
+    m.scrollTop = 0;
     document.body.classList.add('modal-open');
   }
   function closeModal(m){
