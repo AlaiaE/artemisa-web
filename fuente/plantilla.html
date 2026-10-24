@@ -65,6 +65,7 @@
     --sienna-soft:#EBD3C2;
     --sienna-ink:#5C2A16;
     --warm-white:#F7F3E8;
+    --hero-accent:#B14F2A;   /* tagline, sparkle, squiggles: orange in light mode */
     --shadow: 220 30% 10%;
   }
   @media (prefers-color-scheme: dark){
@@ -81,6 +82,7 @@
       --sienna-soft:#3C2A1B;
       --sienna-ink:#F4D9C2;
       --warm-white:#F7F3E8;
+      --hero-accent:#F7F3E8;   /* warm-white in dark mode */
       --shadow: 0 0% 0%;
     }
   }
@@ -96,6 +98,7 @@
     --sienna:#E2894F;
     --sienna-soft:#3C2A1B;
     --sienna-ink:#F4D9C2;
+    --hero-accent:#F7F3E8;
     --shadow: 0 0% 0%;
   }
 
@@ -172,7 +175,7 @@
   .doodle{position:absolute;top:38px;opacity:0.85;pointer-events:none;}
   .doodle-left{left:-14px;}
   .doodle-right{right:-14px;}
-  .doodle path{fill:none;stroke:var(--sienna);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+  .doodle path{fill:none;stroke:var(--hero-accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 
   .orange-badge{
     position:relative;width:min(148px,22vw);aspect-ratio:1;margin-bottom:6px;
@@ -185,10 +188,10 @@
     font-family:'Fraunces',cursive;font-weight:600;
     font-size:clamp(26px,3.6vw,38px);
     line-height:1.25;
-    text-align:center;color:var(--sienna);max-width:18ch;
+    text-align:center;color:var(--hero-accent);max-width:18ch;
     text-wrap:balance;
   }
-  .hero-spark{color:var(--sienna);font-size:15px;margin-top:2px;opacity:0.8;}
+  .hero-spark{color:var(--hero-accent);font-size:15px;margin-top:2px;opacity:0.8;}
 
   .collage{
     position:relative;width:100%;max-width:min(1360px, calc(100% - 240px));aspect-ratio:9/7;margin-top:18px;
