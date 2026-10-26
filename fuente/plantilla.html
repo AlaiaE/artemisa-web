@@ -510,6 +510,14 @@
 
   /* participar */
   .participar-cta{margin-top:44px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  /* "Donación abierta" box under the steps, same card look as the collab boxes */
+  .donacion{
+    margin-top:64px;max-width:760px;padding:36px;
+    background:var(--paper-raised);border:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  }
+  .donacion h3{font-size:clamp(24px,3vw,30px);}
+  .donacion p{font-size:16.5px;margin-bottom:8px;}
 
   footer{border-top:1px solid var(--line);padding:56px 28px 40px;}
   .footer-inner{display:flex;flex-direction:column;align-items:center;gap:32px;}
@@ -744,7 +752,7 @@
        Structure inside: photo + name/role header, biography
        paragraphs, a classroom photo, a 3-step "how it works" strip
        (Enseñar / Intervenir / Compartir), a short "el taller"
-       blurb, and then her 5 lots (Lote 01–05), the same cards as in
+       blurb, and then all 10 lots (Lote 01–10), the same cards as in
        "Obras reimaginadas" — clicking one opens its "Inspiración"
        popup.
        ============================================================ -->
@@ -796,7 +804,7 @@
       </div>
       <div class="artist-modal-subhead">
         <div class="eyebrow">sus obras</div>
-        <h3>5 piezas</h3>
+        <h3>10 piezas</h3>
       </div>
       <div class="lots modal-lots">
         <button type="button" class="lot" data-open-modal="modal-inspiracion-01">
@@ -811,7 +819,7 @@
           <div class="lot-art art-grafito"><span>Lote 02</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -827,12 +835,52 @@
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-inspiracion-05">
           <div class="lot-art art-acuarela"><span>Lote 05</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
+          <div class="lot-art art-mixta"><span>Lote 06</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
+          <div class="lot-art art-acuarela"><span>Lote 07</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
+          <div class="lot-art art-oleo"><span>Lote 08</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
+          <div class="lot-art art-collage"><span>Lote 09</span></div>
+          <div class="lot-label">
+            <div class="lot-title">[Nombre de la obra]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
+          </div>
+        </button>
+        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
+          <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
             <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
@@ -847,8 +895,7 @@
        ARTIST MODAL 02 — [Nombre Artista 2] (placeholder artist)
        Same structure as modal-alaia above, minus the classroom
        photo/steps/taller blocks (those are specific to Alaia).
-       Holds her/his 5 lots: Lote 06–10 (same cards as in
-       "Obras reimaginadas").
+       Name, role and bio only — all lots now belong to Alaia.
        ============================================================ -->
   <div class="artist-modal" id="modal-artista2" hidden>
     <div class="artist-modal-backdrop"></div>
@@ -863,52 +910,6 @@
       </div>
       <div class="prose">
         <p>[Aquí va la biografía breve de Artista 2: su trayectoria, su técnica, y por qué se suma a Artemisa].</p>
-      </div>
-      <div class="artist-modal-subhead">
-        <div class="eyebrow">sus obras</div>
-        <h3>5 piezas</h3>
-      </div>
-      <div class="lots modal-lots">
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
-          <div class="lot-art art-mixta"><span>Lote 06</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
-          <div class="lot-art art-acuarela"><span>Lote 07</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
-          <div class="lot-art art-oleo"><span>Lote 08</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
-          <div class="lot-art art-collage"><span>Lote 09</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
-          <div class="lot-art art-grafito"><span>Lote 10</span></div>
-          <div class="lot-label">
-            <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
-            <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
-          </div>
-        </button>
       </div>
     </div>
   </div>
@@ -1677,7 +1678,7 @@
           <div class="lot-art art-grafito"><span>Lote 02</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1693,7 +1694,7 @@
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">Acuarela sobre papel · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1709,7 +1710,7 @@
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1717,7 +1718,7 @@
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1725,7 +1726,7 @@
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1733,7 +1734,7 @@
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -1741,7 +1742,7 @@
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
-            <div class="lot-meta">[técnica] · Constanza García · [medidas]</div>
+            <div class="lot-meta">[técnica] · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
@@ -2097,6 +2098,17 @@
         <!-- Reservation form (Google Form). "?hl=es" forces the form's
              interface language to Spanish for every visitor. -->
         <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeFw-Kj-HNNF4dU4mXdi4laN0a1hC8y7VqqGszJ5co2BWmYIg/viewform?hl=es" target="_blank" rel="noopener">Reserva tu lugar</a>
+      </div>
+
+      <!-- Donación abierta: for people who can't attend the event.
+           PENDING: the "Donar" button still points to "#" (does nothing).
+           Replace href="#" with the donation link (PayPal, Mercado Pago…)
+           once it exists. -->
+      <div class="donacion reveal">
+        <div class="eyebrow">otra forma de ayudar</div>
+        <h3>Donación abierta</h3>
+        <p>Si no puedes asistir al evento, considera donar.</p>
+        <a class="btn btn-primary" href="#" target="_blank" rel="noopener">Donar</a>
       </div>
     </div>
   </section>
