@@ -107,16 +107,15 @@ solo subir un archivo).
 
 ---
 
-## Fotos de portafolios e inspiración (collages)
+## Fotos de los portafolios (collages)
 
-Estas dos partes del sitio muestran **collages de fotos** que se arman solos
+Los portafolios muestran **collages de fotos** que se arman solos
 a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
 no se toca ningún archivo de código.
 
 | Qué                                    | Carpeta                | El nombre de la foto empieza con |
 |----------------------------------------|------------------------|----------------------------------|
 | Portafolio de cada próxima estrella    | `fuente/portafolios/`  | `estrella01` … `estrella15`      |
-| "Inspiración" de cada obra reimaginada | `fuente/inspiracion/`  | `lote01` … `lote10`              |
 
 Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
 `estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.

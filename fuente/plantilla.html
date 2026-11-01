@@ -17,7 +17,7 @@
             - 3x .artist-modal            (one popup per teacher)
             - #estrellas section           (cards open the portfolio)
             - #portafolios section + 15 modals (photo collages)
-            - #obras section + 10 modals  (obras reimaginadas + inspiración)
+            - #obras section              (obras reimaginadas, collage + lightbox)
             - #galeria section            (venue photos + map link)
             - #impacto section + its modal (where funds go)
             - #participar section         (how to join)
@@ -508,6 +508,45 @@
   .fotos-collage > :nth-child(3n+1){transform:rotate(-1.2deg);}
   .fotos-collage > :nth-child(3n+2){transform:rotate(0.9deg);}
 
+  /* ---------- LOTS AS A COLLAGE (Obras reimaginadas) ----------
+     Photos keep their own shape (no square crop), each card is tilted a
+     little with a strip of "tape" on top, and the columns are staggered.
+     Reading order stays left-to-right, Lote 01, 02, 03… */
+  .lots-collage{grid-template-columns:repeat(3,1fr);gap:56px 40px;align-items:start;margin-top:40px;padding-top:14px;}
+  .lots-collage > .lot{position:relative;transform:rotate(var(--giro,0deg));transition:transform .25s ease, box-shadow .25s ease;}
+  .lots-collage > .lot:nth-child(3n+1){--giro:-1.6deg;}
+  .lots-collage > .lot:nth-child(3n+2){--giro:1.2deg;margin-top:56px;}
+  .lots-collage > .lot:nth-child(3n){--giro:-0.6deg;margin-top:22px;}
+  .lots-collage > .lot:nth-child(4n+3){--giro:2deg;}
+  .lots-collage > .lot:hover,.lots-collage > .lot:focus-visible{transform:rotate(0deg) translateY(-6px) scale(1.02);box-shadow:0 22px 40px -18px hsl(var(--shadow) / 0.45);z-index:3;}
+  .lots-collage > .lot::before{
+    content:"";position:absolute;top:-13px;left:50%;width:86px;height:26px;z-index:2;
+    transform:translateX(-50%) rotate(-3deg);
+    background:hsl(44 70% 86% / 0.72);box-shadow:0 1px 3px hsl(var(--shadow) / 0.18);
+  }
+  .lots-collage .lot-art{aspect-ratio:auto;cursor:zoom-in;}
+  /* natural shape, but very tall photos are capped (center-cropped) so they
+     don't dominate the collage; the lightbox always shows the whole photo */
+  .lots-collage .lot-art img{height:auto !important;max-height:440px;object-fit:cover;display:block;}
+  .lots-collage .lot-art:not(:has(img)){aspect-ratio:4/5;}
+
+  /* ---------- LIGHTBOX (big photo of a lot) ---------- */
+  .lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    padding:5vh 4vw;overflow:auto;background:hsl(var(--shadow) / 0.9);}
+  .lightbox[hidden]{display:none;}
+  .lightbox-figure{margin:auto;display:flex;flex-direction:column;align-items:center;gap:16px;max-width:100%;}
+  .lightbox-img{display:block;max-width:92vw;max-height:80vh;width:auto;height:auto;cursor:zoom-in;
+    background:var(--paper-raised);box-shadow:0 30px 70px -20px rgb(0 0 0 / 0.6);}
+  .lightbox.zoom{align-items:flex-start;justify-content:flex-start;}
+  .lightbox.zoom .lightbox-img{max-width:none;max-height:none;cursor:zoom-out;}
+  .lightbox-cap{text-align:center;color:#F7F3E8;display:flex;flex-direction:column;gap:4px;}
+  .lightbox-num{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.75;}
+  .lightbox-title{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:24px;}
+  .lightbox-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:0.85;}
+  .lightbox-close{position:fixed;top:16px;right:16px;z-index:1;width:42px;height:42px;cursor:pointer;
+    border:1px solid rgb(255 255 255 / 0.35);background:rgb(0 0 0 / 0.35);color:#F7F3E8;font-size:16px;}
+  .lightbox-close:hover{background:rgb(0 0 0 / 0.6);}
+
   /* participar */
   .participar-cta{margin-top:44px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
   /* "Donación abierta" box under the steps, same card look as the collab boxes */
@@ -559,6 +598,9 @@
     .steps,.steps.steps-4{grid-template-columns:1fr 1fr;row-gap:28px;}
     .step{border-right:none;border-bottom:1px dashed var(--line);padding-bottom:20px;}
     .lots{grid-template-columns:repeat(2,1fr);}
+    .lots-collage{gap:44px 26px;}
+    .lots-collage > .lot:nth-child(n){margin-top:0;}
+    .lots-collage > .lot:nth-child(2n){margin-top:40px;}
     .collab-card{flex-direction:column;padding:26px;}
     .modal-lots{grid-template-columns:1fr 1fr;}
     .org-projects{grid-template-columns:1fr 1fr;}
@@ -568,6 +610,8 @@
   }
   @media (max-width:560px){
     .lots{grid-template-columns:1fr 1fr;}
+    .lots-collage{grid-template-columns:1fr;}
+    .lots-collage > .lot:nth-child(n){margin-top:0;}
     .modal-lots{grid-template-columns:1fr;}
     .org-projects{grid-template-columns:1fr;}
     .footer-inner{flex-direction:column;align-items:flex-start;}
@@ -753,8 +797,8 @@
        paragraphs, a classroom photo, a 3-step "how it works" strip
        (Enseñar / Intervenir / Compartir), a short "el taller"
        blurb, and then all 10 lots (Lote 01–10), the same cards as in
-       "Obras reimaginadas" — clicking one opens its "Inspiración"
-       popup.
+       "Obras reimaginadas" — clicking one opens the big-photo
+       lightbox.
        ============================================================ -->
   <div class="artist-modal" id="modal-alaia" hidden>
     <div class="artist-modal-backdrop"></div>
@@ -807,7 +851,7 @@
         <h3>10 piezas</h3>
       </div>
       <div class="lots modal-lots">
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-01">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 01</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -815,31 +859,31 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-02">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 02</span></div>
           <div class="lot-label">
             <div class="lot-title">Don Gallo</div>
-            <div class="lot-meta">Acuarela sobre papel algodon 100% · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">Acuarela sobre papel algodón 100% · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-03">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-oleo"><span>Lote 03</span></div>
           <div class="lot-label">
-            <div class="lot-title">Angeles</div>
-            <div class="lot-meta">Cyanotipo sobre papel algodon 100% y grafito · Alaia Esteban · [medidas]</div>
+            <div class="lot-title">Ángeles</div>
+            <div class="lot-meta">Cianotipia sobre papel algodón 100% y grafito · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-04">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
-            <div class="lot-title">Angel</div>
-            <div class="lot-meta">Cyanotipo sobre papel algodon 100% e hilo de algodon · Alaia Esteban · [medidas]</div>
+            <div class="lot-title">Ángel</div>
+            <div class="lot-meta">Cianotipia sobre papel algodón 100% e hilo de algodón · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-05">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 05</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -847,7 +891,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -855,7 +899,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -863,7 +907,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -871,7 +915,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -879,7 +923,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1346,23 +1390,23 @@
 
   <!-- ============================================================
        SECTION: "OBRAS REIMAGINADAS" (second half of the old "Obras")
-       Keeps the id "obras" so the hero's "Ver las obras" button
-       lands here. 10 lot cards (Lote 01–10); lot photos still come
-       from fuente/obras/loteNN.jpg as before. Each card opens a
-       "modal-inspiracion-NN" popup titled "Inspiración" with a photo
-       collage: put pictures in fuente/inspiracion/ named
-       lote01-<anything>.jpg (or a subfolder lote01/).
+       Keeps the id "obras" so the hero's "Ver las obras" button lands
+       here. 10 lot cards (Lote 01–10) laid out as a collage (.lots-collage):
+       each photo keeps its own shape, tilted, with "tape" on top. Lot
+       photos come from fuente/obras/loteNN.jpg (or .jpeg/.png). Clicking a
+       card opens the shared LIGHTBOX (end of <main>) with the same photo
+       large and in detail.
        ============================================================ -->
   <section id="obras">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">la colección</div>
         <h2>Obras reimaginadas</h2>
-        <p class="lede">[Breve descripción de las obras reimaginadas]. Haz clic en cada una para ver la inspiración detrás de ella.</p>
+        <p class="lede">[Breve descripción de las obras reimaginadas]. Haz clic en cada una para verla en grande y en detalle.</p>
       </div>
 
-      <div class="lots reveal">
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-01">
+      <div class="lots lots-collage reveal">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 01</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1370,31 +1414,31 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-02">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 02</span></div>
           <div class="lot-label">
             <div class="lot-title">Don Gallo</div>
-            <div class="lot-meta">Acuarela sobre papel algodon 100% · Alaia Esteban · [medidas]</div>
+            <div class="lot-meta">Acuarela sobre papel algodón 100% · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-03">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-oleo"><span>Lote 03</span></div>
           <div class="lot-label">
-            <div class="lot-title">Angeles</div>
-            <div class="lot-meta">Cyanotipo sobre papel algodon 100% y grafito · Alaia Esteban · [medidas]</div>
+            <div class="lot-title">Ángeles</div>
+            <div class="lot-meta">Cianotipia sobre papel algodón 100% y grafito · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-04">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 04</span></div>
           <div class="lot-label">
-            <div class="lot-title">Angel</div>
-            <div class="lot-meta">Cyanotipo sobre papel algodon 100% e hilo de algodon · Alaia Esteban · [medidas]</div>
+            <div class="lot-title">Ángel</div>
+            <div class="lot-meta">Cianotipia sobre papel algodón 100% e hilo de algodón · Alaia Esteban · [medidas]</div>
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-05">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 05</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1402,7 +1446,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-06">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-mixta"><span>Lote 06</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1410,7 +1454,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-07">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-acuarela"><span>Lote 07</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1418,7 +1462,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-08">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-oleo"><span>Lote 08</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1426,7 +1470,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-09">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-collage"><span>Lote 09</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1434,7 +1478,7 @@
             <div class="lot-price"><span class="lot-price-label">Precio base</span><span class="lot-price-value">[por confirmar]</span></div>
           </div>
         </button>
-        <button type="button" class="lot" data-open-modal="modal-inspiracion-10">
+        <button type="button" class="lot" data-lightbox>
           <div class="lot-art art-grafito"><span>Lote 10</span></div>
           <div class="lot-label">
             <div class="lot-title">[Nombre de la obra]</div>
@@ -1447,117 +1491,6 @@
       <p class="disclaimer">Los títulos, autoría, medidas y precios base mostrados son provisionales: se actualizarán con la información definitiva de cada obra antes del evento.</p>
     </div>
   </section>
-
-  <div class="artist-modal" id="modal-inspiracion-01" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 01</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote01"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-02" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 02</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote02"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-03" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 03</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote03"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-04" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 04</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote04"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-05" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 05</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote05"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-06" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 06</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote06"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-07" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 07</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote07"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-08" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 08</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote08"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-09" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 09</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote09"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-inspiracion-10" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-subhead modal-title-head">
-        <div class="eyebrow">lote 10</div>
-        <h3>Inspiración</h3>
-      </div>
-      <div class="fotos-collage" data-fotos="inspiracion/lote10"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
-    </div>
-  </div>
 
   <!-- ============================================================
        SECTION: "GALERÍA" (The venue)
@@ -1808,6 +1741,22 @@
       </div>
     </div>
   </section>
+
+  <!-- ============================================================
+       LIGHTBOX — one shared overlay for the lot cards. Clicking a
+       card ([data-lightbox]) shows that same photo large, using the
+       high-resolution copy (data-grande, made by construir.py), with
+       its number, title and technique underneath. Clicking the photo
+       toggles a zoom to full detail. Closes with ✕, the dark
+       background, or Escape (logic in the <script> below).
+       ============================================================ -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Obra en detalle">
+    <button type="button" class="lightbox-close" aria-label="Cerrar">✕</button>
+    <figure class="lightbox-figure">
+      <img class="lightbox-img" alt="">
+      <figcaption class="lightbox-cap"></figcaption>
+    </figure>
+  </div>
 </main>
 <!-- ============================================================
      END OF MAIN CONTENT
@@ -1893,6 +1842,44 @@
       }
     });
   });
+  // Lightbox: a lot card shows its own photo large (high-res copy in
+  // data-grande) with its number, title and technique; clicking the photo
+  // toggles full-detail zoom.
+  var lb = document.getElementById('lightbox');
+  var lbImg = lb.querySelector('.lightbox-img');
+  var lbCap = lb.querySelector('.lightbox-cap');
+  function closeLightbox(){
+    lb.hidden = true;
+    lb.classList.remove('zoom');
+    lbImg.removeAttribute('src');
+    if (!document.querySelector('.artist-modal:not([hidden])')) document.body.classList.remove('modal-open');
+  }
+  document.querySelectorAll('[data-lightbox]').forEach(function(card){
+    card.addEventListener('click', function(){
+      var foto = card.querySelector('.lot-art img');
+      if (!foto) return;                       // no photo yet: nothing to enlarge
+      lbImg.src = foto.getAttribute('data-grande') || foto.src;
+      var titulo = card.querySelector('.lot-title');
+      lbImg.alt = titulo ? titulo.textContent : '';
+      lbCap.innerHTML = '';
+      [['.lot-art span', 'lightbox-num'], ['.lot-title', 'lightbox-title'], ['.lot-meta', 'lightbox-meta']].forEach(function(p){
+        var el = card.querySelector(p[0]);
+        if (el){ var d = document.createElement('div'); d.className = p[1]; d.textContent = el.textContent; lbCap.appendChild(d); }
+      });
+      lb.hidden = false;
+      lb.scrollTop = 0;
+      document.body.classList.add('modal-open');
+    });
+  });
+  lbImg.addEventListener('click', function(e){ e.stopPropagation(); lb.classList.toggle('zoom'); });
+  lb.addEventListener('click', function(e){
+    if (e.target === lb || e.target.classList.contains('lightbox-figure') || e.target.closest('.lightbox-close')) closeLightbox();
+  });
+  // Escape closes the lightbox first (and only it), before any popup behind it
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !lb.hidden){ closeLightbox(); e.stopPropagation(); }
+  }, true);
+
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape'){
       document.querySelectorAll('.artist-modal').forEach(function(m){ if (!m.hidden) closeModal(m); });

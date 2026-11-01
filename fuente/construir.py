@@ -140,7 +140,7 @@ def optimizar_galeria() -> int:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
     return procesadas
 
-# --- collages (portafolios, inspiracion): por CARPETA ---
+# --- collages (portafolios): por CARPETA ---
 # En plantilla.html cada collage es
 #   <div class="fotos-collage..." data-fotos="portafolios/estrella01"> ...placeholders... </div>
 # Se buscan fotos en fuente/portafolios/ cuyo nombre (o subcarpeta) empiece
@@ -336,26 +336,51 @@ IMAGENES = {
 # --- fotos de obras: por CONVENCIÓN DE NOMBRE, sin tocar plantilla.html ---
 # Cada lote es <div class="lot-art[...clases...]"><span>Lote NN</span></div>
 # (sin <img>, dos veces: catálogo general + modal del artista). Si existe
-# fuente/obras/loteNN.jpg (o .jpeg/.png), se le mete la foto ahí mismo.
+# fuente/obras/loteNN.jpg (o .jpeg/.png/.webp), se generan DOS copias en
+# media/obras/: loteNN.jpg (ligera, para la tarjeta) y loteNN-grande.jpg (alta
+# resolución, solo se descarga al abrir la obra en grande). Ya no se incrustan
+# en index.html, que así pesa mucho menos.
 # Para poner una obra: sube el archivo con ese nombre. Para quitarla: bórralo.
 LOTE_ART_RE = re.compile(
     r'<div class="lot-art[^"]*"><span>Lote (\d{2})</span></div>'
 )
+LOTE_LADO_TARJETA, LOTE_LADO_GRANDE = 1000, 2400
 
 def inyectar_fotos_de_lotes(html: str) -> str:
+    hechas = {}     # numero -> (src tarjeta, src grande); cada lote aparece 2 veces
+
+    def fotos(numero: str):
+        if numero not in hechas:
+            hechas[numero] = None
+            for ext in EXT_FOTO:
+                ruta = AQUI / "obras" / f"lote{numero}{ext}"
+                if ruta.is_file():
+                    destino = MEDIA / "obras"
+                    destino.mkdir(parents=True, exist_ok=True)
+                    chica, e1 = foto_web(ruta, lado_max=LOTE_LADO_TARJETA, calidad=84)
+                    grande, e2 = foto_web(ruta, lado_max=LOTE_LADO_GRANDE, calidad=90)
+                    (destino / f"lote{numero}{e1}").write_bytes(chica)
+                    (destino / f"lote{numero}-grande{e2}").write_bytes(grande)
+                    hechas[numero] = (f"media/obras/lote{numero}{e1}", f"media/obras/lote{numero}-grande{e2}")
+                    break
+        return hechas[numero]
+
     def reemplazar(m: "re.Match[str]") -> str:
         numero = m.group(1)
-        for ext, mime in ((".jpg", "image/jpeg"), (".jpeg", "image/jpeg"), (".png", "image/png")):
-            ruta = AQUI / "obras" / f"lote{numero}{ext}"
-            if ruta.exists():
-                uri = data_uri(ruta, mime)
-                return (
-                    f'<div class="lot-art"><img src="{uri}" alt="" '
-                    f'style="width:100%;height:100%;object-fit:cover;">'
-                    f'<span>Lote {numero}</span></div>'
-                )
-        return m.group(0)  # sin foto: se queda el fondo de textura
-    return LOTE_ART_RE.sub(reemplazar, html)
+        par = fotos(numero)
+        if not par:
+            return m.group(0)  # sin foto: se queda el fondo de textura
+        return (
+            f'<div class="lot-art"><img src="{par[0]}" data-grande="{par[1]}" alt="" '
+            f'loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">'
+            f'<span>Lote {numero}</span></div>'
+        )
+
+    html = LOTE_ART_RE.sub(reemplazar, html)
+    n = sum(1 for v in hechas.values() if v)
+    if n:
+        print(f"  obras: {n} foto(s) (tarjeta + grande)")
+    return html
 
 def main() -> int:
     global SALIDA, MEDIA
@@ -391,11 +416,11 @@ def main() -> int:
         print("ERROR: faltan archivos:", *faltan_archivos, sep="\n  ")
         return 1
 
+    if MEDIA.is_dir():
+        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     # fotos de obras por convención de nombre (loteNN.jpg) — va después de
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
-    if MEDIA.is_dir():
-        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     html = inyectar_collages(html)
     html = inyectar_portadas(html)     # después de los collages: usa su primera foto
     html = inyectar_retratos(html)
