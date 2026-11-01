@@ -63,16 +63,28 @@ def b64_crudo(ruta: pathlib.Path) -> str:
 GALERIA_LADO_MAX = 1400
 GALERIA_CALIDAD = 76
 
+def color_de_fondo(im):
+    """Color RGB de las 4 esquinas si son (casi) iguales — el fondo liso de un
+    logo —, o None si las esquinas son distintas (no hay un fondo liso)."""
+    rgb = im.convert("RGB")
+    w, h = rgb.size
+    esquinas = [rgb.getpixel(p) for p in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1))]
+    if max(max(c[i] for c in esquinas) - min(c[i] for c in esquinas) for i in range(3)) > 16:
+        return None
+    return tuple(round(sum(c[i] for c in esquinas) / 4) for i in range(3))
+
 def recortar_bordes_vacios(im):
-    """Quita el margen blanco o transparente alrededor de un logo, dejando un
-    respiro pequeño (4% del lado mayor). Si no encuentra contenido, no toca nada."""
+    """Quita el margen alrededor de un logo (transparente, blanco o del color
+    liso de su fondo), dejando un respiro pequeño (4% del lado mayor).
+    Si no encuentra contenido, no toca nada."""
     from PIL import Image, ImageChops
     rgba = im.convert("RGBA")
     if rgba.getextrema()[3][0] < 255:                  # con transparencia
         caja = rgba.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
-    else:                                               # fondo blanco (p. ej. JPG)
-        blanco = Image.new("RGB", rgba.size, (255, 255, 255))
-        dif = ImageChops.difference(rgba.convert("RGB"), blanco).convert("L")
+    else:                                               # fondo liso (blanco u otro color)
+        fondo = color_de_fondo(rgba) or (255, 255, 255)
+        liso = Image.new("RGB", rgba.size, fondo)
+        dif = ImageChops.difference(rgba.convert("RGB"), liso).convert("L")
         caja = dif.point(lambda p: 255 if p > 24 else 0).getbbox()
     if not caja:
         return im
@@ -262,12 +274,33 @@ LOGO_RE = re.compile(r'<div class="(collab-logo|artist-modal-photo)" data-logo="
 def inyectar_logos(html: str) -> str:
     foto, copiados = cargador_por_nombre("logos", recortar=True)
 
+    def fondo_del_logo(clave: str):
+        """Si el logo tiene un fondo liso de color (no blanco ni transparente),
+        devuelve ese color en #rrggbb para pintar el círculo del mismo color."""
+        try:
+            from PIL import Image
+        except ImportError:
+            return None
+        for ext in EXT_FOTO:
+            ruta = AQUI / "logos" / f"{clave}{ext}"
+            if ruta.is_file():
+                im = Image.open(ruta)
+                if im.convert("RGBA").getextrema()[3][0] < 255:
+                    return None                         # transparente: círculo blanco
+                c = color_de_fondo(im)
+                if c is None or min(c) > 235:
+                    return None                         # sin fondo liso, o blanco
+                return "#{:02x}{:02x}{:02x}".format(*c)
+        return None
+
     def reemplazar(m: "re.Match[str]") -> str:
         clase, clave = m.groups()
         src = foto(clave)
         if not src:
             return m.group(0)
-        return (f'<div class="{clase} con-imagen" data-logo="{clave}">'
+        fondo = fondo_del_logo(clave)
+        estilo = f' style="background:{fondo};border-color:{fondo};"' if fondo else ""
+        return (f'<div class="{clase} con-imagen{" con-fondo" if fondo else ""}" data-logo="{clave}"{estilo}>'
                 f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
 
     html = LOGO_RE.sub(reemplazar, html)
