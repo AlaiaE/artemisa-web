@@ -167,3 +167,25 @@ la organización, con 3 fotos. Van en `fuente/destinatario/` con nombre exacto:
 `01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). Solo se muestran
 las fotos, sin título ni descripción. Más detalle en
 `fuente/destinatario/LEEME.md`.
+
+---
+
+## Barra de donaciones ("Donación abierta")
+
+La barra se llena con lo recaudado: cada **$2,000** es una semana de alimento
+para los ajolotes y cada 4 semanas completas se juntan en un "Mes".
+
+Los números salen de una **hoja de Google** con este contenido:
+
+|   | A           | B       |
+|---|-------------|---------|
+| 1 | `Recaudado` | `13500` |
+| 2 | `Meta`      | `24000` |
+
+Para actualizar la barra solo cambia la celda **B1** (y **B2** si cambia la
+meta). La página se actualiza sola en unos 5 minutos; no hay que tocar GitHub.
+
+Si la hoja no está conectada (o no carga), se usan los números de respaldo
+en `fuente/plantilla.html`, en el bloque `id="meta-donacion"`:
+`data-recaudado` (lo recaudado) y `data-meta` (la meta). El enlace de la hoja
+va en `data-hoja`.
