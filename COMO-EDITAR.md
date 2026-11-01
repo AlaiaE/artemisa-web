@@ -120,6 +120,8 @@ no se toca ningún archivo de código.
 
 Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
 `estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
+La primera foto (en orden alfabético) es la que sale en la tarjeta del
+portafolio.
 Cada carpeta tiene un archivo `LEEME.md` con más detalle.
 
 1. Entra a la carpeta → **Add file → Upload files** → sube las fotos → commit.
@@ -131,8 +133,8 @@ No edites la carpeta `media/` de la raíz: la genera el sitio automáticamente.
 
 ## Fotos de los maestros y de las próximas estrellas
 
-Cada persona tiene una foto que aparece en su tarjeta y en la foto redonda de
-su ventana. Va en `fuente/retratos/` con un nombre exacto:
+Cada persona tiene una foto que aparece en su tarjeta (los maestros, también en
+la foto redonda de su ventana). Va en `fuente/retratos/` con un nombre exacto:
 
 - Maestros: `maestro01.jpg` (Alaia), `maestro02.jpg`, `maestro03.jpg`
 - Próximas estrellas: `estrella01.jpg` … `estrella15.jpg` (siempre dos dígitos)

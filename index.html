@@ -15,7 +15,7 @@
             - #proposito section          (why we do this)
             - #artistas section           ("Los maestros" cards)
             - 3x .artist-modal            (one popup per teacher)
-            - #estrellas section + 15 modals   (students)
+            - #estrellas section           (cards open the portfolio)
             - #portafolios section + 15 modals (photo collages)
             - #obras section + 10 modals  (obras reimaginadas + inspiración)
             - #galeria section            (venue photos + map link)
@@ -939,409 +939,105 @@
   <!-- ============================================================
        SECTION: "LAS PRÓXIMAS ESTRELLAS" (The students)
        Anchor target for the "Estrellas" nav link. Same horizontal card
-       carousel as "Los maestros": 15 placeholder cards (01–15). Each
-       card opens its "modal-estrella-NN" popup (right below), which
-       has a short bio and a "Ver su portafolio" button that opens
-       the matching portfolio collage further down.
+       carousel as "Los maestros": 15 cards (01–15) with photo and
+       name only. Each card opens that student's portfolio collage
+       ("modal-portafolio-NN", in the Portafolios section below).
        ============================================================ -->
   <section id="estrellas">
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">quiénes exponen</div>
         <h2>Las próximas estrellas</h2>
-        <p class="lede">[Breve introducción a las próximas estrellas: quiénes son y qué aprendieron en el taller]. Haz clic en cada tarjeta para conocer su historia.</p>
+        <p class="lede">[Breve introducción a las próximas estrellas: quiénes son y qué aprendieron en el taller]. Haz clic en cada tarjeta para ver su portafolio.</p>
       </div>
 
       <div class="artist-carousel carousel-2rows reveal">
         <!-- Estrella 01 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-01">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-01">
           <div class="artist-photo"><span class="artist-index">01</span><img src="media/retratos/estrella01.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Sara</div>
-          <p class="artist-brief">[Breve descripción de Estrella 1 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 02 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-02">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-02">
           <div class="artist-photo"><span class="artist-index">02</span><img src="media/retratos/estrella02.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Herminio</div>
-          <p class="artist-brief">[Breve descripción de Estrella 2 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 03 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-03">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-03">
           <div class="artist-photo"><span class="artist-index">03</span><img src="media/retratos/estrella03.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Emma</div>
-          <p class="artist-brief">[Breve descripción de Estrella 3 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 04 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-04">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-04">
           <div class="artist-photo"><span class="artist-index">04</span><img src="media/retratos/estrella04.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Jicori</div>
-          <p class="artist-brief">[Breve descripción de Estrella 4 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 05 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-05">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-05">
           <div class="artist-photo"><span class="artist-index">05</span><img src="media/retratos/estrella05.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Andres</div>
-          <p class="artist-brief">[Breve descripción de Estrella 5 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 06 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-06">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-06">
           <div class="artist-photo"><span class="artist-index">06</span><img src="media/retratos/estrella06.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Janet</div>
-          <p class="artist-brief">[Breve descripción de Estrella 6 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 07 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-07">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-07">
           <div class="artist-photo"><span class="artist-index">07</span><img src="media/retratos/estrella07.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Belén</div>
-          <p class="artist-brief">[Breve descripción de Estrella 7 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 08 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-08">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-08">
           <div class="artist-photo"><span class="artist-index">08</span><img src="media/retratos/estrella08.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Fani</div>
-          <p class="artist-brief">[Breve descripción de Estrella 8 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 09 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-09">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-09">
           <div class="artist-photo"><span class="artist-index">09</span><img src="media/retratos/estrella09.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Diana</div>
-          <p class="artist-brief">[Breve descripción de Estrella 9 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 10 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-10">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-10">
           <div class="artist-photo"><span class="artist-index">10</span><img src="media/retratos/estrella10.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Ivanna</div>
-          <p class="artist-brief">[Breve descripción de Estrella 10 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 11 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-11">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-11">
           <div class="artist-photo"><span class="artist-index">11</span><img src="media/retratos/estrella11.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Emiliano</div>
-          <p class="artist-brief">[Breve descripción de Estrella 11 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 12 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-12">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-12">
           <div class="artist-photo"><span class="artist-index">12</span><img src="media/retratos/estrella12.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Zyanya</div>
-          <p class="artist-brief">[Breve descripción de Estrella 12 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 13 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-13">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-13">
           <div class="artist-photo"><span class="artist-index">13</span><img src="media/retratos/estrella13.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Ian</div>
-          <p class="artist-brief">[Breve descripción de Estrella 13 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 14 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-14">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-14">
           <div class="artist-photo"><span class="artist-index">14</span><img src="media/retratos/estrella14.jpg" alt="" loading="lazy" decoding="async" class="artist-photo-img"></div>
           <div class="artist-name">Lia</div>
-          <p class="artist-brief">[Breve descripción de Estrella 14 — edad, técnica favorita, una línea].</p>
         </button>
         <!-- Estrella 15 -->
-        <button type="button" class="artist-card" data-open-modal="modal-estrella-15">
+        <button type="button" class="artist-card" data-open-modal="modal-portafolio-15">
           <div class="artist-photo"><span class="artist-index">15</span><div class="artist-photo-ph" data-retrato="estrella15"></div></div>
-          <div class="artist-name">[Nombre Estrella 15]</div>
-          <p class="artist-brief">[Breve descripción de Estrella 15 — edad, técnica favorita, una línea].</p>
+          <div class="artist-name">Isa y John</div>
         </button>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       ESTRELLA MODALS 01–15 — one popup per student: name, role,
-       short bio, and a button that opens that student's portfolio.
-       ============================================================ -->
-  <div class="artist-modal" id="modal-estrella-01" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella01"><img src="media/retratos/estrella01.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Sara</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 1: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-01">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-02" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella02"><img src="media/retratos/estrella02.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Herminio</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 2: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-02">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-03" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella03"><img src="media/retratos/estrella03.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Emma</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 3: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-03">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-04" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella04"><img src="media/retratos/estrella04.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Jicori</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 4: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-04">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-05" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella05"><img src="media/retratos/estrella05.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Andres</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 5: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-05">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-06" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella06"><img src="media/retratos/estrella06.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Janet</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 6: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-06">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-07" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella07"><img src="media/retratos/estrella07.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Belén</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 7: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-07">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-08" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella08"><img src="media/retratos/estrella08.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Fani</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 8: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-08">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-09" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella09"><img src="media/retratos/estrella09.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Diana</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 9: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-09">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-10" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella10"><img src="media/retratos/estrella10.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Ivanna</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 10: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-10">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-11" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella11"><img src="media/retratos/estrella11.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Emiliano</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 11: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-11">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-12" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella12"><img src="media/retratos/estrella12.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Zyanya</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 12: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-12">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-13" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella13"><img src="media/retratos/estrella13.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Ian</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 13: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-13">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-14" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella14"><img src="media/retratos/estrella14.jpg" alt="" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="author-name">Lia</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 14: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-14">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-  <div class="artist-modal" id="modal-estrella-15" hidden>
-    <div class="artist-modal-backdrop"></div>
-    <div class="artist-modal-panel">
-      <button class="artist-modal-close" aria-label="Cerrar">✕</button>
-      <div class="artist-modal-header">
-        <div class="artist-modal-photo" data-retrato="estrella15"></div>
-        <div>
-          <div class="author-name">[Nombre Estrella 15]</div>
-          <div class="author-role">[Edad] · [Técnica favorita]</div>
-        </div>
-      </div>
-      <div class="prose">
-        <p>[Aquí va una breve presentación de Estrella 15: qué le gusta crear, qué aprendió en el taller y qué presenta en Artemisa].</p>
-      </div>
-      <div class="participar-cta">
-        <button type="button" class="btn btn-ghost" data-open-modal="modal-portafolio-15">Ver su portafolio</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================
        SECTION: "LOS PORTAFOLIOS" (first half of the old "Obras")
        Anchor target for the "Obras" nav link. 15 cards, one per
        Próxima Estrella (same numbering 01–15). Each opens a
        "modal-portafolio-NN" popup showing only a photo collage.
+       The card's picture is the FIRST photo of that collage
+       (alphabetical order of the file names), filled in by the build.
 
        ADDING PHOTOS needs no code: put pictures in fuente/portafolios/
        named estrella01-<anything>.jpg (or a subfolder estrella01/).
@@ -1359,7 +1055,7 @@
 
       <div class="lots reveal">
         <button type="button" class="lot" data-open-modal="modal-portafolio-01">
-          <div class="lot-art art-grafito"><span>Estrella 01</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella01"><img src="media/portafolios/estrella01/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 01</span></div>
           <div class="lot-label">
             <div class="lot-title">Sara</div>
             <div class="lot-meta">Portafolio</div>
@@ -1367,7 +1063,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-02">
-          <div class="lot-art art-acuarela"><span>Estrella 02</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella02"><img src="media/portafolios/estrella02/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 02</span></div>
           <div class="lot-label">
             <div class="lot-title">Herminio</div>
             <div class="lot-meta">Portafolio</div>
@@ -1375,7 +1071,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-03">
-          <div class="lot-art art-oleo"><span>Estrella 03</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella03"><img src="media/portafolios/estrella03/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 03</span></div>
           <div class="lot-label">
             <div class="lot-title">Emma</div>
             <div class="lot-meta">Portafolio</div>
@@ -1383,7 +1079,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-04">
-          <div class="lot-art art-mixta"><span>Estrella 04</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella04"><img src="media/portafolios/estrella04/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 04</span></div>
           <div class="lot-label">
             <div class="lot-title">Jicori</div>
             <div class="lot-meta">Portafolio</div>
@@ -1391,7 +1087,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-05">
-          <div class="lot-art art-collage"><span>Estrella 05</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella05"><img src="media/portafolios/estrella05/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 05</span></div>
           <div class="lot-label">
             <div class="lot-title">Andres</div>
             <div class="lot-meta">Portafolio</div>
@@ -1399,7 +1095,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-06">
-          <div class="lot-art art-grafito"><span>Estrella 06</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella06"><img src="media/portafolios/estrella06/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 06</span></div>
           <div class="lot-label">
             <div class="lot-title">Janet</div>
             <div class="lot-meta">Portafolio</div>
@@ -1407,7 +1103,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-07">
-          <div class="lot-art art-acuarela"><span>Estrella 07</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella07"><img src="media/portafolios/estrella07/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 07</span></div>
           <div class="lot-label">
             <div class="lot-title">Belén</div>
             <div class="lot-meta">Portafolio</div>
@@ -1415,7 +1111,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-08">
-          <div class="lot-art art-oleo"><span>Estrella 08</span></div>
+          <div class="lot-art art-oleo" data-portada="portafolios/estrella08"><span>Estrella 08</span></div>
           <div class="lot-label">
             <div class="lot-title">Fani</div>
             <div class="lot-meta">Portafolio</div>
@@ -1423,7 +1119,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-09">
-          <div class="lot-art art-mixta"><span>Estrella 09</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella09"><img src="media/portafolios/estrella09/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 09</span></div>
           <div class="lot-label">
             <div class="lot-title">Diana</div>
             <div class="lot-meta">Portafolio</div>
@@ -1431,7 +1127,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-10">
-          <div class="lot-art art-collage"><span>Estrella 10</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella10"><img src="media/portafolios/estrella10/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 10</span></div>
           <div class="lot-label">
             <div class="lot-title">Ivanna</div>
             <div class="lot-meta">Portafolio</div>
@@ -1439,7 +1135,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-11">
-          <div class="lot-art art-grafito"><span>Estrella 11</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella11"><img src="media/portafolios/estrella11/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 11</span></div>
           <div class="lot-label">
             <div class="lot-title">Emiliano</div>
             <div class="lot-meta">Portafolio</div>
@@ -1447,7 +1143,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-12">
-          <div class="lot-art art-acuarela"><span>Estrella 12</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella12"><img src="media/portafolios/estrella12/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 12</span></div>
           <div class="lot-label">
             <div class="lot-title">Zyanya</div>
             <div class="lot-meta">Portafolio</div>
@@ -1455,7 +1151,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-13">
-          <div class="lot-art art-oleo"><span>Estrella 13</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella13"><img src="media/portafolios/estrella13/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 13</span></div>
           <div class="lot-label">
             <div class="lot-title">Ian</div>
             <div class="lot-meta">Portafolio</div>
@@ -1463,7 +1159,7 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-14">
-          <div class="lot-art art-mixta"><span>Estrella 14</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella14"><img src="media/portafolios/estrella14/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 14</span></div>
           <div class="lot-label">
             <div class="lot-title">Lia</div>
             <div class="lot-meta">Portafolio</div>
@@ -1471,9 +1167,9 @@
           </div>
         </button>
         <button type="button" class="lot" data-open-modal="modal-portafolio-15">
-          <div class="lot-art art-collage"><span>Estrella 15</span></div>
+          <div class="lot-art" data-portada="portafolios/estrella15"><img src="media/portafolios/estrella15/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>Estrella 15</span></div>
           <div class="lot-label">
-            <div class="lot-title">[Nombre Estrella 15]</div>
+            <div class="lot-title">Isa y John</div>
             <div class="lot-meta">Portafolio</div>
             <div class="lot-cta">Ver portafolio →</div>
           </div>
@@ -1490,7 +1186,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Sara</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella01"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella01"><img src="media/portafolios/estrella01/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella01/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella01/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella01/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella01/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella01/06.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-02" hidden>
@@ -1501,7 +1197,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Herminio</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella02"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella02"><img src="media/portafolios/estrella02/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/06.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/07.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/08.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/09.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/10.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/11.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/12.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/13.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/14.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/15.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/16.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/17.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/18.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella02/19.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-03" hidden>
@@ -1512,7 +1208,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Emma</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella03"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella03"><img src="media/portafolios/estrella03/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/06.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/07.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella03/08.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-04" hidden>
@@ -1523,7 +1219,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Jicori</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella04"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella04"><img src="media/portafolios/estrella04/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella04/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella04/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella04/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella04/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella04/06.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-05" hidden>
@@ -1534,7 +1230,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Andres</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella05"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella05"><img src="media/portafolios/estrella05/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/06.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/07.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/08.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella05/09.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-06" hidden>
@@ -1545,7 +1241,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Janet</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella06"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella06"><img src="media/portafolios/estrella06/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella06/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella06/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella06/04.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-07" hidden>
@@ -1556,7 +1252,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Belén</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella07"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella07"><img src="media/portafolios/estrella07/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella07/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella07/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella07/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella07/05.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-08" hidden>
@@ -1578,7 +1274,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Diana</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella09"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella09"><img src="media/portafolios/estrella09/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/06.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/07.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/08.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/09.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella09/10.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-10" hidden>
@@ -1589,7 +1285,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Ivanna</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella10"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella10"><img src="media/portafolios/estrella10/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella10/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella10/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella10/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella10/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella10/06.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-11" hidden>
@@ -1600,7 +1296,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Emiliano</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella11"><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/3;"></span><span class="collage-ph art-mixta" style="aspect-ratio:1/1;"></span><span class="collage-ph art-collage" style="aspect-ratio:3/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:5/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella11"><img src="media/portafolios/estrella11/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/05.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/06.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/07.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella11/08.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-12" hidden>
@@ -1611,7 +1307,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Zyanya</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella12"><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/3;"></span><span class="collage-ph art-collage" style="aspect-ratio:1/1;"></span><span class="collage-ph art-grafito" style="aspect-ratio:3/4;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:5/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella12"><img src="media/portafolios/estrella12/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella12/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella12/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella12/04.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-13" hidden>
@@ -1622,7 +1318,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Ian</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella13"><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/3;"></span><span class="collage-ph art-grafito" style="aspect-ratio:1/1;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:3/4;"></span><span class="collage-ph art-oleo" style="aspect-ratio:5/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella13"><img src="media/portafolios/estrella13/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella13/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella13/03.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-14" hidden>
@@ -1633,7 +1329,7 @@
         <div class="eyebrow">portafolio</div>
         <h3>Lia</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella14"><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/3;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:1/1;"></span><span class="collage-ph art-oleo" style="aspect-ratio:3/4;"></span><span class="collage-ph art-mixta" style="aspect-ratio:5/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella14"><img src="media/portafolios/estrella14/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella14/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella14/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella14/04.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella14/05.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
   <div class="artist-modal" id="modal-portafolio-15" hidden>
@@ -1642,9 +1338,9 @@
       <button class="artist-modal-close" aria-label="Cerrar">✕</button>
       <div class="artist-modal-subhead modal-title-head">
         <div class="eyebrow">portafolio</div>
-        <h3>[Nombre Estrella 15]</h3>
+        <h3>Isa y John</h3>
       </div>
-      <div class="fotos-collage" data-fotos="portafolios/estrella15"><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span><span class="collage-ph art-acuarela" style="aspect-ratio:4/3;"></span><span class="collage-ph art-oleo" style="aspect-ratio:1/1;"></span><span class="collage-ph art-mixta" style="aspect-ratio:3/4;"></span><span class="collage-ph art-collage" style="aspect-ratio:5/4;"></span><span class="collage-ph art-grafito" style="aspect-ratio:4/5;"></span></div>
+      <div class="fotos-collage" data-fotos="portafolios/estrella15"><img src="media/portafolios/estrella15/01.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella15/02.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella15/03.jpg" alt="" loading="lazy" decoding="async"><img src="media/portafolios/estrella15/04.jpg" alt="" loading="lazy" decoding="async"></div>
     </div>
   </div>
 
