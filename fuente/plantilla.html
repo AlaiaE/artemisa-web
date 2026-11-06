@@ -592,6 +592,30 @@
   .md-nota{font-size:14px !important;margin:0 !important;color:var(--graphite);}
   @media (prefers-reduced-motion:reduce){.md-fill{transition:none;}}
 
+  /* ---------- "PAGO POR TRANSFERENCIA" POPUP ----------
+     One popup, two versions (data-pago="donacion" / "entrada" on the
+     panel): texts marked with the other version's data-modo are hidden. */
+  .pago-panel{max-width:560px;}
+  .pago-panel[data-pago="donacion"] [data-modo="entrada"],
+  .pago-panel[data-pago="entrada"] [data-modo="donacion"]{display:none !important;}
+  .pago-titulo{font-size:clamp(26px,3.4vw,32px);margin:8px 0 12px;padding-right:40px;}
+  .pago-intro{font-size:16px;color:var(--graphite);margin-bottom:22px;}
+  .pago-datos{margin:0 0 22px;border-top:1px solid var(--line);}
+  .pago-fila{display:grid;grid-template-columns:96px 1fr;gap:4px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .pago-fila dt{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite);}
+  .pago-fila dd{margin:0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .pago-valor{font-size:17px;color:var(--ink);font-weight:500;}
+  .pago-valor small{display:block;font-size:13px;font-weight:400;color:var(--graphite);}
+  .pago-num{font-family:'IBM Plex Mono',monospace;font-size:16px;letter-spacing:0.04em;}
+  .pago-copiar{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:6px 10px;border:1px solid var(--line);background:var(--paper-raised);color:var(--ink);cursor:pointer;flex-shrink:0;}
+  .pago-copiar:hover{border-color:var(--sienna);color:var(--sienna);}
+  .pago-copiar.copiado{background:var(--sienna);border-color:var(--sienna);color:var(--paper);}
+  .pago-nota{font-size:15px;color:var(--graphite);line-height:1.7;}
+  .pago-nota a{color:var(--sienna);overflow-wrap:anywhere;}
+  .pago-nota .pago-copiar{margin:0 4px;vertical-align:1px;}
+  @media (max-width:560px){ .pago-fila{grid-template-columns:1fr;} }
+
   footer{border-top:1px solid var(--line);padding:56px 28px 40px;}
   .footer-inner{display:flex;flex-direction:column;align-items:center;gap:32px;}
   .footer-badge{width:min(148px,22vw);aspect-ratio:1;flex-shrink:0;filter:drop-shadow(0 8px 16px hsl(var(--shadow) / 0.22));}
@@ -1738,7 +1762,7 @@
         <div class="step">
           <div class="step-num">N.º 01</div>
           <h3>Reserva tu lugar</h3>
-          <p>Confirma tu asistencia llenando el <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFw-Kj-HNNF4dU4mXdi4laN0a1hC8y7VqqGszJ5co2BWmYIg/viewform?hl=es" target="_blank" rel="noopener">formulario de reserva</a>.</p>
+          <p>Confirma tu asistencia llenando el <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFw-Kj-HNNF4dU4mXdi4laN0a1hC8y7VqqGszJ5co2BWmYIg/viewform?hl=es" target="_blank" rel="noopener">formulario de reserva</a> y paga tu entrada de $400 por transferencia.</p>
         </div>
         <div class="step">
           <div class="step-num">N.º 02</div>
@@ -1761,12 +1785,13 @@
         <!-- Reservation form (Google Form). "?hl=es" forces the form's
              interface language to Spanish for every visitor. -->
         <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeFw-Kj-HNNF4dU4mXdi4laN0a1hC8y7VqqGszJ5co2BWmYIg/viewform?hl=es" target="_blank" rel="noopener">Reserva tu lugar</a>
+        <!-- Opens the "Pago por transferencia" popup in its ticket version -->
+        <button type="button" class="btn btn-ghost" data-open-modal="modal-transferencia" data-pago="entrada">Pagar entrada · $400</button>
       </div>
 
       <!-- Donación abierta: for people who can't attend the event.
-           PENDING: the "Donar" button still points to "#" (does nothing).
-           Replace href="#" with the donation link (PayPal, Mercado Pago…)
-           once it exists. -->
+           The "Donar" button opens the "Pago por transferencia" popup in
+           its donation version. -->
       <div class="donacion reveal">
         <div class="eyebrow">otra forma de ayudar</div>
         <h3>Donación abierta</h3>
@@ -1797,7 +1822,55 @@
           <p class="md-nota">Cada <strong>$2,000</strong> equivalen a <strong>una semana de alimento</strong> para los ajolotes de Axolotitlán. Cada 4 semanas completas se juntan en <strong>1 mes</strong>.</p>
         </div>
 
-        <a class="btn btn-primary" href="#" target="_blank" rel="noopener">Donar</a>
+        <button type="button" class="btn btn-primary" data-open-modal="modal-transferencia" data-pago="donacion">Donar</button>
+      </div>
+
+      <!-- POPUP: "Pago por transferencia" — opened by "Pagar entrada" and
+           by "Donar". The button's data-pago ("entrada" or "donacion") is
+           copied onto the panel, and only the texts marked with that same
+           data-modo show; texts without data-modo always show.
+           BANK DETAILS: edit them in the rows below. Each "Copiar" button
+           copies its row's data-copiar value (the CLABE without spaces). -->
+      <div class="artist-modal" id="modal-transferencia" hidden role="dialog" aria-modal="true" aria-labelledby="pago-titulo">
+        <div class="artist-modal-backdrop"></div>
+        <div class="artist-modal-panel pago-panel" data-pago="donacion">
+          <button class="artist-modal-close" aria-label="Cerrar">✕</button>
+          <div class="eyebrow">pago por transferencia</div>
+          <h3 class="pago-titulo" id="pago-titulo">
+            <span data-modo="donacion">Haz tu donación</span>
+            <span data-modo="entrada">Paga tu entrada</span>
+          </h3>
+          <p class="pago-intro" data-modo="donacion">Cualquier cantidad ayuda: cada $2,000 son una semana de alimento para los ajolotes. Transfiere a esta cuenta:</p>
+          <p class="pago-intro" data-modo="entrada">La entrada al evento cuesta <strong>$400 por persona</strong>. Primero reserva tu lugar con el formulario y después transfiere a esta cuenta:</p>
+
+          <dl class="pago-datos">
+            <div class="pago-fila">
+              <dt>Banco</dt>
+              <dd><span class="pago-valor">BanBajío</span></dd>
+            </div>
+            <div class="pago-fila">
+              <dt>Titular</dt>
+              <dd><span class="pago-valor">ALAIA HELENA ESTEBAN SANDOVAL</span><button type="button" class="pago-copiar" data-copiar="ALAIA HELENA ESTEBAN SANDOVAL">Copiar</button></dd>
+            </div>
+            <div class="pago-fila">
+              <dt>CLABE</dt>
+              <dd><span class="pago-valor pago-num">030 180 90005022723 4</span><button type="button" class="pago-copiar" data-copiar="030180900050227234">Copiar</button></dd>
+            </div>
+            <div class="pago-fila">
+              <dt>Concepto</dt>
+              <dd data-modo="donacion"><span class="pago-valor">Donación</span><button type="button" class="pago-copiar" data-copiar="Donación">Copiar</button></dd>
+              <dd data-modo="entrada"><span class="pago-valor">Entrada + tu nombre <small>(ej. Entrada Ana López)</small></span><button type="button" class="pago-copiar" data-copiar="Entrada ">Copiar</button></dd>
+            </div>
+          </dl>
+
+          <p class="pago-nota">
+            Envía tu comprobante a
+            <a href="mailto:artemisa.proyect2026@gmail.com?subject=Comprobante%20de%20pago">artemisa.proyect2026@gmail.com</a>
+            <button type="button" class="pago-copiar" data-copiar="artemisa.proyect2026@gmail.com">Copiar</button>
+            <span data-modo="donacion">para sumar tu donación a la barra.</span>
+            <span data-modo="entrada">con el nombre con el que reservaste; te confirmaremos tu lugar.</span>
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -1946,6 +2019,33 @@
     if (e.key === 'Escape'){
       document.querySelectorAll('.artist-modal').forEach(function(m){ if (!m.hidden) closeModal(m); });
     }
+  });
+
+  // "Pago por transferencia" popup: the button that opened it says which
+  // version to show (data-pago="entrada" or "donacion"); "Copiar" buttons
+  // copy their data-copiar value and briefly say "¡Copiado!".
+  document.querySelectorAll('[data-pago][data-open-modal]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelector('.pago-panel').setAttribute('data-pago', btn.getAttribute('data-pago'));
+    });
+  });
+  document.querySelectorAll('.pago-copiar').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var texto = btn.getAttribute('data-copiar');
+      function listo(){
+        btn.textContent = '¡Copiado!'; btn.classList.add('copiado');
+        setTimeout(function(){ btn.textContent = 'Copiar'; btn.classList.remove('copiado'); }, 1600);
+      }
+      function aLaAntigua(){                     // older browsers / clipboard blocked
+        var t = document.createElement('textarea');
+        t.value = texto; t.style.position = 'fixed'; t.style.opacity = '0';
+        btn.parentNode.appendChild(t); t.select();
+        try { if (document.execCommand('copy')) listo(); } catch (e) {}
+        t.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(texto).then(listo, aLaAntigua);
+      else aLaAntigua();
+    });
   });
 
   // Donation milestone bar ("Donación abierta"): every $2,000 is one week

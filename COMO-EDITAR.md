@@ -189,3 +189,19 @@ Si la hoja no está conectada (o no carga), se usan los números de respaldo
 en `fuente/plantilla.html`, en el bloque `id="meta-donacion"`:
 `data-recaudado` (lo recaudado) y `data-meta` (la meta). El enlace de la hoja
 va en `data-hoja`.
+
+---
+
+## Datos bancarios (pago por transferencia)
+
+Los botones **"Donar"** y **"Pagar entrada · $400"** abren la misma ventana con
+los datos para transferir. Están en `fuente/plantilla.html`, en el bloque
+`id="modal-transferencia"`. Cada dato aparece **dos veces** en su fila: el
+texto que se ve y el `data-copiar` (lo que copia el botón "Copiar"):
+
+```html
+<span class="pago-valor">Ana López</span><button … data-copiar="Ana López">Copiar</button>
+```
+
+La CLABE se puede escribir con espacios en el texto visible
+(`012 180 0012345678 9`), pero en `data-copiar` va **sin espacios**.
