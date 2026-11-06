@@ -23,6 +23,14 @@ del nombre. Sirven `.jpg`, `.jpeg`, `.png` y `.webp`.
 También puedes crear una subcarpeta con el nombre `estrella01` y poner ahí
 todas sus fotos con cualquier nombre.
 
+## La foto de la tarjeta (portada)
+
+La tarjeta de cada estrella en "Los portafolios" muestra la **primera foto de su
+collage**, es decir, la primera en **orden alfabético** del nombre del archivo.
+Para elegir cuál sale en la tarjeta, ponle un nombre que vaya primero, por
+ejemplo `00-portada.jpg` dentro de la carpeta `estrella01`, o
+`estrella01-00-portada.jpg` si las fotos van sueltas.
+
 ## Qué pasa después
 
 El sitio se reconstruye solo: las fotos se comprimen para que la página cargue

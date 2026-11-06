@@ -1,7 +1,8 @@
 # Fotos de los maestros y de las próximas estrellas
 
 La foto de cada persona va **aquí mismo**, en esta carpeta. Aparece en su
-tarjeta y también en la foto redonda de su ventana. No hace falta tocar
+tarjeta (y, en el caso de los maestros, también en la foto redonda de su
+ventana). No hace falta tocar
 ningún otro archivo.
 
 ## Cómo nombrar cada foto

@@ -63,16 +63,28 @@ def b64_crudo(ruta: pathlib.Path) -> str:
 GALERIA_LADO_MAX = 1400
 GALERIA_CALIDAD = 76
 
+def color_de_fondo(im):
+    """Color RGB de las 4 esquinas si son (casi) iguales — el fondo liso de un
+    logo —, o None si las esquinas son distintas (no hay un fondo liso)."""
+    rgb = im.convert("RGB")
+    w, h = rgb.size
+    esquinas = [rgb.getpixel(p) for p in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1))]
+    if max(max(c[i] for c in esquinas) - min(c[i] for c in esquinas) for i in range(3)) > 16:
+        return None
+    return tuple(round(sum(c[i] for c in esquinas) / 4) for i in range(3))
+
 def recortar_bordes_vacios(im):
-    """Quita el margen blanco o transparente alrededor de un logo, dejando un
-    respiro pequeño (4% del lado mayor). Si no encuentra contenido, no toca nada."""
+    """Quita el margen alrededor de un logo (transparente, blanco o del color
+    liso de su fondo), dejando un respiro pequeño (4% del lado mayor).
+    Si no encuentra contenido, no toca nada."""
     from PIL import Image, ImageChops
     rgba = im.convert("RGBA")
     if rgba.getextrema()[3][0] < 255:                  # con transparencia
         caja = rgba.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
-    else:                                               # fondo blanco (p. ej. JPG)
-        blanco = Image.new("RGB", rgba.size, (255, 255, 255))
-        dif = ImageChops.difference(rgba.convert("RGB"), blanco).convert("L")
+    else:                                               # fondo liso (blanco u otro color)
+        fondo = color_de_fondo(rgba) or (255, 255, 255)
+        liso = Image.new("RGB", rgba.size, fondo)
+        dif = ImageChops.difference(rgba.convert("RGB"), liso).convert("L")
         caja = dif.point(lambda p: 255 if p > 24 else 0).getbbox()
     if not caja:
         return im
@@ -140,7 +152,7 @@ def optimizar_galeria() -> int:
         print(f"  galeria: {procesadas} foto(s) optimizada(s) -> {destino}")
     return procesadas
 
-# --- collages (portafolios, inspiracion): por CARPETA ---
+# --- collages (portafolios): por CARPETA ---
 # En plantilla.html cada collage es
 #   <div class="fotos-collage..." data-fotos="portafolios/estrella01"> ...placeholders... </div>
 # Se buscan fotos en fuente/portafolios/ cuyo nombre (o subcarpeta) empiece
@@ -178,11 +190,31 @@ def inyectar_collages(html: str) -> str:
             datos, ext = foto_web(ruta)
             nombre = f"{n:02d}{ext}"
             (destino / nombre).write_bytes(datos)
-            imgs.append(f'<img src="{"/".join(partes + [nombre])}" alt="" loading="lazy" decoding="async">')
+            src = "/".join(partes + [nombre])
+            if n == 1:
+                PORTADAS[ref] = src      # primera foto = portada de la tarjeta
+            imgs.append(f'<img src="{src}" alt="" loading="lazy" decoding="async">')
         print(f"  collage {ref}: {len(fotos)} foto(s)")
         return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
 
     return COLLAGE_RE.sub(reemplazar, html)
+
+# --- portadas: la tarjeta de cada portafolio muestra la PRIMERA foto de su
+# collage (orden alfabético de los nombres de archivo). En plantilla.html:
+#   <div class="lot-art ..." data-portada="portafolios/estrella01"><span>…</span></div>
+PORTADAS = {}     # ref del collage -> ruta web de su primera foto
+PORTADA_RE = re.compile(r'<div class="lot-art[^"]*" data-portada="([^"]+)"><span>([^<]*)</span></div>')
+
+def inyectar_portadas(html: str) -> str:
+    def reemplazar(m: "re.Match[str]") -> str:
+        ref, etiqueta = m.groups()
+        src = PORTADAS.get(ref)
+        if not src:
+            return m.group(0)      # sin fotos: se queda el fondo de textura
+        return (f'<div class="lot-art" data-portada="{ref}"><img src="{src}" alt="" '
+                f'loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">'
+                f'<span>{etiqueta}</span></div>')
+    return PORTADA_RE.sub(reemplazar, html)
 
 # --- retratos de maestros y próximas estrellas: por NOMBRE de archivo ---
 # En plantilla.html cada foto de tarjeta y cada foto redonda de la ventana
@@ -242,12 +274,33 @@ LOGO_RE = re.compile(r'<div class="(collab-logo|artist-modal-photo)" data-logo="
 def inyectar_logos(html: str) -> str:
     foto, copiados = cargador_por_nombre("logos", recortar=True)
 
+    def fondo_del_logo(clave: str):
+        """Si el logo tiene un fondo liso de color (no blanco ni transparente),
+        devuelve ese color en #rrggbb para pintar el círculo del mismo color."""
+        try:
+            from PIL import Image
+        except ImportError:
+            return None
+        for ext in EXT_FOTO:
+            ruta = AQUI / "logos" / f"{clave}{ext}"
+            if ruta.is_file():
+                im = Image.open(ruta)
+                if im.convert("RGBA").getextrema()[3][0] < 255:
+                    return None                         # transparente: círculo blanco
+                c = color_de_fondo(im)
+                if c is None or min(c) > 235:
+                    return None                         # sin fondo liso, o blanco
+                return "#{:02x}{:02x}{:02x}".format(*c)
+        return None
+
     def reemplazar(m: "re.Match[str]") -> str:
         clase, clave = m.groups()
         src = foto(clave)
         if not src:
             return m.group(0)
-        return (f'<div class="{clase} con-imagen" data-logo="{clave}">'
+        fondo = fondo_del_logo(clave)
+        estilo = f' style="background:{fondo};border-color:{fondo};"' if fondo else ""
+        return (f'<div class="{clase} con-imagen{" con-fondo" if fondo else ""}" data-logo="{clave}"{estilo}>'
                 f'<img src="{src}" alt="" loading="lazy" decoding="async"></div>')
 
     html = LOGO_RE.sub(reemplazar, html)
@@ -316,26 +369,51 @@ IMAGENES = {
 # --- fotos de obras: por CONVENCIÓN DE NOMBRE, sin tocar plantilla.html ---
 # Cada lote es <div class="lot-art[...clases...]"><span>Lote NN</span></div>
 # (sin <img>, dos veces: catálogo general + modal del artista). Si existe
-# fuente/obras/loteNN.jpg (o .jpeg/.png), se le mete la foto ahí mismo.
+# fuente/obras/loteNN.jpg (o .jpeg/.png/.webp), se generan DOS copias en
+# media/obras/: loteNN.jpg (ligera, para la tarjeta) y loteNN-grande.jpg (alta
+# resolución, solo se descarga al abrir la obra en grande). Ya no se incrustan
+# en index.html, que así pesa mucho menos.
 # Para poner una obra: sube el archivo con ese nombre. Para quitarla: bórralo.
 LOTE_ART_RE = re.compile(
     r'<div class="lot-art[^"]*"><span>Lote (\d{2})</span></div>'
 )
+LOTE_LADO_TARJETA, LOTE_LADO_GRANDE = 1000, 2400
 
 def inyectar_fotos_de_lotes(html: str) -> str:
+    hechas = {}     # numero -> (src tarjeta, src grande); cada lote aparece 2 veces
+
+    def fotos(numero: str):
+        if numero not in hechas:
+            hechas[numero] = None
+            for ext in EXT_FOTO:
+                ruta = AQUI / "obras" / f"lote{numero}{ext}"
+                if ruta.is_file():
+                    destino = MEDIA / "obras"
+                    destino.mkdir(parents=True, exist_ok=True)
+                    chica, e1 = foto_web(ruta, lado_max=LOTE_LADO_TARJETA, calidad=84)
+                    grande, e2 = foto_web(ruta, lado_max=LOTE_LADO_GRANDE, calidad=90)
+                    (destino / f"lote{numero}{e1}").write_bytes(chica)
+                    (destino / f"lote{numero}-grande{e2}").write_bytes(grande)
+                    hechas[numero] = (f"media/obras/lote{numero}{e1}", f"media/obras/lote{numero}-grande{e2}")
+                    break
+        return hechas[numero]
+
     def reemplazar(m: "re.Match[str]") -> str:
         numero = m.group(1)
-        for ext, mime in ((".jpg", "image/jpeg"), (".jpeg", "image/jpeg"), (".png", "image/png")):
-            ruta = AQUI / "obras" / f"lote{numero}{ext}"
-            if ruta.exists():
-                uri = data_uri(ruta, mime)
-                return (
-                    f'<div class="lot-art"><img src="{uri}" alt="" '
-                    f'style="width:100%;height:100%;object-fit:cover;">'
-                    f'<span>Lote {numero}</span></div>'
-                )
-        return m.group(0)  # sin foto: se queda el fondo de textura
-    return LOTE_ART_RE.sub(reemplazar, html)
+        par = fotos(numero)
+        if not par:
+            return m.group(0)  # sin foto: se queda el fondo de textura
+        return (
+            f'<div class="lot-art"><img src="{par[0]}" data-grande="{par[1]}" alt="" '
+            f'loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">'
+            f'<span>Lote {numero}</span></div>'
+        )
+
+    html = LOTE_ART_RE.sub(reemplazar, html)
+    n = sum(1 for v in hechas.values() if v)
+    if n:
+        print(f"  obras: {n} foto(s) (tarjeta + grande)")
+    return html
 
 def main() -> int:
     global SALIDA, MEDIA
@@ -371,12 +449,13 @@ def main() -> int:
         print("ERROR: faltan archivos:", *faltan_archivos, sep="\n  ")
         return 1
 
+    if MEDIA.is_dir():
+        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     # fotos de obras por convención de nombre (loteNN.jpg) — va después de
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
-    if MEDIA.is_dir():
-        shutil.rmtree(MEDIA)          # media/ es solo salida: se regenera completa
     html = inyectar_collages(html)
+    html = inyectar_portadas(html)     # después de los collages: usa su primera foto
     html = inyectar_retratos(html)
     html = inyectar_logos(html)
     html = inyectar_imagenes(html)

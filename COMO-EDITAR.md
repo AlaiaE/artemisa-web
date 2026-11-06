@@ -107,19 +107,20 @@ solo subir un archivo).
 
 ---
 
-## Fotos de portafolios e inspiración (collages)
+## Fotos de los portafolios (collages)
 
-Estas dos partes del sitio muestran **collages de fotos** que se arman solos
+Los portafolios muestran **collages de fotos** que se arman solos
 a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
 no se toca ningún archivo de código.
 
 | Qué                                    | Carpeta                | El nombre de la foto empieza con |
 |----------------------------------------|------------------------|----------------------------------|
 | Portafolio de cada próxima estrella    | `fuente/portafolios/`  | `estrella01` … `estrella15`      |
-| "Inspiración" de cada obra reimaginada | `fuente/inspiracion/`  | `lote01` … `lote10`              |
 
 Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
 `estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
+La primera foto (en orden alfabético) es la que sale en la tarjeta del
+portafolio.
 Cada carpeta tiene un archivo `LEEME.md` con más detalle.
 
 1. Entra a la carpeta → **Add file → Upload files** → sube las fotos → commit.
@@ -131,8 +132,8 @@ No edites la carpeta `media/` de la raíz: la genera el sitio automáticamente.
 
 ## Fotos de los maestros y de las próximas estrellas
 
-Cada persona tiene una foto que aparece en su tarjeta y en la foto redonda de
-su ventana. Va en `fuente/retratos/` con un nombre exacto:
+Cada persona tiene una foto que aparece en su tarjeta (los maestros, también en
+la foto redonda de su ventana). Va en `fuente/retratos/` con un nombre exacto:
 
 - Maestros: `maestro01.jpg` (Alaia), `maestro02.jpg`, `maestro03.jpg`
 - Próximas estrellas: `estrella01.jpg` … `estrella15.jpg` (siempre dos dígitos)
@@ -166,3 +167,41 @@ la organización, con 3 fotos. Van en `fuente/destinatario/` con nombre exacto:
 `01.jpg`, `02.jpg` y `03.jpg` (también `.png` o `.webp`). Solo se muestran
 las fotos, sin título ni descripción. Más detalle en
 `fuente/destinatario/LEEME.md`.
+
+---
+
+## Barra de donaciones ("Donación abierta")
+
+La barra se llena con lo recaudado: cada **$2,000** es una semana de alimento
+para los ajolotes y cada 4 semanas completas se juntan en un "Mes".
+
+Los números salen de una **hoja de Google** con este contenido:
+
+|   | A           | B       |
+|---|-------------|---------|
+| 1 | `Recaudado` | `13500` |
+| 2 | `Meta`      | `24000` |
+
+Para actualizar la barra solo cambia la celda **B1** (y **B2** si cambia la
+meta). La página se actualiza sola en unos 5 minutos; no hay que tocar GitHub.
+
+Si la hoja no está conectada (o no carga), se usan los números de respaldo
+en `fuente/plantilla.html`, en el bloque `id="meta-donacion"`:
+`data-recaudado` (lo recaudado) y `data-meta` (la meta). El enlace de la hoja
+va en `data-hoja`.
+
+---
+
+## Datos bancarios (pago por transferencia)
+
+Los botones **"Donar"** y **"Pagar entrada · $400"** abren la misma ventana con
+los datos para transferir. Están en `fuente/plantilla.html`, en el bloque
+`id="modal-transferencia"`. Cada dato aparece **dos veces** en su fila: el
+texto que se ve y el `data-copiar` (lo que copia el botón "Copiar"):
+
+```html
+<span class="pago-valor">Ana López</span><button … data-copiar="Ana López">Copiar</button>
+```
+
+La CLABE se puede escribir con espacios en el texto visible
+(`012 180 0012345678 9`), pero en `data-copiar` va **sin espacios**.
