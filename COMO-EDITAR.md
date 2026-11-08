@@ -159,6 +159,14 @@ en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
 
 ---
 
+## Icono de la pestaña
+
+El dibujito junto a "Artemisa" en la pestaña del navegador es
+`fuente/icono/icono.png` (ahora, la "A" del logo). Para cambiarlo, sube otra
+imagen cuadrada con ese mismo nombre. Más detalle en `fuente/icono/LEEME.md`.
+
+---
+
 ## Fotos de las iniciativas de la organización (en su ventana)
 
 Al hacer clic en "Misión Animal" se abre una ventana con 3 iniciativas, cada una
