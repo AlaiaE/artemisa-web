@@ -16,7 +16,7 @@
             - #artistas section           ("Los maestros" cards)
             - 3x .artist-modal            (one popup per teacher)
             - #estrellas section           (cards open the portfolio)
-            - #portafolios section + 15 modals (photo collages)
+            - 15 portfolio modals         (photo collages)
             - #obras section              (obras reimaginadas, collage + lightbox)
             - #galeria section            (venue photos + map link)
             - #impacto section + its modal (where funds go)
@@ -693,7 +693,7 @@
       <a href="#proposito">Propósito</a>
       <a href="#artistas">Maestros</a>
       <a href="#estrellas">Estrellas</a>
-      <a href="#portafolios">Obras</a>
+      <a href="#obras">Obras</a>
       <a href="#galeria">Galería</a>
       <a href="#impacto">Impacto</a>
       <a href="#participar">Cómo participar</a>
@@ -707,7 +707,7 @@
     <a href="#proposito">Propósito</a>
     <a href="#artistas">Maestros</a>
     <a href="#estrellas">Estrellas</a>
-    <a href="#portafolios">Obras</a>
+    <a href="#obras">Obras</a>
     <a href="#galeria">Galería</a>
     <a href="#impacto">Impacto</a>
     <a href="#participar">Cómo participar</a>
@@ -1011,7 +1011,7 @@
         </div>
       </div>
       <div class="prose">
-        <p>[Aquí va la biografía breve de Artista 2: su trayectoria, su técnica, y por qué se suma a Artemisa].</p>
+        <p>Me uní al proyecto para ayudar a Alaia con la carga de trabajo y ayudarla a realizar el sueño tan demandante que es Artemisa. Soy maestra y ayudo a nuestros estudiantes con sus piezas. Este proyecto me ha ayudado a comprender el arte más allá del simple proceso creativo, sino también de su impacto en diferentes individuos.</p>
       </div>
     </div>
   </div>
@@ -1043,7 +1043,7 @@
        Anchor target for the "Estrellas" nav link. Same horizontal card
        carousel as "Los maestros": 15 cards (01–15) with photo and
        name only. Each card opens that student's portfolio collage
-       ("modal-portafolio-NN", in the Portafolios section below).
+       ("modal-portafolio-NN", right after this section).
        ============================================================ -->
   <section id="estrellas">
     <div class="wrap">
@@ -1134,12 +1134,9 @@
   </section>
 
   <!-- ============================================================
-       SECTION: "LOS PORTAFOLIOS" (first half of the old "Obras")
-       Anchor target for the "Obras" nav link. 15 cards, one per
-       Próxima Estrella (same numbering 01–15). Each opens a
-       "modal-portafolio-NN" popup showing only a photo collage.
-       The card's picture is the FIRST photo of that collage
-       (alphabetical order of the file names), filled in by the build.
+       PORTFOLIO POPUPS — 15 "modal-portafolio-NN", one per Próxima
+       Estrella (same numbering 01–15), each opened by that student's
+       card in the section above. Each shows only a photo collage.
 
        ADDING PHOTOS needs no code: put pictures in fuente/portafolios/
        named estrella01-<anything>.jpg (or a subfolder estrella01/).
@@ -1147,138 +1144,6 @@
        any number of photos works. With no photos the collage shows
        colored placeholder tiles.
        ============================================================ -->
-  <section id="portafolios">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">su trabajo</div>
-        <h2>Los portafolios</h2>
-        <p class="lede">Estos son los portafolios que los niños han realizado desde que se unieron al proyecto. Haz clic en cada uno para verlo.</p>
-      </div>
-
-      <div class="lots reveal">
-        <button type="button" class="lot" data-open-modal="modal-portafolio-01">
-          <div class="lot-art" data-portada="portafolios/estrella01"><img src="media/portafolios/estrella01/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>01</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Sara</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-02">
-          <div class="lot-art" data-portada="portafolios/estrella02"><img src="media/portafolios/estrella02/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>02</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Herminio</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-03">
-          <div class="lot-art" data-portada="portafolios/estrella03"><img src="media/portafolios/estrella03/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>03</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Emma</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-04">
-          <div class="lot-art" data-portada="portafolios/estrella04"><img src="media/portafolios/estrella04/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>04</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Jicori</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-05">
-          <div class="lot-art" data-portada="portafolios/estrella05"><img src="media/portafolios/estrella05/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>05</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Andres</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-06">
-          <div class="lot-art" data-portada="portafolios/estrella06"><img src="media/portafolios/estrella06/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>06</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Janet</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-07">
-          <div class="lot-art" data-portada="portafolios/estrella07"><img src="media/portafolios/estrella07/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>07</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Belén</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-08">
-          <div class="lot-art art-oleo" data-portada="portafolios/estrella08"><span>08</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Fani</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-09">
-          <div class="lot-art" data-portada="portafolios/estrella09"><img src="media/portafolios/estrella09/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>09</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Diana</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-10">
-          <div class="lot-art" data-portada="portafolios/estrella10"><img src="media/portafolios/estrella10/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>10</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Ivanna</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-11">
-          <div class="lot-art" data-portada="portafolios/estrella11"><img src="media/portafolios/estrella11/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>11</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Emiliano</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-12">
-          <div class="lot-art" data-portada="portafolios/estrella12"><img src="media/portafolios/estrella12/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>12</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Zyanya</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-13">
-          <div class="lot-art" data-portada="portafolios/estrella13"><img src="media/portafolios/estrella13/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>13</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Ian</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-14">
-          <div class="lot-art" data-portada="portafolios/estrella14"><img src="media/portafolios/estrella14/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>14</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Lia</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-        <button type="button" class="lot" data-open-modal="modal-portafolio-15">
-          <div class="lot-art" data-portada="portafolios/estrella15"><img src="media/portafolios/estrella15/01.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"><span>15</span></div>
-          <div class="lot-label">
-            <div class="lot-title">Isa y John</div>
-            <div class="lot-meta">Portafolio</div>
-            <div class="lot-cta">Ver portafolio →</div>
-          </div>
-        </button>
-      </div>
-    </div>
-  </section>
 
   <div class="artist-modal" id="modal-portafolio-01" hidden>
     <div class="artist-modal-backdrop"></div>
@@ -1447,7 +1312,7 @@
   </div>
 
   <!-- ============================================================
-       SECTION: "OBRAS REIMAGINADAS" (second half of the old "Obras")
+       SECTION: "OBRAS REIMAGINADAS" (the auction lots)
        Keeps the id "obras" so the hero's "Ver las obras" button lands
        here. 10 lot cards (Lote 01–10) laid out as a collage (.lots-collage):
        each photo keeps its own shape, tilted, with "tape" on top. Lot
@@ -1656,7 +1521,8 @@
          Same hidden-popup pattern as the artist modals: opened by
          the "[Nombre de la organización]" button in the collab-card
          just above, closed the same way. Shows a longer description
-         and a 3-item grid of the organization's own projects.
+         and a 3-item grid of the organization's own projects (photos
+         from fuente/organizacion/01.jpg, 02.jpg, 03.jpg).
          Nested inside the "impacto" section (not inside <main>'s
          top-level modal group) because it's only ever referenced
          from within this section.
@@ -1681,17 +1547,17 @@
         </div>
         <div class="org-projects">
           <div class="org-project">
-            <div class="org-project-img"></div>
+            <div class="org-project-img" data-imagen="organizacion/01"></div>
             <div class="org-project-title">Voluntariado en el Refugio San Gregorio</div>
             <p class="org-project-desc">Promueven un voluntariado en el Refugio San Gregorio, donde ayudan a alimentar, cuidar y pasar tiempo con los perros puestos en adopción, como parte de una campaña de Top Choice, "Cámbiate al Verde Top".</p>
           </div>
           <div class="org-project">
-            <div class="org-project-img"></div>
+            <div class="org-project-img" data-imagen="organizacion/02"></div>
             <div class="org-project-title">Protección del lobo mexicano</div>
             <p class="org-project-desc">Visitaron el Santuario Extinción Cero, donde plantaron árboles y dieron una plática acerca de la importancia de la protección del lobo mexicano.</p>
           </div>
           <div class="org-project">
-            <div class="org-project-img"></div>
+            <div class="org-project-img" data-imagen="organizacion/03"></div>
             <div class="org-project-title">#NoMásPirotecnia</div>
             <p class="org-project-desc">En conjunto con Change.org México, promovieron una petición de la Fundación Pata de Perro que pide regular los fuegos artificiales por el daño que les causan a los animales durante las fiestas patrias.</p>
           </div>

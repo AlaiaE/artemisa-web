@@ -109,7 +109,8 @@ solo subir un archivo).
 
 ## Fotos de los portafolios (collages)
 
-Los portafolios muestran **collages de fotos** que se arman solos
+Al hacer clic en una próxima estrella se abre su portafolio: un **collage de
+fotos** que se arma solo
 a partir de una carpeta. Solo hay que subir las fotos con el nombre correcto;
 no se toca ningún archivo de código.
 
@@ -119,8 +120,6 @@ no se toca ningún archivo de código.
 
 Ejemplo: para la estrella 3, sube `estrella03-dibujo.jpg`,
 `estrella03-pintura.jpg`, etc. Puedes subir las que quieras; todas aparecen.
-La primera foto (en orden alfabético) es la que sale en la tarjeta del
-portafolio.
 Cada carpeta tiene un archivo `LEEME.md` con más detalle.
 
 1. Entra a la carpeta → **Add file → Upload files** → sube las fotos → commit.
@@ -157,6 +156,15 @@ Van en `fuente/logos/` con un nombre exacto:
 Mejor `.png` con fondo transparente (también sirven `.jpg` y `.webp`).
 **Renombra la imagen en tu computadora antes de subirla**: renombrar una imagen
 en el editor de GitHub la deja vacía. Más detalle en `fuente/logos/LEEME.md`.
+
+---
+
+## Fotos de las iniciativas de la organización (en su ventana)
+
+Al hacer clic en "Misión Animal" se abre una ventana con 3 iniciativas, cada una
+con su foto. Van en `fuente/organizacion/` con nombre exacto: `01.jpg`
+(Refugio San Gregorio), `02.jpg` (lobo mexicano) y `03.jpg` (#NoMásPirotecnia).
+También sirven `.png` o `.webp`. Más detalle en `fuente/organizacion/LEEME.md`.
 
 ---
 
