@@ -396,6 +396,35 @@ def inyectar_fotos_de_lotes(html: str) -> str:
         print(f"  obras: {n} foto(s) (tarjeta + grande)")
     return html
 
+# --- icono de la pestaña (favicon): fuente/icono/icono.png ---
+# Una imagen cuadrada (mejor 512 px o más, con esquinas transparentes si es
+# redonda). Se generan en media/icono/ el favicon.ico de la pestaña y el
+# icono que usa un celular al guardar el sitio en la pantalla de inicio, y se
+# ponen sus <link> donde está el comentario ICONOS de plantilla.html.
+ICONOS_RE = re.compile(r"<!-- ICONOS:[^>]*-->")
+
+def inyectar_iconos(html: str) -> str:
+    ruta = AQUI / "icono" / "icono.png"
+    if not ruta.is_file():
+        return html                   # sin icono: el navegador pone el genérico
+    from PIL import Image
+    im = Image.open(ruta).convert("RGBA")
+    destino = MEDIA / "icono"
+    destino.mkdir(parents=True, exist_ok=True)
+    im.save(destino / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+    im.resize((192, 192), Image.LANCZOS).save(destino / "icono-192.png", optimize=True)
+    # el celular no admite transparencia: esquinas del color del centro-arriba del icono
+    fondo = im.getpixel((im.width // 2, im.height // 16))
+    fondo = fondo[:3] if fondo[3] == 255 else (255, 255, 255)
+    celular = Image.new("RGB", im.size, fondo)
+    celular.paste(im, (0, 0), im)
+    celular.resize((180, 180), Image.LANCZOS).save(destino / "apple-touch-icon.png", optimize=True)
+    print("  icono: favicon.ico + apple-touch-icon.png")
+    return ICONOS_RE.sub(
+        '<link rel="icon" href="media/icono/favicon.ico" sizes="any">\n'
+        '<link rel="icon" href="media/icono/icono-192.png" type="image/png">\n'
+        '<link rel="apple-touch-icon" href="media/icono/apple-touch-icon.png">', html, count=1)
+
 def main() -> int:
     global SALIDA, MEDIA
     if "--salida" in sys.argv:
@@ -439,6 +468,7 @@ def main() -> int:
     html = inyectar_retratos(html)
     html = inyectar_logos(html)
     html = inyectar_imagenes(html)
+    html = inyectar_iconos(html)
 
     sobran = sorted(set(re.findall(r"__[A-Za-z0-9_]+__", html)))
     if sobran:
