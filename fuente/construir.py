@@ -191,30 +191,11 @@ def inyectar_collages(html: str) -> str:
             nombre = f"{n:02d}{ext}"
             (destino / nombre).write_bytes(datos)
             src = "/".join(partes + [nombre])
-            if n == 1:
-                PORTADAS[ref] = src      # primera foto = portada de la tarjeta
             imgs.append(f'<img src="{src}" alt="" loading="lazy" decoding="async">')
         print(f"  collage {ref}: {len(fotos)} foto(s)")
         return f'<div class="{clases}" data-fotos="{ref}">' + "".join(imgs) + "</div>"
 
     return COLLAGE_RE.sub(reemplazar, html)
-
-# --- portadas: la tarjeta de cada portafolio muestra la PRIMERA foto de su
-# collage (orden alfabético de los nombres de archivo). En plantilla.html:
-#   <div class="lot-art ..." data-portada="portafolios/estrella01"><span>…</span></div>
-PORTADAS = {}     # ref del collage -> ruta web de su primera foto
-PORTADA_RE = re.compile(r'<div class="lot-art[^"]*" data-portada="([^"]+)"><span>([^<]*)</span></div>')
-
-def inyectar_portadas(html: str) -> str:
-    def reemplazar(m: "re.Match[str]") -> str:
-        ref, etiqueta = m.groups()
-        src = PORTADAS.get(ref)
-        if not src:
-            return m.group(0)      # sin fotos: se queda el fondo de textura
-        return (f'<div class="lot-art" data-portada="{ref}"><img src="{src}" alt="" '
-                f'loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">'
-                f'<span>{etiqueta}</span></div>')
-    return PORTADA_RE.sub(reemplazar, html)
 
 # --- retratos de maestros y próximas estrellas: por NOMBRE de archivo ---
 # En plantilla.html cada foto de tarjeta y cada foto redonda de la ventana
@@ -455,7 +436,6 @@ def main() -> int:
     # rellenar todo lo demás, para operar sobre el HTML ya casi terminado.
     html = inyectar_fotos_de_lotes(html)
     html = inyectar_collages(html)
-    html = inyectar_portadas(html)     # después de los collages: usa su primera foto
     html = inyectar_retratos(html)
     html = inyectar_logos(html)
     html = inyectar_imagenes(html)
