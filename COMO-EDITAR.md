@@ -4,7 +4,7 @@ Todo se hace desde la página de GitHub, en el navegador. **No hay que instalar
 nada ni usar la Terminal.** Cuando guardas un cambio, el sitio se actualiza solo
 en 1–2 minutos.
 
-Sitio publicado: **https://alaiae.github.io/artemisa-web/**
+Sitio publicado: **https://www.proyectartemisa.com**
 
 ---
 
@@ -26,13 +26,13 @@ Listo, ya puedes editar.
 3. Arriba a la derecha del archivo, pica el **lápiz ✏️** (*Edit this file*).
 4. Busca el texto con **Cmd + F** y cámbialo. Ejemplos:
    - Precio de entrada → busca `Entrada` y cambia `$400`
-   - Fecha → busca `18 de diciembre`
+   - Fecha → busca `19 de diciembre`
    - Lugar → busca `Centro Cultural San Ángel`
    - Nombre de una artista → busca `[Nombre Artista 2]`
    - Bio de una artista → busca `[Breve descripción de Artista 2`
 5. Baja hasta abajo, pica **Commit changes**, escribe una nota corta
    (ej. *"precio actualizado"*) y confirma con **Commit changes**.
-6. Espera 1–2 minutos y recarga **https://alaiae.github.io/artemisa-web/**.
+6. Espera 1–2 minutos y recarga **https://www.proyectartemisa.com**.
    El cambio ya está.
 
 > Para ver que el sitio se está reconstruyendo: en el repo, pestaña **Actions**.
@@ -45,6 +45,8 @@ Listo, ya puedes editar.
 - El archivo **`index.html`** (se genera solo — si lo editas se sobreescribe).
 - Las carpetas **`fuente/letras`**, **`fuente/stickers`**, **`fuente/fuentes`**.
 - El archivo **`fuente/construir.py`** y la carpeta **`.github`**.
+- El archivo **`CNAME`** (conecta el dominio www.proyectartemisa.com; si se
+  borra, el sitio deja de abrir en esa dirección).
 - Dentro de `plantilla.html`: cualquier cosa que parezca código o letras
   aleatorias largas. Solo cambia el **texto que se lee** (títulos, párrafos,
   precios, fechas, nombres).

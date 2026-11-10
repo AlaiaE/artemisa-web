@@ -615,6 +615,10 @@
     padding:6px 10px;border:1px solid var(--line);background:var(--paper-raised);color:var(--ink);cursor:pointer;flex-shrink:0;}
   .pago-copiar:hover{border-color:var(--sienna);color:var(--sienna);}
   .pago-copiar.copiado{background:var(--sienna);border-color:var(--sienna);color:var(--paper);}
+  /* "verify the account holder" warning, so a copied site with another
+     CLABE is easier to spot */
+  .pago-aviso{font-size:14px;line-height:1.6;color:var(--ink);background:var(--paper-raised);
+    border-left:3px solid var(--sienna);padding:12px 14px;margin:0 0 20px;}
   .pago-nota{font-size:15px;color:var(--graphite);line-height:1.7;}
   .pago-nota a{color:var(--sienna);overflow-wrap:anywhere;}
   .pago-nota .pago-copiar{margin:0 4px;vertical-align:1px;}
@@ -1733,6 +1737,8 @@
             </div>
           </dl>
 
+          <p class="pago-aviso">Antes de transferir, verifica que la cuenta esté a nombre de <strong>Alaia Helena Esteban Sandoval</strong>. Es la única cuenta de Artemisa: si alguien te comparte otros datos, no transfieras y escríbenos por Instagram a <strong>@artemisa.proyect</strong>.</p>
+
           <p class="pago-nota">
             Envía tu comprobante a
             <a href="mailto:artemisa.proyect2026@gmail.com?subject=Comprobante%20de%20pago">artemisa.proyect2026@gmail.com</a>
@@ -1789,7 +1795,6 @@
              icon (envelope = email, camera-in-square = Instagram). -->
         <div class="footer-contact">
           <h3 class="footer-contact-title">Contáctanos</h3>
-          <a href="mailto:alaiaesteban@icloud.com"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>alaiaesteban@icloud.com</a>
           <a href="mailto:artemisa.proyect2026@gmail.com"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>artemisa.proyect2026@gmail.com</a>
           <a href="https://instagram.com/artemisa.proyect" target="_blank" rel="noopener"><svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@artemisa.proyect</a>
         </div>
