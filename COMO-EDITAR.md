@@ -169,6 +169,14 @@ imagen cuadrada con ese mismo nombre. Más detalle en `fuente/icono/LEEME.md`.
 
 ---
 
+## Foto de "El evento" (vestimenta casual)
+
+El recuadro junto a los datos del evento (fecha, horario, lugar, entrada y
+código de vestimenta) muestra `fuente/evento/01.jpg`. Mejor una foto
+vertical. Los datos se cambian en `plantilla.html`: busca `id="evento"`.
+
+---
+
 ## Fotos de las iniciativas de la organización (en su ventana)
 
 Al hacer clic en "Misión Animal" se abre una ventana con 3 iniciativas, cada una

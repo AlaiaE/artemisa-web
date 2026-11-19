@@ -119,7 +119,9 @@ function guardarEnlace() {
 function reenviarSeleccion() {
   const ui = SpreadsheetApp.getUi();
   const h = hoja_();
-  const sel = h.getActiveRange();
+  // La selección se lee de la hoja abierta en pantalla (hoja_() abre el libro
+  // por su id, y ese objeto no conoce lo que el usuario seleccionó)
+  const sel = SpreadsheetApp.getActiveRange();
   if (!sel || sel.getSheet().getSheetId() !== h.getSheetId() || sel.getRow() < 2) {
     ui.alert('Primero haz clic en una celda de la fila del invitado (en la hoja de respuestas).');
     return;
@@ -216,7 +218,9 @@ function enviarBoleto_(h, c, fila) {
       h.getRange(fila, c.codigo).setValue(codigo);
     }
 
-    const png = qrPng(url + '?c=' + codigo, 8);
+    // Ojo: Google reserva los parámetros "c" y "sid" en las apps web
+    // (con ?c= la página da error), por eso el código va en ?boleto=
+    const png = qrPng(url + '?boleto=' + codigo, 8);
     const imagen = Utilities.newBlob(png.map(b => (b > 127 ? b - 256 : b)), 'image/png', 'boleto-artemisa.png');
 
     MailApp.sendEmail({
@@ -274,7 +278,7 @@ function correoHtml_(nombre, personas, codigo) {
 // =====================================================================
 
 function doGet(e) {
-  const codigo = String((e && e.parameter && e.parameter.c) || '').trim().slice(0, 40);
+  const codigo = String((e && e.parameter && e.parameter.boleto) || '').trim().slice(0, 40);
   return HtmlService.createHtmlOutput(paginaPuerta_(codigo))
     .setTitle('Entrada · ' + EVENTO.nombre)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');

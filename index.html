@@ -13,6 +13,7 @@
        4. <main>
             - .hero                       (top banner/collage)
             - #proposito section          (why we do this)
+            - #evento section             (date, time, price, dress code + photo)
             - #artistas section           ("Los maestros" cards)
             - 3x .artist-modal            (one popup per teacher)
             - #estrellas section           (cards open the portfolio)
@@ -166,11 +167,43 @@
   .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line);}
   .btn-ghost:hover{border-color:var(--ink);}
   .nav-cta{padding:9px 16px;}
+  /* "→" inside buttons. The nav's "→ Compra tu boleto ←" has one arrow on
+     each side pointing at the text, and both nudge toward it every few
+     seconds so the eye catches it */
+  .flecha{display:inline-block;transition:transform .2s;}
+  .btn:hover .flecha{transform:translateX(3px);}
+  .nav-cta .flecha{animation:empujar 1.8s ease-in-out infinite;font-size:1.35em;line-height:0.7;}
+  .nav-cta .flecha-der{animation-name:empujar-izq;}
+  @keyframes empujar{0%,60%,100%{transform:translateX(0);}30%{transform:translateX(5px);}}
+  @keyframes empujar-izq{0%,60%,100%{transform:translateX(0);}30%{transform:translateX(-5px);}}
+  @media (prefers-reduced-motion:reduce){.nav-cta .flecha{animation:none;}}
+  .nav-cta, nav.links a{white-space:nowrap;}
+  @media (max-width:1180px){ nav.links{gap:16px;} .nav-inner{gap:14px;} }
+  /* narrow phones: the logo, this button and the ☰ menu must fit in one row */
+  @media (max-width:560px){
+    .nav-inner{padding:14px 16px;gap:12px;}
+    .nav-cta{padding:8px 12px;font-size:11px;letter-spacing:0.05em;gap:6px;}
+  }
+  @media (max-width:350px){ .nav-inner{gap:8px;} .wordmark{font-size:18px;} .nav-cta{padding:8px 8px;font-size:10.5px;letter-spacing:0;gap:4px;} }
   .menu-toggle{display:none;}
   #nav-check{display:none;}
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;}
   .menu-btn span{display:block;width:100%;height:1px;background:var(--ink);}
   .mobile-links{display:none;}
+  /* below 1000px the links move into the ☰ menu */
+  @media (max-width:1000px){
+    nav.links{display:none;}
+    .menu-btn{display:flex;}
+    #nav-check:checked ~ .mobile-links{display:flex;}
+    .mobile-links{
+      display:none;flex-direction:column;gap:0;
+      border-top:1px solid var(--line);background:var(--paper);
+    }
+    .mobile-links a{
+      padding:16px 28px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.08em;
+      text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px dashed var(--line);
+    }
+  }
 
   /* ---------- HERO / COLLAGE ---------- */
   .hero{padding:36px 28px 40px;position:relative;}
@@ -606,6 +639,7 @@
   .pago-panel[data-pago="entrada"] [data-modo="donacion"]{display:none !important;}
   .pago-titulo{font-size:clamp(26px,3.4vw,32px);margin:8px 0 12px;padding-right:40px;}
   .pago-intro{font-size:16px;color:var(--graphite);margin-bottom:22px;}
+  .pago-intro a{color:var(--sienna);}
   .pago-datos{margin:0 0 22px;border-top:1px solid var(--line);}
   .pago-fila{display:grid;grid-template-columns:96px 1fr;gap:4px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
   .pago-fila dt{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite);}
@@ -625,6 +659,31 @@
   .pago-nota a{color:var(--sienna);overflow-wrap:anywhere;}
   .pago-nota .pago-copiar{margin:0 4px;vertical-align:1px;}
   @media (max-width:560px){ .pago-fila{grid-template-columns:1fr;} }
+
+  /* ---------- "EL EVENTO" ----------
+     Details box (left) + example-outfit photo box (right; the photo is
+     fuente/evento/01.jpg via data-imagen) + a button to the gallery. */
+  .evento-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:start;}
+  .evento-info{background:var(--paper-raised);border:1px solid var(--line);padding:30px 32px;}
+  .evento-datos{margin:0;}
+  .evento-fila{display:grid;grid-template-columns:140px 1fr;gap:4px 18px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);}
+  .evento-fila:first-child{padding-top:0;}
+  .evento-fila:last-child{border-bottom:none;padding-bottom:0;}
+  .evento-fila dt{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite);}
+  .evento-fila dd{margin:0;font-family:'Fraunces',Georgia,serif;font-size:clamp(20px,2.2vw,26px);line-height:1.25;color:var(--ink);}
+  .evento-fila dd small{display:block;margin-top:4px;font-family:inherit;font-size:15px;color:var(--graphite);}
+  .evento-foto{margin:0;display:flex;flex-direction:column;gap:10px;}
+  .evento-foto .org-project-img{aspect-ratio:4/5;}
+  .evento-foto figcaption{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--graphite);}
+  .evento-acciones{margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;}
+  @media (max-width:900px){
+    .evento-grid{grid-template-columns:1fr;}
+    .evento-foto{max-width:440px;}
+  }
+  @media (max-width:560px){
+    .evento-info{padding:24px 20px;}
+    .evento-fila{grid-template-columns:1fr;}
+  }
 
   footer{border-top:1px solid var(--line);padding:56px 28px 40px;}
   .footer-inner{display:flex;flex-direction:column;align-items:center;gap:32px;}
@@ -650,17 +709,6 @@
   @media (max-width:900px){
     .hero-inner{max-width:900px;}
     .collage{max-width:640px;}
-    nav.links{display:none;}
-    .menu-btn{display:flex;}
-    #nav-check:checked ~ .mobile-links{display:flex;}
-    .mobile-links{
-      display:none;flex-direction:column;gap:0;
-      border-top:1px solid var(--line);background:var(--paper);
-    }
-    .mobile-links a{
-      padding:16px 28px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.08em;
-      text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px dashed var(--line);
-    }
     .doodle{display:none;}
     .grid-2{grid-template-columns:1fr;gap:40px;}
     .steps,.steps.steps-4{grid-template-columns:1fr 1fr;row-gap:28px;}
@@ -691,7 +739,8 @@
      SITE HEADER — sticky top navigation bar.
      Contains: the "Artemisa" logo (wordmark), the menu links
      (Propósito / Artistas / Obras / Impacto / Cómo participar),
-     the "Reservar lugar" button, and a hidden checkbox (#nav-check)
+     the "→ Compra tu boleto ←" button (opens the transfer popup in
+     "entrada" mode), and a hidden checkbox (#nav-check)
      that is used purely as a CSS trick to open/close the mobile
      hamburger menu — no JavaScript needed for that toggle.
      ============================================================ -->
@@ -709,7 +758,7 @@
       <a href="#participar">Cómo participar</a>
     </nav>
     <div style="display:flex;align-items:center;gap:14px;">
-      <a class="btn btn-primary nav-cta" href="#participar">Reservar lugar</a>
+      <button type="button" class="btn btn-primary nav-cta" data-open-modal="modal-transferencia" data-pago="entrada"><span class="flecha" aria-hidden="true">→</span> Compra tu boleto <span class="flecha flecha-der" aria-hidden="true">←</span></button>
       <label class="menu-btn" for="nav-check" aria-label="Abrir menú"><span></span><span></span><span></span></label>
     </div>
   </div>
@@ -809,6 +858,41 @@
             <p>Esta subasta nace de mis clases de arte con niños de 7 a 10 años: un espacio donde ellos descubren su propio lenguaje visual y yo aprendo, semana tras semana, a mirar el mundo de nuevo. Cada pieza que se subasta —mía, de una intervención sobre el trabajo de un estudiante, o de los artistas que se suman a este proyecto— sostiene ese espacio para que pueda seguir creciendo.</p>
           </div>
         </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION: "EL EVENTO"
+       Anchor #evento. A details box (date, time, place, ticket
+       price, dress code) with a photo box to its right showing an
+       example of casual dress (fuente/evento/01.jpg — until it is
+       uploaded the box shows a texture), and a button to #galeria.
+       ============================================================ -->
+  <section id="evento">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">la noche de la subasta</div>
+        <h2>El evento</h2>
+      </div>
+      <div class="evento-grid reveal">
+        <div class="evento-info">
+          <dl class="evento-datos">
+            <div class="evento-fila"><dt>Fecha</dt><dd>Sábado 19 de diciembre</dd></div>
+            <div class="evento-fila"><dt>Horario</dt><dd>6:00 a 9:30 p.&nbsp;m.</dd></div>
+            <div class="evento-fila"><dt>Lugar</dt><dd>Centro Cultural San Ángel</dd></div>
+            <div class="evento-fila"><dt>Entrada</dt><dd>$300 por persona</dd></div>
+            <div class="evento-fila"><dt>Código de vestimenta</dt><dd>Casual</dd></div>
+            <div class="evento-fila"><dt>Incluye</dt><dd>Drinks de bienvenida</dd></div>
+          </dl>
+        </div>
+        <figure class="evento-foto">
+          <div class="org-project-img" data-imagen="evento/01"></div>
+          <figcaption>Ejemplo de vestimenta casual</figcaption>
+        </figure>
+      </div>
+      <div class="evento-acciones reveal">
+        <a class="btn btn-ghost" href="#galeria">Conoce el lugar en la galería <span class="flecha" aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -1717,7 +1801,7 @@
             <span data-modo="entrada">Paga tu entrada</span>
           </h3>
           <p class="pago-intro" data-modo="donacion">Cualquier cantidad ayuda: cada $2,000 son una semana de alimento para los ajolotes. Transfiere a esta cuenta:</p>
-          <p class="pago-intro" data-modo="entrada">La entrada al evento cuesta <strong>$300 por persona</strong>. Primero reserva tu lugar con el formulario y después transfiere a esta cuenta:</p>
+          <p class="pago-intro" data-modo="entrada">La entrada al evento cuesta <strong>$300 por persona</strong>. Primero reserva tu lugar con el <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFw-Kj-HNNF4dU4mXdi4laN0a1hC8y7VqqGszJ5co2BWmYIg/viewform?hl=es" target="_blank" rel="noopener">formulario de reserva</a> y después transfiere a esta cuenta:</p>
 
           <dl class="pago-datos">
             <div class="pago-fila">
