@@ -13,7 +13,7 @@
        4. <main>
             - .hero                       (top banner/collage)
             - #proposito section          (why we do this)
-            - #evento section             (date, time, price, dress code + photo)
+            - #evento section             (date, time, price, dress code)
             - #artistas section           ("Los maestros" cards)
             - 3x .artist-modal            (one popup per teacher)
             - #estrellas section           (cards open the portfolio)
@@ -661,10 +661,8 @@
   @media (max-width:560px){ .pago-fila{grid-template-columns:1fr;} }
 
   /* ---------- "EL EVENTO" ----------
-     Details box (left) + example-outfit photo box (right; the photo is
-     fuente/evento/01.jpg via data-imagen) + a button to the gallery. */
-  .evento-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:start;}
-  .evento-info{background:var(--paper-raised);border:1px solid var(--line);padding:30px 32px;}
+     Details box + a button to the gallery. */
+  .evento-info{background:var(--paper-raised);border:1px solid var(--line);padding:30px 32px;max-width:760px;}
   .evento-datos{margin:0;}
   .evento-fila{display:grid;grid-template-columns:140px 1fr;gap:4px 18px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);}
   .evento-fila:first-child{padding-top:0;}
@@ -672,14 +670,7 @@
   .evento-fila dt{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--graphite);}
   .evento-fila dd{margin:0;font-family:'Fraunces',Georgia,serif;font-size:clamp(20px,2.2vw,26px);line-height:1.25;color:var(--ink);}
   .evento-fila dd small{display:block;margin-top:4px;font-family:inherit;font-size:15px;color:var(--graphite);}
-  .evento-foto{margin:0;display:flex;flex-direction:column;gap:10px;}
-  .evento-foto .org-project-img{aspect-ratio:4/5;}
-  .evento-foto figcaption{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--graphite);}
   .evento-acciones{margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;}
-  @media (max-width:900px){
-    .evento-grid{grid-template-columns:1fr;}
-    .evento-foto{max-width:440px;}
-  }
   @media (max-width:560px){
     .evento-info{padding:24px 20px;}
     .evento-fila{grid-template-columns:1fr;}
@@ -864,9 +855,7 @@
   <!-- ============================================================
        SECTION: "EL EVENTO"
        Anchor #evento. A details box (date, time, place, ticket
-       price, dress code) with a photo box to its right showing an
-       example of casual dress (fuente/evento/01.jpg — until it is
-       uploaded the box shows a texture), and a button to #galeria.
+       price, dress code, what's included) and a button to #galeria.
        ============================================================ -->
   <section id="evento">
     <div class="wrap">
@@ -874,21 +863,15 @@
         <div class="eyebrow">la noche de la subasta</div>
         <h2>El evento</h2>
       </div>
-      <div class="evento-grid reveal">
-        <div class="evento-info">
+      <div class="evento-info reveal">
           <dl class="evento-datos">
             <div class="evento-fila"><dt>Fecha</dt><dd>Sábado 19 de diciembre</dd></div>
             <div class="evento-fila"><dt>Horario</dt><dd>6:00 a 9:30 p.&nbsp;m.</dd></div>
             <div class="evento-fila"><dt>Lugar</dt><dd>Centro Cultural San Ángel</dd></div>
             <div class="evento-fila"><dt>Entrada</dt><dd>$300 por persona</dd></div>
             <div class="evento-fila"><dt>Código de vestimenta</dt><dd>Semiformal</dd></div>
-            <div class="evento-fila"><dt>Incluye</dt><dd>Cocteleria</dd></div>
+            <div class="evento-fila"><dt>Incluye</dt><dd>Coctelería</dd></div>
           </dl>
-        </div>
-        <figure class="evento-foto">
-          <div class="org-project-img" data-imagen="evento/01"></div>
-          <figcaption>Ejemplo de vestimenta semiformal</figcaption>
-        </figure>
       </div>
       <div class="evento-acciones reveal">
         <a class="btn btn-ghost" href="#galeria">Conoce el lugar en la galería <span class="flecha" aria-hidden="true">→</span></a>
